@@ -1,0 +1,225 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { SITE } from "../lib/site";
+
+// Four physical entrances to The Burial Mound Shooting Center.
+// Coordinates pulled from the legacy Google Maps embed iframes.
+const gates = [
+  {
+    id: "west-1",
+    name: "West Gate 1",
+    label: "Main Gate",
+    lat: 36.40096,
+    lng: -96.8541357,
+    coords: "36°24'03.5\"N 96°51'12.6\"W",
+    open: "https://maps.app.goo.gl/Usn8ewQWbAGJDSsU6",
+    directions: "https://maps.app.goo.gl/W5HDnJGbgZqaTxdm9",
+    note: "Primary entrance. Use this if it's your first visit.",
+  },
+  {
+    id: "west-2",
+    name: "West Gate 2",
+    label: "The Bays",
+    lat: 36.4059444,
+    lng: -96.8549722,
+    coords: "36°24'21.4\"N 96°51'17.9\"W",
+    open: "https://maps.app.goo.gl/CzUq7n9scBnKXJFJ9",
+    directions: "https://maps.app.goo.gl/ZxBVWsQNVGZxFe8EA",
+    note: "Direct access to the bays.",
+  },
+  {
+    id: "east-3",
+    name: "East Gate 3",
+    label: "Creek Entrance",
+    lat: 36.3997830,
+    lng: -96.8361377,
+    coords: "36°23'59.2\"N 96°50'07.8\"W",
+    open: "https://maps.app.goo.gl/gP8JHFhsDqEnNzHa9",
+    directions: "https://maps.app.goo.gl/H7AKFgTtKsq8j4fNA",
+    note: "Creek-side approach. Lower-elevation route.",
+  },
+  {
+    id: "east-4",
+    name: "East Gate 4",
+    label: "Hilltop Entrance",
+    lat: 36.3955040,
+    lng: -96.8360227,
+    coords: "36°23'43.8\"N 96°50'07.4\"W",
+    open: "https://maps.app.goo.gl/BQJ4NPmfzZ1gDJaUA",
+    directions: "https://maps.app.goo.gl/3gTf2DCpwAJwSWHa9",
+    note: "Higher-elevation eastern approach.",
+  },
+];
+
+const lodging = [
+  {
+    title: "Free primitive camping",
+    body: "Available on-site. No hookups. Bring everything you need (water, food, shelter).",
+    href: null,
+  },
+  {
+    title: "Nearby Dining & Lodging",
+    body: "Food, hotels, and services within 65 miles of the venue.",
+    href: "https://www.google.com/maps/search/Food+and+accommodations+within+65+miles+of+42251+S+34500+Rd+Pawnee,+OK+74058/@36.2428025,-97.1193788,10.25z",
+  },
+  {
+    title: "Airbnb · Pawnee, OK",
+    body: "Vacation rentals near the event.",
+    href: "https://www.airbnb.com/s/Pawnee--OK/homes",
+  },
+  {
+    title: "Click's Steak House",
+    body: "Local favorite near Pawnee.",
+    href: "https://www.clickssteakhouse.com/",
+  },
+];
+---
+
+<BaseLayout
+  title="Location & Directions"
+  description="The Burial Mound Shooting Center, 42251 S 34500 Rd, Pawnee, OK. GPS for all four gates, parking, free on-site camping, and nearby lodging."
+>
+  <section class="mx-auto max-w-5xl px-4 py-20 sm:px-6 lg:px-8">
+    <p class="section-label">// Location & Directions</p>
+    <h1
+      class="mt-3 font-[family-name:var(--font-display)] text-5xl font-bold uppercase sm:text-6xl"
+    >
+      Pawnee, Oklahoma.
+    </h1>
+    <p class="mt-6 max-w-2xl text-[var(--color-text-muted)]">
+      All Twilight Biathlon events are held at <strong class="text-[var(--color-text)]">{SITE.venue.name}</strong> —
+      a private range east of Pawnee, Oklahoma. Four entrances. Pick the one
+      closest to your approach.
+    </p>
+
+    {/* Address card */}
+    <div class="mt-10 grid gap-6 border border-[var(--color-hairline)] p-6 sm:grid-cols-2">
+      <div>
+        <p class="section-label">Address</p>
+        <address class="mt-2 not-italic font-[family-name:var(--font-display)] text-xl text-[var(--color-text)]">
+          {SITE.venue.address}<br />
+          {SITE.venue.city}, {SITE.venue.region} {SITE.venue.postalCode}
+        </address>
+      </div>
+      <div>
+        <p class="section-label">Venue</p>
+        <p class="mt-2">
+          <a
+            href={SITE.venue.website}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-[var(--color-nv)] hover:underline"
+          >
+            {SITE.venue.name} →
+          </a>
+        </p>
+        <p class="mt-3 text-sm text-[var(--color-text-muted)]">
+          Parking is available near the starting line. Free primitive camping
+          on-site (no hookups).
+        </p>
+      </div>
+    </div>
+
+    {/* Gates */}
+    <div class="mt-16">
+      <p class="section-label">// Four Entrances</p>
+      <h2 class="mt-2 font-[family-name:var(--font-display)] text-3xl font-bold uppercase sm:text-4xl">
+        Pick a gate.
+      </h2>
+      <p class="mt-3 max-w-2xl text-[var(--color-text-muted)]">
+        Each gate has its own GPS. Click <strong class="text-[var(--color-text)]">Directions</strong>
+        to launch turn-by-turn navigation in your phone's maps app.
+      </p>
+
+      <div class="mt-8 grid gap-4 sm:grid-cols-2">
+        {gates.map((g) => (
+          <article class="flex flex-col border border-[var(--color-hairline)] p-5 transition-colors hover:border-[var(--color-nv)]">
+            <header class="flex items-baseline gap-3">
+              <span class="font-[family-name:var(--font-mono)] text-xs uppercase tracking-[0.2em] text-[var(--color-nv)]">
+                {g.name}
+              </span>
+              <span class="font-[family-name:var(--font-display)] text-xl font-semibold uppercase tracking-wide">
+                {g.label}
+              </span>
+            </header>
+            <p class="mt-2 font-[family-name:var(--font-mono)] text-xs text-[var(--color-text-muted)]">
+              {g.coords}
+            </p>
+            <p class="mt-3 text-sm text-[var(--color-text)]/90">{g.note}</p>
+
+            <div class="mt-5 flex flex-wrap gap-3">
+              <a
+                href={g.directions}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn-primary text-xs"
+              >
+                Directions
+              </a>
+              <a
+                href={g.open}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn-ghost text-xs"
+              >
+                Open in Maps
+              </a>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+
+    {/* Map embed — uses the West Gate 1 (Main Gate) as the canonical view */}
+    <div class="mt-16">
+      <p class="section-label">// Map</p>
+      <h2 class="mt-2 font-[family-name:var(--font-display)] text-3xl font-bold uppercase sm:text-4xl">
+        Satellite view.
+      </h2>
+      <p class="mt-3 text-sm text-[var(--color-text-muted)]">
+        Centered on the Main Gate. Pinch / drag to explore.
+      </p>
+      <div class="mt-6 aspect-[16/9] overflow-hidden border border-[var(--color-hairline)]">
+        <iframe
+          title="The Burial Mound Shooting Center — satellite map"
+          src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d955.4573822327928!2d-96.8541357303471!3d36.40095999827271!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMzbCsDI0JzAzLjUiTiA5NsKwNTEnMTIuNiJX!5e1!3m2!1sen!2sus"
+          width="100%"
+          height="100%"
+          style="border:0"
+          allowfullscreen
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+        ></iframe>
+      </div>
+    </div>
+
+    {/* Lodging / dining */}
+    <div class="mt-16">
+      <p class="section-label">// Stay & Eat</p>
+      <h2 class="mt-2 font-[family-name:var(--font-display)] text-3xl font-bold uppercase sm:text-4xl">
+        Food, beds, and the long drive home.
+      </h2>
+
+      <ul class="mt-8 grid gap-4 sm:grid-cols-2">
+        {lodging.map((item) => (
+          <li class="border border-[var(--color-hairline)] p-5">
+            <p class="font-[family-name:var(--font-display)] text-lg font-semibold uppercase tracking-wide text-[var(--color-text)]">
+              {item.title}
+            </p>
+            <p class="mt-2 text-sm text-[var(--color-text-muted)]">{item.body}</p>
+            {item.href && (
+              <a
+                href={item.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="mt-3 inline-block text-sm text-[var(--color-nv)] hover:underline"
+              >
+                Open →
+              </a>
+            )}
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+</BaseLayout>

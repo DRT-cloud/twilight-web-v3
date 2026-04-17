@@ -1,41 +1,100 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import NewsletterForm from "../components/NewsletterForm.astro";
 import { SITE } from "../lib/site";
 ---
 
 <BaseLayout
   title="Contact"
-  description="Contact the Twilight Biathlon organizers for volunteer, sponsor, or event inquiries."
+  description="Email OkMultiGun@gmail.com for questions about registration, divisions, rules, or any event matter."
 >
-  <section class="mx-auto max-w-2xl px-4 py-20 sm:px-6 lg:px-8">
+  <section class="mx-auto max-w-4xl px-4 py-20 sm:px-6 lg:px-8">
     <p class="section-label">// Contact</p>
     <h1
       class="mt-3 font-[family-name:var(--font-display)] text-5xl font-bold uppercase sm:text-6xl"
     >
-      Reach out.
+      Get in touch.
     </h1>
+    <p class="mt-6 max-w-2xl text-[var(--color-text-muted)]">
+      Questions about registration, divisions, rules, gear, age waivers, or any
+      other event matter — email is the fastest path. Replies come from a real
+      human (typically within a couple of days).
+    </p>
 
-    <div class="mt-12 space-y-8">
-      <div class="border border-[var(--color-hairline)] bg-[var(--color-surface)] p-6">
-        <p class="section-label text-[var(--color-nv)]">// Email</p>
+    {/* Email panel */}
+    <div class="mt-12 grid gap-6 border border-[var(--color-hairline)] p-8 sm:grid-cols-[1fr_auto] sm:items-center">
+      <div>
+        <p class="section-label text-[var(--color-nv)]">// Primary Contact</p>
         <a
-          href={`mailto:${SITE.contact.email}`}
-          class="mt-3 block font-[family-name:var(--font-mono)] text-xl hover:text-[var(--color-nv)]"
+          href={`mailto:${SITE.contact.email}?subject=Twilight%20Biathlon%20Inquiry`}
+          class="mt-3 block font-[family-name:var(--font-display)] text-3xl font-bold uppercase tracking-tight text-[var(--color-text)] hover:text-[var(--color-nv)] sm:text-4xl"
         >
           {SITE.contact.email}
         </a>
-        <p class="mt-2 text-sm text-[var(--color-text-muted)]">
-          Registration, logistics, volunteer, sponsor, general inquiries.
+        <p class="mt-3 text-sm text-[var(--color-text-muted)]">
+          For: registration help, division questions, rules clarifications,
+          age waivers (under 16), gear questions, weather concerns.
         </p>
       </div>
+      <a
+        href={`mailto:${SITE.contact.email}?subject=Twilight%20Biathlon%20Inquiry`}
+        class="btn-primary text-sm whitespace-nowrap"
+      >
+        Send email →
+      </a>
+    </div>
 
-      <div class="border border-[var(--color-hairline)] p-6">
-        <p class="section-label">// Venue</p>
-        <p class="mt-3 text-lg">{SITE.venue.name}</p>
-        <p class="text-[var(--color-text-muted)]">
-          {SITE.venue.city}, {SITE.venue.state}
+    {/* Secondary info grid */}
+    <div class="mt-10 grid gap-4 sm:grid-cols-3">
+      <div class="border border-[var(--color-hairline)] p-5">
+        <p class="font-[family-name:var(--font-mono)] text-xs uppercase tracking-[0.2em] text-[var(--color-nv)]">
+          Organization
+        </p>
+        <p class="mt-3 font-[family-name:var(--font-display)] text-lg font-semibold uppercase tracking-wide">
+          Oklahoma Multi-Gun
         </p>
       </div>
+      <div class="border border-[var(--color-hairline)] p-5">
+        <p class="font-[family-name:var(--font-mono)] text-xs uppercase tracking-[0.2em] text-[var(--color-nv)]">
+          Venue
+        </p>
+        <p class="mt-3 font-[family-name:var(--font-display)] text-lg font-semibold uppercase tracking-wide">
+          {SITE.venue.name}
+        </p>
+        <p class="mt-1 text-xs text-[var(--color-text-muted)]">
+          {SITE.venue.city}, {SITE.venue.region}
+        </p>
+      </div>
+      <div class="border border-[var(--color-hairline)] p-5">
+        <p class="font-[family-name:var(--font-mono)] text-xs uppercase tracking-[0.2em] text-[var(--color-nv)]">
+          Registration
+        </p>
+        <p class="mt-3 text-sm text-[var(--color-text)]/90">
+          Handled via PractiScore. <a href="/register" class="text-[var(--color-nv)] hover:underline">See open events →</a>
+        </p>
+      </div>
+    </div>
+
+    {/* Common questions hint */}
+    <div class="mt-12 border-l-2 border-[var(--color-nv)] bg-[var(--color-nv)]/5 p-5">
+      <p class="font-[family-name:var(--font-display)] text-lg font-semibold uppercase tracking-wide">
+        Before you email — your question might already be answered.
+      </p>
+      <p class="mt-2 text-sm text-[var(--color-text)]/90">
+        Check the <a href="/faq" class="text-[var(--color-nv)] hover:underline">FAQ</a>,
+        the <a href="/first-timer" class="text-[var(--color-nv)] hover:underline">First-Timer Guide</a>,
+        or the <a href="/rules" class="text-[var(--color-nv)] hover:underline">Rules</a>.
+      </p>
+    </div>
+
+    {/* Newsletter */}
+    <div class="mt-20 border-t border-[var(--color-hairline)] pt-12">
+      <NewsletterForm
+        variant="stacked"
+        label="// Stay in the loop"
+        heading="Email list."
+        description="Registration alerts, weather calls, NV-night reminders. Unsubscribe any time."
+      />
     </div>
   </section>
 </BaseLayout>

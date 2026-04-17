@@ -11,10 +11,13 @@ export const SITE = {
 
   venue: {
     name: "The Burial Mound Shooting Center",
+    address: "42251 S 34500 Rd",
     city: "Pawnee",
     state: "Oklahoma",
     region: "OK",
+    postalCode: "74058",
     country: "US",
+    website: "https://theburialmound.com/",
   },
 
   contact: {
@@ -25,14 +28,17 @@ export const SITE = {
   nav: [
     { href: "/about", label: "About" },
     { href: "/register", label: "Register" },
-    { href: "/course", label: "Course" },
     { href: "/rules", label: "Rules" },
     { href: "/results", label: "Results" },
+    { href: "/location", label: "Location" },
     { href: "/faq", label: "FAQ" },
   ],
 
   footerNav: [
     { href: "/schedule", label: "Schedule" },
+    { href: "/course", label: "Course" },
+    { href: "/what-is-run-and-gun", label: "What is Run-and-Gun?" },
+    { href: "/first-timer", label: "First-Timer Guide" },
     { href: "/gallery", label: "Gallery" },
     { href: "/contact", label: "Contact" },
   ],

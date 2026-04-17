@@ -1,0 +1,142 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const flow = [
+  { num: "01", title: "Start", body: "You begin at the starting line carrying everything: firearms, ammunition, eye/ear protection, and lighting. No resupply at your vehicle." },
+  { num: "02", title: "Run", body: "Follow a marked course through Oklahoma fields, woods, hills, and creek beds. Distances range from 2K to 10+ miles depending on the event." },
+  { num: "03", title: "Shoot", body: "At each shooting stage, a Range Officer supervises you through a course of fire. Engage targets with the designated firearm, then move on." },
+  { num: "04", title: "Repeat", body: "Run to the next stage. Shoot. Run. Until you finish." },
+  { num: "05", title: "Score", body: "Final score = total time: running + stage times + penalties for missed targets. Lowest total time wins." },
+];
+
+const adds = [
+  { kw: "Navigation", body: "The course is marked, but you're moving through Oklahoma fields, woods, hills, and creek beds in the dark. Light discipline and route-finding matter." },
+  { kw: "Target ID", body: "Every target must be positively identified using your own lighting or night vision before you press the trigger. No firing at shadows." },
+  { kw: "Equipment", body: "Lights, batteries, NV devices, IR illuminators — managing all of it while moving through darkness is a skill layer of its own." },
+];
+---
+
+<BaseLayout
+  title="What Is Run-and-Gun?"
+  description="Run and gun combines cross-country running with live-fire shooting stages. Twilight Biathlon adds the dark."
+>
+  <section class="mx-auto max-w-4xl px-4 py-20 sm:px-6 lg:px-8">
+    <p class="section-label">// The Format</p>
+    <h1
+      class="mt-3 font-[family-name:var(--font-display)] text-5xl font-bold uppercase sm:text-6xl"
+    >
+      What is run-and-gun?
+    </h1>
+    <p class="mt-6 max-w-2xl text-[var(--color-text-muted)]">
+      Run and gun (also called "run n' gun" or "tactical biathlon") is a timed
+      shooting competition that combines cross-country running with live-fire
+      shooting stages. You carry your firearms the entire course, stop at
+      designated stages to engage targets, then keep running.
+    </p>
+
+    {/* How it works */}
+    <div class="mt-16">
+      <p class="section-label">// How It Works</p>
+      <h2 class="mt-2 font-[family-name:var(--font-display)] text-3xl font-bold uppercase sm:text-4xl">
+        Five steps.
+      </h2>
+      <ol class="mt-8 space-y-4">
+        {flow.map((s) => (
+          <li class="flex gap-5 border-l-2 border-[var(--color-nv)]/40 pl-5">
+            <span class="font-[family-name:var(--font-mono)] text-sm text-[var(--color-nv)] pt-1 shrink-0">{s.num}</span>
+            <div>
+              <p class="font-[family-name:var(--font-display)] text-xl font-semibold uppercase tracking-wide">{s.title}</p>
+              <p class="mt-2 text-[var(--color-text)]/90 leading-relaxed">{s.body}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+
+    {/* What makes it different */}
+    <div class="mt-20 border-y border-[var(--color-hairline)] py-12">
+      <p class="section-label">// The Appeal</p>
+      <h2 class="mt-2 font-[family-name:var(--font-display)] text-3xl font-bold uppercase sm:text-4xl">
+        Two skills, one stopwatch.
+      </h2>
+      <p class="mt-4 max-w-2xl text-[var(--color-text)]/90 leading-relaxed">
+        Most shooting sports treat fitness and marksmanship separately. Run and
+        gun doesn't. After running uphill through a field, your heart rate is
+        elevated, your hands may be shaking, and you need to settle onto a
+        target at 100+ yards. That combination is the appeal.
+      </p>
+      <p class="mt-4 max-w-2xl text-[var(--color-text)]/90 leading-relaxed">
+        Unlike static range competitions (USPSA, IDPA, PRS), run and gun rewards
+        athletes who can both run and shoot. You can't win on marksmanship alone
+        if your run time is slow, and you can't win on fitness alone if you're
+        stacking penalties at every stage.
+      </p>
+    </div>
+
+    {/* What Twilight adds */}
+    <div class="mt-20">
+      <p class="section-label">// What Twilight Adds</p>
+      <h2 class="mt-2 font-[family-name:var(--font-display)] text-3xl font-bold uppercase sm:text-4xl">
+        At night. Completely unlit.
+      </h2>
+      <p class="mt-4 max-w-2xl text-[var(--color-text)]/90 leading-relaxed">
+        Twilight Biathlon takes the run-and-gun format and runs it at night, on
+        completely unlit terrain. Three new layers of difficulty:
+      </p>
+
+      <div class="mt-8 grid gap-4 sm:grid-cols-3">
+        {adds.map((a) => (
+          <div class="border border-[var(--color-hairline)] p-5">
+            <p class="font-[family-name:var(--font-mono)] text-xs uppercase tracking-[0.2em] text-[var(--color-nv)]">
+              {a.kw}
+            </p>
+            <p class="mt-3 text-sm text-[var(--color-text)]/90 leading-relaxed">{a.body}</p>
+          </div>
+        ))}
+      </div>
+
+      <div class="mt-8 border-l-2 border-[var(--color-nv)] bg-[var(--color-nv)]/5 p-5">
+        <p class="font-[family-name:var(--font-display)] text-lg font-semibold uppercase tracking-wide text-[var(--color-nv)]">
+          Four divisions across two nights.
+        </p>
+        <p class="mt-2 text-[var(--color-text)]/90 leading-relaxed">
+          <strong>Friday is NV-only</strong> (NV 2Gun and NV PCC). <strong>Saturday is white-light</strong>
+          (2Gun and PCC) — headlamps, weapon lights, and flashlights are
+          permitted. This is one of the few events that dedicates an entire
+          night exclusively to night vision competitors.
+        </p>
+      </div>
+    </div>
+
+    {/* Do I need to be fast */}
+    <div class="mt-20">
+      <p class="section-label">// Fitness</p>
+      <h2 class="mt-2 font-[family-name:var(--font-display)] text-3xl font-bold uppercase sm:text-4xl">
+        Do I need to be fast?
+      </h2>
+      <p class="mt-4 max-w-2xl text-[var(--color-text)]/90 leading-relaxed">
+        No. The run-and-gun community is one of the most welcoming in
+        competitive shooting. Many competitors walk significant portions of
+        the course. Finishing is the goal.
+      </p>
+      <p class="mt-4 max-w-2xl text-[var(--color-text)]/90 leading-relaxed">
+        If you've never done a run and gun before, the Twilight Biathlon's 5K
+        course is on the shorter end of the format (many events run 5–10+ miles).
+        It's a good entry point.
+      </p>
+    </div>
+
+    {/* CTA */}
+    <div class="mt-20 flex flex-col gap-4 border-t border-[var(--color-hairline)] pt-10 sm:flex-row sm:items-center">
+      <a href="/first-timer" class="btn-primary text-sm">
+        Read the First-Timer Guide
+      </a>
+      <a href="/register" class="btn-ghost text-sm">
+        See upcoming events
+      </a>
+      <a href="/rules" class="btn-ghost text-sm">
+        Review the rules
+      </a>
+    </div>
+  </section>
+</BaseLayout>

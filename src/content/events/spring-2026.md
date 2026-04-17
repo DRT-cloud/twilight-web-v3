@@ -9,7 +9,7 @@ shootersMeeting: "9:00 PM each night"
 firstRelease: "10:00 PM each night"
 registrationOpens: 2025-10-05
 registrationCloses: 2026-05-11
-registrationUrl: "https://practiscore.com/"
+registrationUrl: "https://practiscore.com/twilight-biathlon-may-15-16-2026/register"
 entryFee: 100
 secondDivisionFee: 50
 fridayDivisions: ["NV 2Gun", "NV PCC"]

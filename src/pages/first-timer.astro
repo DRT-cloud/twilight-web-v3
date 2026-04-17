@@ -1,0 +1,248 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const checklist = [
+  {
+    cat: "Firearms",
+    items: [
+      "Rifle — center-fire (2Gun) or PCC (PCC division)",
+      "Pistol — center-fire (2Gun); optional in PCC",
+      "Rifle sling (required)",
+      "Rigid pistol holster that covers the trigger and retains during running",
+    ],
+  },
+  {
+    cat: "Ammunition",
+    items: [
+      "Rifle: 30–50 hits needed (bring 2× that)",
+      "Pistol: 40–60 hits needed (bring 2× that)",
+      "Loaded magazines ready to go",
+      "No tracers, incendiary, armor-piercing, or steel-core projectiles",
+    ],
+  },
+  {
+    cat: "Lighting",
+    items: [
+      "Headlamp (primary navigation light)",
+      "Weapon-mounted light on rifle and pistol",
+      "Backup flashlight",
+      "Fresh batteries in all lights + spare batteries",
+      "Chem-lights (optional but useful for stage waiting areas)",
+    ],
+  },
+  {
+    cat: "Safety & Personal",
+    items: [
+      "Eye protection",
+      "Ear protection (electronic recommended)",
+      "Stopwatch or watch with timer function",
+      "Water / hydration",
+      "Footwear suitable for uneven wooded terrain at night (trail runners or boots)",
+      "Weather-appropriate clothing",
+    ],
+  },
+];
+
+const flow = [
+  { num: "01", title: "Check-in", body: "Arrive during the check-in window (see the Schedule page). You'll get a start time. Be ready before that start time." },
+  { num: "02", title: "Shooters meeting", body: "Mandatory. The Match Director briefs the entire field on safety, course layout, and any changes. Ask your questions here." },
+  { num: "03", title: "Your release", body: "Competitors are released individually every ~5 minutes. When your name is called, move to the starting area to start your run." },
+  { num: "04", title: "The course", body: "A marked 5K route through Oklahoma fields, woods, hills, and creek beds. Follow the markers. It's dark — that's the point." },
+  { num: "05", title: "Shooting stages", body: "You'll hit 4 stages across 2 laps (odd/even rotation). At each stage, wait in the stage waiting area until the RO calls you. The RO supervises your entire course of fire." },
+  { num: "06", title: "Finish", body: "Cross the finish line. Your total time (run – wait times + stage times + penalties) is your score." },
+];
+
+const tips = [
+  { kw: "Don't rush the stages", body: "Penalties from failing to neutralize targets add up fast. Taking an extra couple seconds to settle your breathing and confirm your sight picture saves time." },
+  { kw: "Hydrate before you start", body: "The course is 5K through fields and woods. In Oklahoma spring/fall weather, dehydration is real." },
+  { kw: "Test your gear the night before", body: "Run around your neighborhood in the dark with your kit (your neighbors will love it). Does the sling chafe? Does the holster retain at a jog? Does your headlamp bounce? Find out before the event." },
+  { kw: "Walk when you need to", body: "Nobody judges you for walking. A steady pace with clean stages beats sprinting and missing targets." },
+  { kw: "Have fun", body: "The Twilight Biathlon community is one of the most welcoming in competitive shooting. People will help you, cheer for you, and swap stories after the event." },
+];
+---
+
+<BaseLayout
+  title="First-Timer Guide"
+  description="Never done a run and gun? This is a complete walkthrough — gear, fitness, division choice, day-of flow, and tips from past competitors."
+>
+  <section class="mx-auto max-w-4xl px-4 py-20 sm:px-6 lg:px-8">
+    <p class="section-label">// First-Timer Guide</p>
+    <h1
+      class="mt-3 font-[family-name:var(--font-display)] text-5xl font-bold uppercase sm:text-6xl"
+    >
+      Your first night.
+    </h1>
+    <p class="mt-6 max-w-2xl text-[var(--color-text-muted)]">
+      Everything a new competitor needs to register, prepare, and finish their
+      first Twilight Biathlon with a smile.
+    </p>
+
+    {/* Before you register */}
+    <div class="mt-16">
+      <p class="section-label">// Before You Register</p>
+      <h2 class="mt-2 font-[family-name:var(--font-display)] text-3xl font-bold uppercase sm:text-4xl">
+        Are you ready?
+      </h2>
+      <p class="mt-4 text-[var(--color-text)]/90 leading-relaxed">
+        You should be an <strong>experienced shooter</strong> before entering.
+        This is not the place to learn the basics. You need to be comfortable with:
+      </p>
+      <ul class="mt-4 space-y-2">
+        {[
+          "Loading, unloading, and making safe your rifle and pistol",
+          "Engaging targets from standing, kneeling, and prone positions",
+          "Moving with loaded firearms",
+          "Basic firearm malfunction remediation",
+        ].map((it) => (
+          <li class="flex gap-3 text-[var(--color-text)]/90">
+            <span class="text-[var(--color-nv)] pt-1 shrink-0">→</span>
+            <span>{it}</span>
+          </li>
+        ))}
+      </ul>
+      <p class="mt-6 text-[var(--color-text)]/90 leading-relaxed">
+        You do not need to be a fast runner. Many competitors walk significant
+        portions of the course. The community is welcoming and the atmosphere is
+        encouraging — finishing is the goal.
+      </p>
+    </div>
+
+    {/* Which division */}
+    <div class="mt-20 border-y border-[var(--color-hairline)] py-12">
+      <p class="section-label">// Which Division?</p>
+      <h2 class="mt-2 font-[family-name:var(--font-display)] text-3xl font-bold uppercase sm:text-4xl">
+        Pick your night.
+      </h2>
+
+      <div class="mt-8 space-y-6">
+        <div class="border-l-2 border-[var(--color-nv)] pl-5">
+          <p class="font-[family-name:var(--font-display)] text-xl font-semibold uppercase tracking-wide">
+            Saturday 2Gun <span class="text-[var(--color-nv)]">— recommended for first-timers</span>
+          </p>
+          <p class="mt-2 text-[var(--color-text)]/90 leading-relaxed">
+            White-light division. Bring a rifle, pistol, headlamp, and weapon
+            lights. The course is completely dark, but you control your own
+            illumination.
+          </p>
+        </div>
+
+        <div class="border-l-2 border-[var(--color-hairline)] pl-5">
+          <p class="font-[family-name:var(--font-display)] text-xl font-semibold uppercase tracking-wide">
+            PCC
+          </p>
+          <p class="mt-2 text-[var(--color-text)]/90 leading-relaxed">
+            Pistol caliber carbine. Good option if you don't want to manage two
+            firearms — uses a single primary; pistol is optional.
+          </p>
+        </div>
+
+        <div class="border-l-2 border-[var(--color-wl)] pl-5">
+          <p class="font-[family-name:var(--font-display)] text-xl font-semibold uppercase tracking-wide">
+            Friday NV divisions <span class="text-[var(--color-wl)]">— experienced NV shooters only</span>
+          </p>
+          <p class="mt-2 text-[var(--color-text)]/90 leading-relaxed">
+            NV 2Gun and NV PCC. Require night vision devices and prohibit white
+            light. Not the place to use NV for the first time.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    {/* Gear checklist */}
+    <div class="mt-20">
+      <p class="section-label">// Gear Checklist</p>
+      <h2 class="mt-2 font-[family-name:var(--font-display)] text-3xl font-bold uppercase sm:text-4xl">
+        What to bring.
+      </h2>
+      <p class="mt-3 text-[var(--color-text-muted)]">
+        Carry all gear from start to finish. No resupply at your vehicle.
+      </p>
+
+      <div class="mt-8 grid gap-6 sm:grid-cols-2">
+        {checklist.map((cat) => (
+          <div class="border border-[var(--color-hairline)] p-5">
+            <p class="font-[family-name:var(--font-mono)] text-xs uppercase tracking-[0.2em] text-[var(--color-nv)]">
+              {cat.cat}
+            </p>
+            <ul class="mt-4 space-y-2">
+              {cat.items.map((item) => (
+                <li class="flex gap-3 text-sm text-[var(--color-text)]/90">
+                  <span class="text-[var(--color-nv)]/70 shrink-0">▸</span>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+
+      <div class="mt-8 border-l-2 border-[var(--color-wl)] bg-[var(--color-wl)]/5 p-5">
+        <p class="font-bold uppercase tracking-wide text-[var(--color-wl)]">
+          A light failure on course costs time.
+        </p>
+        <p class="mt-2 text-[var(--color-text)]/90 leading-relaxed">
+          Your headlamp is your most critical piece of non-firearm gear. Bring
+          a backup. Fresh batteries. Test everything before you leave the
+          parking area.
+        </p>
+      </div>
+    </div>
+
+    {/* Day of */}
+    <div class="mt-20">
+      <p class="section-label">// On Course</p>
+      <h2 class="mt-2 font-[family-name:var(--font-display)] text-3xl font-bold uppercase sm:text-4xl">
+        What to expect.
+      </h2>
+      <ol class="mt-8 space-y-4">
+        {flow.map((s) => (
+          <li class="flex gap-5 border-l-2 border-[var(--color-nv)]/40 pl-5">
+            <span class="font-[family-name:var(--font-mono)] text-sm text-[var(--color-nv)] pt-1 shrink-0">{s.num}</span>
+            <div>
+              <p class="font-[family-name:var(--font-display)] text-xl font-semibold uppercase tracking-wide">{s.title}</p>
+              <p class="mt-2 text-[var(--color-text)]/90 leading-relaxed">{s.body}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+
+    {/* Tips */}
+    <div class="mt-20">
+      <p class="section-label">// Tips From Past Competitors</p>
+      <h2 class="mt-2 font-[family-name:var(--font-display)] text-3xl font-bold uppercase sm:text-4xl">
+        Hard-earned advice.
+      </h2>
+      <div class="mt-8 grid gap-4 sm:grid-cols-2">
+        {tips.map((t) => (
+          <div class="border border-[var(--color-hairline)] p-5">
+            <p class="font-[family-name:var(--font-display)] text-lg font-semibold uppercase tracking-wide text-[var(--color-text)]">
+              {t.kw}
+            </p>
+            <p class="mt-2 text-sm text-[var(--color-text)]/90 leading-relaxed">{t.body}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    {/* After */}
+    <div class="mt-20 border-y border-[var(--color-hairline)] py-12">
+      <p class="section-label">// After the Event</p>
+      <h2 class="mt-2 font-[family-name:var(--font-display)] text-3xl font-bold uppercase sm:text-4xl">
+        Scoring, awards, t-shirt.
+      </h2>
+      <ul class="mt-6 space-y-3 text-[var(--color-text)]/90 leading-relaxed">
+        <li><strong>Scoring.</strong> Scores are usually ready within an hour of all stages reporting in after the final competitor completes the course.</li>
+        <li><strong>Awards ceremony.</strong> Top 3 in each division — presented Saturday night after all scoring is complete (usually very early Sunday morning). Stick around.</li>
+        <li><strong>Your t-shirt.</strong> Every registered competitor receives a Twilight Biathlon t-shirt at the event.</li>
+      </ul>
+    </div>
+
+    {/* CTA */}
+    <div class="mt-16 flex flex-col gap-4 border-t border-[var(--color-hairline)] pt-10 sm:flex-row sm:items-center">
+      <a href="/register" class="btn-primary text-sm">Register</a>
+      <a href="/rules" class="btn-ghost text-sm">Read the Rules</a>
+      <a href="/location" class="btn-ghost text-sm">Get directions</a>
+    </div>
+  </section>
+</BaseLayout>

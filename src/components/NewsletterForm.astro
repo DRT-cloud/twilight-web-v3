@@ -1,0 +1,228 @@
+---
+// Brevo-backed signup form. POSTs JSON to /api/subscribe (Cloudflare Pages
+// Function in /functions/api/subscribe.ts).
+//
+// Variants:
+//   inline  — single-row email + button (default; for footer / sidebar)
+//   stacked — labeled fields, generous spacing (for full-width sections)
+
+interface Props {
+  variant?: "inline" | "stacked";
+  /** Optional eyebrow, headline, sub */
+  label?: string;
+  heading?: string;
+  description?: string;
+  /** Where to send users on JS-disabled fallback (mailto:) */
+  fallbackEmail?: string;
+}
+
+const {
+  variant = "inline",
+  label,
+  heading,
+  description,
+  fallbackEmail = "okmultigun@gmail.com",
+} = Astro.props;
+
+const id = `nl-${Math.random().toString(36).slice(2, 8)}`;
+---
+
+<form
+  id={id}
+  class:list={[
+    "newsletter-form",
+    variant === "stacked" ? "is-stacked" : "is-inline",
+  ]}
+  action={`mailto:${fallbackEmail}?subject=Subscribe%20-%20Twilight%20Biathlon`}
+  method="post"
+  data-newsletter
+  novalidate
+>
+  {label && <p class="section-label text-[var(--color-nv)]">{label}</p>}
+  {heading && (
+    <h2 class="mt-2 font-[family-name:var(--font-display)] text-3xl font-bold uppercase sm:text-4xl">
+      {heading}
+    </h2>
+  )}
+  {description && (
+    <p class="mt-3 text-[var(--color-text-muted)]">{description}</p>
+  )}
+
+  {variant === "stacked" && (
+    <div class="mt-6 grid gap-3 sm:grid-cols-2">
+      <label class="flex flex-col gap-1.5">
+        <span class="text-xs font-[family-name:var(--font-mono)] uppercase tracking-wider text-[var(--color-text-muted)]">First name</span>
+        <input
+          type="text"
+          name="firstName"
+          autocomplete="given-name"
+          maxlength="60"
+          class="newsletter-input"
+        />
+      </label>
+      <label class="flex flex-col gap-1.5">
+        <span class="text-xs font-[family-name:var(--font-mono)] uppercase tracking-wider text-[var(--color-text-muted)]">Last name</span>
+        <input
+          type="text"
+          name="lastName"
+          autocomplete="family-name"
+          maxlength="60"
+          class="newsletter-input"
+        />
+      </label>
+    </div>
+  )}
+
+  <div
+    class:list={[
+      "mt-6",
+      variant === "inline"
+        ? "flex flex-col gap-2 sm:flex-row sm:items-stretch"
+        : "flex flex-col gap-3 sm:flex-row sm:items-stretch",
+    ]}
+  >
+    <label class="sr-only" for={`${id}-email`}>Email address</label>
+    <input
+      id={`${id}-email`}
+      type="email"
+      name="email"
+      required
+      autocomplete="email"
+      placeholder="you@example.com"
+      maxlength="254"
+      class="newsletter-input flex-1"
+    />
+
+    {/* Honeypot — visually hidden but technically present */}
+    <input
+      type="text"
+      name="website"
+      tabindex="-1"
+      autocomplete="off"
+      class="absolute left-[-9999px] h-0 w-0 overflow-hidden opacity-0"
+      aria-hidden="true"
+    />
+
+    <button
+      type="submit"
+      class="btn-primary text-sm whitespace-nowrap"
+      data-newsletter-submit
+    >
+      <span data-default>Subscribe</span>
+      <span data-loading hidden>Subscribing…</span>
+    </button>
+  </div>
+
+  {/* Inline status messages (a11y live region) */}
+  <p
+    class="mt-3 min-h-[1.25rem] text-sm"
+    role="status"
+    aria-live="polite"
+    data-newsletter-status
+  >
+  </p>
+
+  <p class="mt-2 text-xs text-[var(--color-text-muted)]">
+    No spam. Event announcements and registration alerts only. Unsubscribe any time.
+  </p>
+</form>
+
+<style>
+  .newsletter-input {
+    background: var(--color-surface);
+    border: 1px solid var(--color-hairline);
+    color: var(--color-text);
+    padding: 0.75rem 1rem;
+    font-family: var(--font-body), system-ui, sans-serif;
+    font-size: 0.95rem;
+    border-radius: 2px;
+    transition: border-color 150ms ease, background 150ms ease;
+    min-width: 0;
+  }
+  .newsletter-input:focus {
+    outline: none;
+    border-color: var(--color-nv);
+    background: color-mix(in oklab, var(--color-surface), var(--color-nv) 4%);
+  }
+  .newsletter-input::placeholder {
+    color: color-mix(in oklab, var(--color-text-muted), transparent 30%);
+  }
+  .newsletter-form[data-state="success"] .newsletter-input,
+  .newsletter-form[data-state="success"] [data-newsletter-submit] {
+    opacity: 0.55;
+    pointer-events: none;
+  }
+  [data-newsletter-status][data-tone="success"] {
+    color: var(--color-nv);
+  }
+  [data-newsletter-status][data-tone="error"] {
+    color: var(--color-wl);
+  }
+</style>
+
+<script>
+  // Progressive enhancement — if JS runs, hijack submit and POST JSON.
+  // Without JS, the form falls back to mailto:.
+  document.querySelectorAll<HTMLFormElement>("[data-newsletter]").forEach((form) => {
+    form.action = "/api/subscribe";
+    form.method = "post";
+
+    const status = form.querySelector<HTMLElement>("[data-newsletter-status]");
+    const submit = form.querySelector<HTMLButtonElement>("[data-newsletter-submit]");
+    const defaultLabel = submit?.querySelector<HTMLElement>("[data-default]");
+    const loadingLabel = submit?.querySelector<HTMLElement>("[data-loading]");
+
+    const setStatus = (msg: string, tone: "success" | "error" | "") => {
+      if (!status) return;
+      status.textContent = msg;
+      if (tone) status.dataset.tone = tone;
+      else delete status.dataset.tone;
+    };
+
+    const setLoading = (loading: boolean) => {
+      if (!submit || !defaultLabel || !loadingLabel) return;
+      submit.disabled = loading;
+      defaultLabel.hidden = loading;
+      loadingLabel.hidden = !loading;
+    };
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      setStatus("", "");
+      setLoading(true);
+
+      const data = Object.fromEntries(new FormData(form).entries());
+
+      try {
+        const res = await fetch("/api/subscribe", {
+          method: "POST",
+          headers: { "content-type": "application/json", accept: "application/json" },
+          body: JSON.stringify(data),
+        });
+        const body = (await res.json().catch(() => ({}))) as {
+          ok?: boolean;
+          error?: string;
+          alreadySubscribed?: boolean;
+          doi?: boolean;
+        };
+
+        if (res.ok && body.ok) {
+          form.dataset.state = "success";
+          if (body.alreadySubscribed) {
+            setStatus("You're already on the list. See you in the dark.", "success");
+          } else if (body.doi) {
+            setStatus("Check your email to confirm your subscription.", "success");
+          } else {
+            setStatus("Subscribed. We'll send you the next event drop.", "success");
+          }
+        } else {
+          setStatus(body.error ?? "Something went wrong. Try again.", "error");
+        }
+      } catch {
+        setStatus("Network error. Check your connection and retry.", "error");
+      } finally {
+        setLoading(false);
+      }
+    });
+  });
+</script>

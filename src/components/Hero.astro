@@ -1,9 +1,15 @@
 ---
-// Hero — LCP element. The <img> inside uses fetchpriority="high" and the
-// AVIF variant at the user's viewport width is preloaded in BaseLayout.
+// Hero — LCP element. The <img> uses fetchpriority="high" and the AVIF
+// variant at viewport width is preloaded by BaseLayout.
 //
-// We ship 3 widths × 3 formats for the hero (9 files total):
-//   1920w, 1280w, 768w · AVIF / WebP / JPEG
+// Image variants (9 files): 1920w / 1280w / 768w × AVIF / WebP / JPEG
+//
+// Visual treatment:
+//   • Image is rendered at higher opacity (was 0.60 → now 0.85) and pushed
+//     brighter via CSS filters (brightness + saturate + slight contrast).
+//   • Subtle scroll parallax via translate3d on a separate inner layer —
+//     done in plain JS (no framework dep), and disabled when the user has
+//     prefers-reduced-motion or is on a coarse pointer / narrow viewport.
 
 import { SITE } from "../lib/site";
 import { formatEventRange } from "../lib/format";
@@ -11,15 +17,15 @@ import { formatEventRange } from "../lib/format";
 interface Props {
   nextEventStart: Date;
   nextEventEnd: Date;
-  /** Hero basename, e.g. "hero-twilight" — used to construct srcsets */
+  registrationUrl?: string;
   heroBase?: string;
-  /** Widths available (in px) */
   heroWidths?: number[];
 }
 
 const {
   nextEventStart,
   nextEventEnd,
+  registrationUrl,
   heroBase = "hero-twilight",
   heroWidths = [768, 1280, 1920],
 } = Astro.props;
@@ -33,61 +39,149 @@ const srcset = (fmt: "avif" | "webp" | "jpg") =>
 const sizes = "100vw";
 ---
 
-<section class="relative isolate overflow-hidden">
-  <!-- Background image: picture element for AVIF/WebP fallback chain -->
-  <picture>
-    <source type="image/avif" srcset={srcset("avif")} sizes={sizes} />
-    <source type="image/webp" srcset={srcset("webp")} sizes={sizes} />
-    <img
-      src={`/images/hero/${heroBase}-${largest}w.jpg`}
-      srcset={srcset("jpg")}
-      sizes={sizes}
-      alt=""
-      aria-hidden="true"
-      width="1920"
-      height="1080"
-      fetchpriority="high"
-      decoding="async"
-      class="absolute inset-0 h-full w-full object-cover object-center opacity-60"
-    />
-  </picture>
+<section
+  class="hero relative isolate overflow-hidden min-h-[88vh] flex items-end"
+>
+  {/*
+    Parallax wrapper. Translates upward as the user scrolls; the image
+    is over-sized (115% height) so that translation never reveals empty
+    space below.
+  */}
+  <div class="hero-parallax absolute inset-0 will-change-transform" data-parallax>
+    <picture>
+      <source type="image/avif" srcset={srcset("avif")} sizes={sizes} />
+      <source type="image/webp" srcset={srcset("webp")} sizes={sizes} />
+      <img
+        src={`/images/hero/${heroBase}-${largest}w.jpg`}
+        srcset={srcset("jpg")}
+        sizes={sizes}
+        alt=""
+        aria-hidden="true"
+        width="1920"
+        height="1080"
+        fetchpriority="high"
+        decoding="async"
+        class="hero-img absolute inset-0 h-[115%] w-full object-cover object-center"
+      />
+    </picture>
+  </div>
 
-  <!-- Gradient overlay for legibility -->
+  {/*
+    Two-layer overlay tuned for legibility AGAINST the brightened image:
+    1. Vignette/gradient bottom→top so headline reads cleanly
+    2. Very faint top vignette so the nav doesn't disappear
+  */}
   <div
-    class="absolute inset-0 bg-gradient-to-t from-[var(--color-bg)] via-[var(--color-bg)]/70 to-[var(--color-bg)]/40"
+    class="pointer-events-none absolute inset-0 bg-gradient-to-t from-[var(--color-bg)] from-5% via-[var(--color-bg)]/55 via-55% to-[var(--color-bg)]/15"
+    aria-hidden="true"
+  >
+  </div>
+  <div
+    class="pointer-events-none absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-[var(--color-bg)]/60 to-transparent"
     aria-hidden="true"
   >
   </div>
 
-  <div class="relative mx-auto max-w-7xl px-4 pt-24 pb-20 sm:px-6 sm:pt-32 sm:pb-28 lg:px-8 lg:pt-40 lg:pb-36">
+  <div
+    class="relative mx-auto w-full max-w-7xl px-4 pt-32 pb-20 sm:px-6 sm:pt-40 sm:pb-24 lg:px-8 lg:pt-48 lg:pb-32"
+  >
     <p class="section-label text-[var(--color-nv)]">
       {SITE.venue.city}, {SITE.venue.state} · Spring & Fall
     </p>
 
     <h1
-      class="mt-4 font-[family-name:var(--font-display)] text-6xl font-bold uppercase leading-[0.95] tracking-tight sm:text-7xl lg:text-8xl"
+      class="mt-4 font-[family-name:var(--font-display)] text-6xl font-bold uppercase leading-[0.95] tracking-tight text-shadow sm:text-7xl lg:text-8xl"
     >
       Twilight<br />Biathlon
     </h1>
 
     <p
-      class="mt-6 max-w-2xl font-[family-name:var(--font-display)] text-2xl font-semibold uppercase tracking-wider text-[var(--color-nv)] sm:text-3xl"
+      class="mt-6 max-w-2xl font-[family-name:var(--font-display)] text-2xl font-semibold uppercase tracking-wider text-[var(--color-nv)] text-shadow sm:text-3xl"
     >
       Run the Dark. Shoot the Dark.
     </p>
 
-    <p class="mt-6 max-w-2xl text-base text-[var(--color-text)]/90 sm:text-lg">
+    <p class="mt-6 max-w-2xl text-base text-[var(--color-text)]/95 sm:text-lg text-shadow-sm">
       The original nighttime run-and-gun biathlon. 5K night course, 4 live-fire
       shooting stages, NV and white-light divisions. Running since 2018.
     </p>
 
     <div class="mt-10 flex flex-col items-start gap-4 sm:flex-row sm:items-center">
-      <a href="/register" class="btn-primary text-base">
+      <a
+        href={registrationUrl ?? "/register"}
+        class="btn-primary text-base"
+        target={registrationUrl ? "_blank" : undefined}
+        rel={registrationUrl ? "noopener noreferrer" : undefined}
+      >
         Register for {formatEventRange(nextEventStart, nextEventEnd)}
       </a>
-      <a href="#how-it-works" class="btn-ghost text-sm">
+      <a href="/what-is-run-and-gun" class="btn-ghost text-sm">
         What is a run-and-gun biathlon?
       </a>
     </div>
   </div>
 </section>
+
+<style>
+  /* Lighten the hero photo — applied to the <img> directly */
+  .hero-img {
+    opacity: 0.88;
+    filter: brightness(1.18) contrast(1.04) saturate(1.05);
+  }
+
+  /* Text shadow utilities for legibility on the brighter image */
+  :global(.text-shadow) {
+    text-shadow: 0 2px 18px rgba(0, 0, 0, 0.75), 0 1px 2px rgba(0, 0, 0, 0.6);
+  }
+  :global(.text-shadow-sm) {
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.65);
+  }
+
+  /* Parallax — disable for users who opt out of motion */
+  @media (prefers-reduced-motion: reduce) {
+    .hero-parallax {
+      transform: none !important;
+    }
+  }
+</style>
+
+<script>
+  // Lightweight scroll-parallax. Uses transform on the wrapper so the
+  // composited layer animates on the GPU. Disabled on touch/coarse pointer
+  // and narrow viewports (where parallax tends to feel laggy and consume
+  // battery for little visual gain).
+  (() => {
+    const layer = document.querySelector<HTMLElement>("[data-parallax]");
+    if (!layer) return;
+
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const coarse = window.matchMedia("(pointer: coarse)").matches;
+    const narrow = window.matchMedia("(max-width: 768px)").matches;
+    if (reduce || coarse || narrow) return;
+
+    let ticking = false;
+    const SPEED = 0.35; // 0.0 = static, 1.0 = scrolls 1:1 with page
+
+    const update = () => {
+      // Clamp translation to the hero section's height so we never reveal
+      // a gap once the user has scrolled past it.
+      const rect = layer.getBoundingClientRect();
+      const sectionHeight = rect.height;
+      const scrolled = Math.max(0, -rect.top);
+      const offset = Math.min(scrolled * SPEED, sectionHeight * 0.15);
+      layer.style.transform = `translate3d(0, ${offset}px, 0)`;
+      ticking = false;
+    };
+
+    const onScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(update);
+        ticking = true;
+      }
+    };
+
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll, { passive: true });
+  })();
+</script>
