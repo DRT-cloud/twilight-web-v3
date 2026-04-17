@@ -16,8 +16,8 @@ const currentPath = Astro.url.pathname;
       </span>
     </a>
 
-    <nav aria-label="Primary" class="hidden lg:flex">
-      <ul class="flex items-center gap-7">
+    <nav aria-label="Primary" class="hidden xl:flex">
+      <ul class="flex items-center gap-x-5 gap-y-1">
         {
           SITE.nav.map((item) => (
             <li>
@@ -25,7 +25,7 @@ const currentPath = Astro.url.pathname;
                 href={item.href}
                 aria-current={currentPath === item.href ? "page" : undefined}
                 class:list={[
-                  "font-[family-name:var(--font-display)] text-sm font-semibold uppercase tracking-wider transition-colors",
+                  "font-[family-name:var(--font-display)] text-[13px] font-semibold uppercase tracking-wider transition-colors whitespace-nowrap",
                   currentPath === item.href
                     ? "text-[var(--color-nv)]"
                     : "text-[var(--color-text-muted)] hover:text-[var(--color-text)]",
@@ -50,7 +50,7 @@ const currentPath = Astro.url.pathname;
         aria-label="Open menu"
         aria-controls="mobile-nav"
         aria-expanded="false"
-        class="lg:hidden inline-flex h-10 w-10 items-center justify-center border border-[var(--color-hairline)] rounded-sm"
+        class="xl:hidden inline-flex h-10 w-10 items-center justify-center border border-[var(--color-hairline)] rounded-sm"
         data-mobile-nav-trigger
       >
         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
@@ -63,7 +63,7 @@ const currentPath = Astro.url.pathname;
   <!-- Mobile nav drawer -->
   <div
     id="mobile-nav"
-    class="lg:hidden hidden border-t border-[var(--color-hairline)] bg-[var(--color-bg)]"
+    class="xl:hidden hidden border-t border-[var(--color-hairline)] bg-[var(--color-bg)]"
     data-mobile-nav
   >
     <ul class="flex flex-col gap-1 px-4 py-4">

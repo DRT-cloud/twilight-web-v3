@@ -21,11 +21,8 @@ for (const r of sorted) {
 const years = [...byYear.keys()].sort((a, b) => b - a);
 
 const totalMatches = sorted.length;
-const totalShooters = sorted.reduce(
-  (n, r) => n + (r.competitors ?? 0),
-  0,
-);
 const firstYear = Math.min(...sorted.map((r) => r.year));
+const yearsRunning = new Date().getFullYear() - firstYear + 1;
 ---
 
 <BaseLayout
@@ -52,8 +49,8 @@ const firstYear = Math.min(...sorted.map((r) => r.year));
         <dd class="mt-1 font-[family-name:var(--font-display)] text-3xl font-bold sm:text-4xl">{totalMatches}</dd>
       </div>
       <div>
-        <dt class="section-label">Total shooters</dt>
-        <dd class="mt-1 font-[family-name:var(--font-display)] text-3xl font-bold sm:text-4xl">{totalShooters}</dd>
+        <dt class="section-label">Years running</dt>
+        <dd class="mt-1 font-[family-name:var(--font-display)] text-3xl font-bold sm:text-4xl">{yearsRunning}</dd>
       </div>
       <div>
         <dt class="section-label">Running since</dt>
@@ -117,29 +114,6 @@ const firstYear = Math.min(...sorted.map((r) => r.year));
                     <h3 class="mt-2 font-[family-name:var(--font-display)] text-xl font-semibold uppercase tracking-wide transition-colors group-hover:text-[var(--color-nv)] sm:text-2xl">
                       {r.eventTitle}
                     </h3>
-
-                    <dl class="mt-3 grid grid-cols-2 gap-x-6 gap-y-1 text-sm sm:grid-cols-3">
-                      {r.competitors !== undefined && (
-                        <div class="flex gap-2">
-                          <dt class="text-[var(--color-text-muted)]">Shooters</dt>
-                          <dd class="text-[var(--color-text)]">{r.competitors}</dd>
-                        </div>
-                      )}
-                      {r.winner && (
-                        <div class="flex gap-2 sm:col-span-2">
-                          <dt class="text-[var(--color-text-muted)]">Winner</dt>
-                          <dd class="text-[var(--color-text)]">{r.winner}</dd>
-                        </div>
-                      )}
-                      {r.winnerTime && (
-                        <div class="flex gap-2 sm:col-span-3">
-                          <dt class="text-[var(--color-text-muted)]">Time</dt>
-                          <dd class="font-[family-name:var(--font-mono)] text-[var(--color-text)]">
-                            {r.winnerTime}
-                          </dd>
-                        </div>
-                      )}
-                    </dl>
 
                     <p class="mt-3 font-[family-name:var(--font-mono)] text-xs text-[var(--color-nv)]/70 transition-colors group-hover:text-[var(--color-nv)]">
                       View full results on PractiScore →

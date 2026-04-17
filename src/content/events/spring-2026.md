@@ -4,10 +4,12 @@ startDate: 2026-05-15
 endDate: 2026-05-16
 season: "spring"
 status: "registration-open"
+gatesOpen: "5:00 PM each night"
 checkinWindow: "7:00–8:00 PM each night"
 shootersMeeting: "9:00 PM each night"
 firstRelease: "10:00 PM each night"
-registrationOpens: 2025-10-05
+squaddingOpens: "10/27 12:00 PM CST"
+registrationOpens: 2025-10-27
 registrationCloses: 2026-05-11
 registrationUrl: "https://practiscore.com/twilight-biathlon-may-15-16-2026/register"
 entryFee: 100
@@ -21,6 +23,8 @@ Held at The Burial Mound Shooting Center, Pawnee, Oklahoma.
 
 - **Friday, May 15** — NV 2Gun / NV PCC — Night Vision only.
 - **Saturday, May 16** — 2Gun / PCC — White Light.
+- Squadding opens: 10/27 12:00 PM CST.
+- Gates open: 5:00 PM each night.
 - Check-in: 7:00–8:00 PM each night.
 - Shooters meeting: 9:00 PM each night.
 - First release: 10:00 PM each night.

@@ -32,16 +32,13 @@ export const SITE = {
     { href: "/results", label: "Results" },
     { href: "/location", label: "Location" },
     { href: "/faq", label: "FAQ" },
-  ],
-
-  footerNav: [
-    { href: "/schedule", label: "Schedule" },
-    { href: "/course", label: "Course" },
     { href: "/what-is-run-and-gun", label: "What is Run-and-Gun?" },
     { href: "/first-timer", label: "First-Timer Guide" },
     { href: "/gallery", label: "Gallery" },
     { href: "/contact", label: "Contact" },
   ],
+
+  footerNav: [],
 } as const;
 
 export type NavItem = { href: string; label: string };

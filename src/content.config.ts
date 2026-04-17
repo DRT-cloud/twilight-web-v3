@@ -21,6 +21,7 @@ const events = defineCollection({
     shootersMeeting: z.string(),
     firstRelease: z.string(),
     gatesOpen: z.string().optional(),
+    squaddingOpens: z.string().optional(),
 
     // Registration
     registrationOpens: z.coerce.date(),
