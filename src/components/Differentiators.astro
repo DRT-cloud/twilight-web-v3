@@ -1,0 +1,55 @@
+---
+const items = [
+  {
+    title: "The Original",
+    body: "The original nighttime run-and-gun biathlon, running continuously since 2018.",
+  },
+  {
+    title: "Dedicated NV Divisions",
+    body: "NV 2Gun and NV PCC on Friday night with full white-light prohibition. A format few other events offer.",
+  },
+  {
+    title: "Timed Release",
+    body: "Individual 5-minute releases for a clean, uncontested course and shorter wait times.",
+  },
+  {
+    title: "Engineered Against Bottlenecks",
+    body: "Two-lap odd/even stage rotation: even competitors run even stages first, odds run odd first.",
+  },
+  {
+    title: "Genuine Unlit Terrain",
+    body: "Oklahoma fields, woods, and creek beds. Tests navigation and light discipline, not just shooting fitness.",
+  },
+  {
+    title: "T-Shirt & Awards",
+    body: "Every competitor gets a Twilight Biathlon t-shirt. Top 3 in each division receive awards at the Saturday night ceremony.",
+  },
+];
+---
+
+<section class="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+  <p class="section-label">// Why This Event</p>
+  <h2
+    class="mt-3 font-[family-name:var(--font-display)] text-4xl font-bold uppercase sm:text-5xl"
+  >
+    Built for the dark.
+  </h2>
+
+  <ul class="mt-12 grid gap-px bg-[var(--color-hairline)] sm:grid-cols-2 lg:grid-cols-3">
+    {
+      items.map((item, i) => (
+        <li class="group bg-[var(--color-bg)] p-6 transition-colors hover:bg-[var(--color-surface)]">
+          <p class="font-[family-name:var(--font-mono)] text-xs text-[var(--color-text-muted)]">
+            0{i + 1}
+          </p>
+          <h3 class="mt-3 font-[family-name:var(--font-display)] text-xl font-bold uppercase">
+            {item.title}
+          </h3>
+          <p class="mt-2 text-sm text-[var(--color-text-muted)] leading-relaxed">
+            {item.body}
+          </p>
+        </li>
+      ))
+    }
+  </ul>
+</section>

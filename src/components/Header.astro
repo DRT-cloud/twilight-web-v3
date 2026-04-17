@@ -1,0 +1,104 @@
+---
+import { SITE } from "../lib/site";
+
+const currentPath = Astro.url.pathname;
+---
+
+<header
+  class="sticky top-0 z-40 border-b border-[var(--color-hairline)] bg-[var(--color-bg)]/80 backdrop-blur-md"
+>
+  <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
+    <a href="/" class="group flex items-center gap-3">
+      <span
+        class="font-[family-name:var(--font-display)] text-xl font-bold uppercase tracking-tight text-[var(--color-text)]"
+      >
+        Twilight Biathlon
+      </span>
+    </a>
+
+    <nav aria-label="Primary" class="hidden lg:flex">
+      <ul class="flex items-center gap-7">
+        {
+          SITE.nav.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                aria-current={currentPath === item.href ? "page" : undefined}
+                class:list={[
+                  "font-[family-name:var(--font-display)] text-sm font-semibold uppercase tracking-wider transition-colors",
+                  currentPath === item.href
+                    ? "text-[var(--color-nv)]"
+                    : "text-[var(--color-text-muted)] hover:text-[var(--color-text)]",
+                ]}
+              >
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="flex items-center gap-3">
+      <a href="/register" class="btn-primary hidden sm:inline-flex text-sm">
+        Register →
+      </a>
+
+      <!-- Mobile nav trigger -->
+      <button
+        type="button"
+        aria-label="Open menu"
+        aria-controls="mobile-nav"
+        aria-expanded="false"
+        class="lg:hidden inline-flex h-10 w-10 items-center justify-center border border-[var(--color-hairline)] rounded-sm"
+        data-mobile-nav-trigger
+      >
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+          <path d="M3 6h14M3 10h14M3 14h14" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile nav drawer -->
+  <div
+    id="mobile-nav"
+    class="lg:hidden hidden border-t border-[var(--color-hairline)] bg-[var(--color-bg)]"
+    data-mobile-nav
+  >
+    <ul class="flex flex-col gap-1 px-4 py-4">
+      {
+        SITE.nav.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              aria-current={currentPath === item.href ? "page" : undefined}
+              class:list={[
+                "block font-[family-name:var(--font-display)] text-base font-semibold uppercase tracking-wider py-2",
+                currentPath === item.href
+                  ? "text-[var(--color-nv)]"
+                  : "text-[var(--color-text)]",
+              ]}
+            >
+              {item.label}
+            </a>
+          </li>
+        ))
+      }
+      <li class="pt-2">
+        <a href="/register" class="btn-primary w-full text-sm">Register →</a>
+      </li>
+    </ul>
+  </div>
+</header>
+
+<script>
+  // Minimal mobile nav toggle — vanilla JS, ~0.3 KB
+  const trigger = document.querySelector("[data-mobile-nav-trigger]");
+  const drawer = document.querySelector("[data-mobile-nav]");
+  trigger?.addEventListener("click", () => {
+    const expanded = trigger.getAttribute("aria-expanded") === "true";
+    trigger.setAttribute("aria-expanded", String(!expanded));
+    drawer?.classList.toggle("hidden");
+  });
+</script>

@@ -1,0 +1,592 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+// Rulebook structured as data so markup stays clean. Sub-items can include
+// a `children` array for nested enumerations. Callouts use `callout` / `warn`.
+type SubItem = { num?: string; text: string; children?: SubItem[] };
+type Sub = {
+  num: string;
+  title: string;
+  body?: string;
+  items?: SubItem[];
+  callout?: { variant?: "default" | "warn"; label?: string; text: string };
+};
+type Section = {
+  num: number;
+  id: string;
+  title: string;
+  subs?: Sub[];
+  tables?: { caption?: string; head: string[]; rows: (string | { v: string; cls?: string })[][] }[];
+};
+
+const sections: Section[] = [
+  {
+    num: 1,
+    id: "s1",
+    title: "Safety Rules",
+    subs: [
+      {
+        num: "1.1",
+        title: "Competitor Responsibility",
+        body:
+          "It is the competitor’s responsibility to read and understand the rules and stage briefings and to agree to be bound by them while participating in the event.",
+      },
+      {
+        num: "1.2",
+        title: "Basic Firearms Safety Rules",
+        body: "The following fundamental safety rules apply at all times:",
+        items: [
+          { num: "1.2.1", text: "Treat all guns as if they are always loaded." },
+          { num: "1.2.2", text: "Never let the muzzle cover anything you are not willing to destroy." },
+          { num: "1.2.3", text: "Keep your finger off the trigger until your sights are on target and you have made a positive identification." },
+          { num: "1.2.4", text: "Be sure of your target, what is in front of it, and what is behind it." },
+        ],
+      },
+      {
+        num: "1.3",
+        title: "Cold Range",
+        callout: {
+          label: "COLD RANGE:",
+          text:
+            "All events operate on a cold range. Firearms shall be unloaded at all times except when directly under the supervision of a Range Officer (RO) during an active Course of Fire (COF).",
+        },
+        items: [
+          { num: "1.3.1", text: "Rifles and PCCs shall be transported between stages with detachable magazines removed and chamber empty. Slings are strongly recommended for hands-free carrying during the run." },
+          { num: "1.3.2", text: "Pistols shall remain holstered at all times between stages. Chamber shall be empty; a magazine may be inserted." },
+          { num: "1.3.3", text: "Competitors shall not handle, manipulate, or load any firearm outside of the active shooting stage under supervision of an RO. Any such action observed between stages is grounds for Match DQ under Section 9." },
+        ],
+      },
+      {
+        num: "1.4",
+        title: "Eye and Ear Protection",
+        body:
+          "Eye and ear protection must be worn at all times while at a shooting stage. Ear protection is mandatory from the “Make Ready” command through “Range is Clear.” Electronic hearing protection is strongly recommended for ROs and competitors to maintain situational awareness at night.",
+      },
+      {
+        num: "1.5",
+        title: "Minimum Target Illumination Standard",
+        items: [
+          { num: "1.5.1", text: "A competitor shall not engage any target unless that target has been positively identified using available lighting or night vision before the trigger is pressed. Firing at sound, movement, or assumed target location is prohibited and constitutes grounds for immediate Match DQ under Section 9." },
+          { num: "1.5.2", text: "ROs shall visually confirm that the shooting lane is clear and downrange is safe before issuing the “Make Ready” command at each stage." },
+        ],
+      },
+      {
+        num: "1.6",
+        title: "Abandoning Firearms",
+        items: [
+          { num: "1.6.1", text: "During a COF, a competitor may be required to abandon a firearm to transition to another. A competitor shall not engage targets with more than one gun in their hands at any time." },
+          { num: "1.6.2", text: "Designated firearm abandonment locations will be identified during the stage brief. These locations shall be clearly marked with high-visibility markers visible under white light and IR illumination." },
+          { num: "1.6.3", text: "Firearms shall be abandoned in one of the following conditions only: MANUAL SAFETY ENGAGED, or EMPTY — empty chamber with no live rounds in the firearm or attached magazine." },
+          { num: "1.6.4", text: "Abandoned firearms shall be placed muzzle-forward into the designated receptacle or laid flat in the designated zone, pointed downrange. An abandoned firearm pointing uprange or sideways is a safety violation and the RO will call “STOP.”" },
+        ],
+      },
+    ],
+  },
+  {
+    num: 2,
+    id: "s2",
+    title: "Range Commands and Procedures",
+    subs: [
+      { num: "2.1", title: "Make Ready", body: "The RO will issue the “Make Ready” command and supervise the competitor through firearm preparation." },
+      { num: "2.2", title: "Are You Ready / Standby", body: "After “Make Ready,” the RO will accompany the competitor to the start position and issue “Are You Ready” followed by “Standby” and timer activation. Silence from the competitor indicates readiness. If not ready, the competitor shall state “No” or “Not Ready.”" },
+      { num: "2.3", title: "STOP", body: "Any RO may issue “STOP” at any time. The competitor shall immediately cease firing, stop moving, and await further instruction." },
+      { num: "2.4", title: "Unload and Show Clear", body: "Upon completion of the stage, the competitor shall lower the firearm, present it muzzle downrange with magazine removed and chamber empty for RO inspection. The RO will supervise safe unloading of all firearms used on the stage." },
+      { num: "2.5", title: "Range is Clear", body: "Issued only after all firearms are confirmed clear. Officials and competitors may move downrange only after this declaration." },
+      { num: "2.6", title: "Stage Brief Supersedes Posted Information", body: "The stage brief delivered by the RO supersedes any previously posted stage information." },
+      { num: "2.7", title: "Competitor Self-Sufficiency", body: "Competitors must carry all required equipment for the full course at the start of their run. No resupply at vehicles is permitted." },
+      {
+        num: "2.8",
+        title: "Stage Wait Time and Stopwatch",
+        body: "When a competitor arrives at a stage and another competitor is actively running the COF, the arriving competitor shall:",
+        items: [
+          { num: "2.8.1", text: "Proceed to the Stage Waiting Area (SWA), at least 5 yards behind the active shooting line." },
+          { num: "2.8.2", text: "Start their wait timer on their personal stopwatch immediately upon entering the SWA." },
+          { num: "2.8.3", text: "Turn off all active lights except chemical lights (chem-lights) upon entering the SWA (see Section 12)." },
+          { num: "2.8.4", text: "Remain in the SWA with all firearms unloaded and holstered/slung until invited to the stage by the RO." },
+          { num: "2.8.5", text: "The RO will record competitor wait time upon exit of the SWA. Wait time will be deducted from run time. RO log is authoritative in the event of dispute." },
+        ],
+      },
+      { num: "2.9", title: "Equipment Carry", body: "The competitor will carry all personal equipment throughout each stage unless otherwise stated in the stage brief." },
+    ],
+  },
+  {
+    num: 3,
+    id: "s3",
+    title: "Firearms",
+    subs: [
+      { num: "3.1", title: "Serviceability", body: "All firearms must be serviceable and safe. ROs may inspect any firearm at any time. Firearms declared unsafe shall be withdrawn until repaired to the satisfaction of the RO, Range Master (RM), or Match Director (MD)." },
+      { num: "3.2", title: "Malfunction Repair", body: "A competitor may attempt to repair a malfunctioning firearm under RO supervision, without outside assistance, on run time. Wait time does not apply." },
+      { num: "3.3", title: "Fire Mode", body: "Firearms capable of select-fire or full-auto may only be fired in semi-automatic mode." },
+      { num: "3.4", title: "Slings", body: "A sling or retention device is required on all rifles and PCCs. The firearm must remain attached to the competitor’s body during transitions and movement. Unslung rifles carried in-hand between stages are prohibited." },
+    ],
+  },
+  {
+    num: 4,
+    id: "s4",
+    title: "Holsters and Equipment",
+    subs: [
+      {
+        num: "4.1",
+        title: "Handgun Holsters",
+        items: [
+          { num: "4.1.1", text: "Holsters must safely retain the handgun during vigorous movement including running on uneven terrain." },
+          { num: "4.1.2", text: "Holster material must be rigid and completely cover the trigger on all semi-automatic pistols and the cylinder on revolvers." },
+          { num: "4.1.3", text: "Shoulder holsters, belly bands, magazine pouch holsters, cross-draw chest holsters, and pocket holsters are prohibited." },
+        ],
+      },
+    ],
+  },
+  {
+    num: 5,
+    id: "s5",
+    title: "Ammunition",
+    subs: [
+      {
+        num: "5.1",
+        title: "Prohibited Ammunition",
+        callout: {
+          variant: "warn",
+          label: "Prohibited:",
+          text:
+            "Tracer, incendiary, armor-piercing, and steel/tungsten core ammunition. Violations may result in penalties up to Match DQ and reimbursement for target and/or property damage. Steel-cased ammunition with non-steel projectiles is permitted.",
+        },
+      },
+      {
+        num: "5.2",
+        title: "Allowed Pistol / PCC Calibers",
+        body: "Only the following pistol and PCC calibers are permitted:",
+        items: [
+          { num: "5.2.1", text: ".380 ACP" },
+          { num: "5.2.2", text: "9mm" },
+          { num: "5.2.3", text: ".40 S&W" },
+          { num: "5.2.4", text: ".45 ACP" },
+          { num: "5.2.5", text: "10mm" },
+          { num: "5.2.6", text: ".38 Special" },
+          { num: "5.2.7", text: ".357 Magnum" },
+        ],
+      },
+      {
+        num: "5.3",
+        title: "Allowed Rifle Calibers",
+        body: "Only the following rifle calibers are permitted:",
+        items: [
+          { num: "5.3.1", text: "5.45×39mm" },
+          { num: "5.3.2", text: "5.56×45mm / .223 Remington" },
+          { num: "5.3.3", text: "7.62×39mm" },
+          { num: "5.3.4", text: ".300 AAC Blackout" },
+          { num: "5.3.5", text: "FN 5.7×28mm" },
+          { num: "5.3.6", text: "Larger calibers may be allowed for specific events at Match Director discretion." },
+        ],
+      },
+      { num: "5.4", title: "Projectile Type", body: "All pistol and rifle cartridges shall fire a single projectile only. No shot shells or multi-projectile loads." },
+    ],
+  },
+  {
+    num: 6,
+    id: "s6",
+    title: "Targets",
+    subs: [
+      { num: "6.1", title: "Stage Brief Specifies Targets", body: "The stage brief will specify target type, count, required firearm for each target, and required hit count." },
+      { num: "6.2", title: "Competitor Responsibility", body: "Competitors must listen to or read the stage brief and ask questions before “Make Ready” is issued. Engaging a target with the wrong firearm is subject to procedural penalties or Stage DQ." },
+      {
+        num: "6.3",
+        title: "Night Target Standards",
+        items: [
+          { num: "6.3.1", text: "All targets will be high-visibility contrast: white targets with dark backstops, or black targets with white backers. Targets will be visually distinguishable from backstops under white light and IR illumination." },
+          { num: "6.3.2", text: "Target faces will not be illuminated by stage lighting. Competitors are responsible for illuminating targets using personal lighting systems." },
+          { num: "6.3.3", text: "Target distances: Rifle/PCC targets: 5–150 yards. Pistol targets: 5–50 yards." },
+        ],
+      },
+    ],
+  },
+  {
+    num: 7,
+    id: "s7",
+    title: "Scoring",
+    subs: [
+      { num: "7.1", title: "Appeals", body: "Scoring disputes may be appealed to the stage RO. If unresolved, the MD or RM will review after the competitor’s run but before results are posted. Run time continues during appeals at stages." },
+      { num: "7.2", title: "Shoot / Run Weighting", body: "Shoot and run time weighting is 50/50." },
+      { num: "7.3", title: "Target Neutralization", body: "Targets must be neutralized to avoid time penalties." },
+      {
+        num: "7.4",
+        title: "Neutralization Standards",
+        items: [
+          { num: "7.4.1", text: "Paper/cardboard: Required number of hits within the scored zone/perforations." },
+          { num: "7.4.2", text: "Steel knockdown (KD) plates: Must fall to score." },
+          { num: "7.4.3", text: "Static plates: Must be struck the required number of times per engagement." },
+          { num: "7.4.4", text: "ROs shall call “HIT” audibly for all non-visually-obvious target hits (static steel). At night, ROs shall also use a secondary visual signal (tap on the shoulder or back) when audible calls may be masked by hearing protection. Competitors with electronic ear pro may still miss calls in ambient noise." },
+        ],
+      },
+    ],
+  },
+  {
+    num: 8,
+    id: "s8",
+    title: "Stage Penalties",
+    subs: [
+      {
+        num: "8.1",
+        title: "Time Penalties",
+        body: "All stage penalties are assessed as fixed time additions to the competitor’s stage time.",
+        items: [
+          { num: "8.1.1", text: "Failure to Neutralize (FTN): one hit when multiple hits are required." },
+          { num: "8.1.2", text: "No-Shoot: a hit on a designated friendly or no-shoot target." },
+          { num: "8.1.3", text: "Procedural violation: failure to follow stage procedures, shooting from incorrect position, shooting under walls, or failing to engage targets in required order." },
+        ],
+      },
+    ],
+    tables: [
+      {
+        head: ["Penalty", "Time Added"],
+        rows: [
+          ["Failure to Neutralize (FTN)", "20–60 sec (stage-dependent)"],
+          ["No-Shoot hit", "20–60 sec (stage-dependent)"],
+          ["Procedural violation", "20–60 sec (stage-dependent)"],
+          ["Lighting violation in Stage Waiting Area", "30 sec per occurrence"],
+          ["Stage DQ (negligent discharge, muzzle break, etc.)", { v: "No score for stage", cls: "dq" }],
+          ["Match DQ (safety violations, cheating, etc.)", { v: "Full disqualification from event", cls: "dq" }],
+        ],
+      },
+    ],
+  },
+  {
+    num: 9,
+    id: "s9",
+    title: "Match Disqualifications",
+    subs: [
+      {
+        num: "9.1",
+        title: "Non-Arbitrable Safety Violations",
+        callout: {
+          variant: "warn",
+          text: "Safety violations are not subject to arbitration.",
+        },
+      },
+      {
+        num: "9.2",
+        title: "Match DQ Causes",
+        body: "A Match Disqualification results in immediate removal from the event.",
+        items: [
+          { num: "9.2.1", text: "Cheating" },
+          { num: "9.2.2", text: "Intentionally cutting the course" },
+          { num: "9.2.3", text: "Altering course, COF, or scorecards" },
+          { num: "9.2.4", text: "Unsportsmanlike conduct" },
+          { num: "9.2.5", text: "Intentional or unintentional discharge aimed over a berm or significantly off-target in an unsafe direction" },
+          { num: "9.2.6", text: "Any competitor found with a round chambered in any firearm while not under direct RO supervision" },
+          { num: "9.2.7", text: "A competitor impaired by drugs or alcohol and deemed unsafe by an RO or MD" },
+          { num: "9.2.8", text: "Firing at a target without positive visual identification. Discharging at sound, movement, or assumed position in the dark is an immediate Match DQ." },
+          { num: "9.2.9", text: "Deliberate use of lighting to blind, interfere with, or damage the night-vision equipment of another competitor. This includes white light activation in direction of a NV competitor on-course. (See Section 12 for NV lighting protocol.)" },
+        ],
+      },
+    ],
+  },
+  {
+    num: 10,
+    id: "s10",
+    title: "Stage Disqualifications",
+    subs: [
+      {
+        num: "10.1",
+        title: "Stage DQ Causes",
+        body: "A Stage Disqualification (SDQ) results in no score for the stage.",
+        items: [
+          {
+            num: "10.1.1",
+            text: "Negligent Discharge not in the direction of a target. Rule 9.2.5 still applies. Includes:",
+            children: [
+              { num: "10.1.1.1", text: "A shot during loading, reloading, or unloading after “Make Ready” and before “Range is Clear.”" },
+              { num: "10.1.1.2", text: "A shot during malfunction remediation, firearm transfer between hands, or movement between positions." },
+            ],
+          },
+          { num: "10.1.2", text: "Dropping or losing control of a loaded firearm at any time after “Make Ready” and before “Range is Clear.”" },
+          { num: "10.1.3", text: "Breaking the 180-degree safety plane or designated safe direction at any time." },
+          { num: "10.1.4", text: "Muzzle sweeping any part of the competitor’s own body during a COF." },
+          { num: "10.1.5", text: "Engaging pistol-designated targets with a rifle caliber." },
+          { num: "10.1.6", text: "Firing after the “STOP” command is issued, after a stage is declared complete, or before the timer starts." },
+        ],
+      },
+    ],
+  },
+  {
+    num: 11,
+    id: "s11",
+    title: "Appeals",
+    subs: [
+      {
+        num: "11.1",
+        title: "Appeals Process",
+        items: [
+          { text: "Decisions are initially made by the stage RO." },
+          { text: "If disputed, the RM or MD makes the final ruling. Run time continues during appeals at the stage." },
+          { text: "The RO has final authority on all HIT/MISS calls." },
+          { text: "Safety violations are not subject to arbitration." },
+        ],
+      },
+    ],
+  },
+  {
+    num: 12,
+    id: "s12",
+    title: "Lighting",
+    subs: [
+      {
+        num: "12.1",
+        title: "Permitted Lighting — Standard Divisions (2Gun & PCC)",
+        items: [
+          { num: "12.1.1", text: "Weapon-mounted lights, illuminators, and non-IR lasers are permitted and recommended." },
+          { num: "12.1.2", text: "Competitors may use any personal lighting (headlamps, handheld flashlights) at shooting stages and during course navigation." },
+          { num: "12.1.3", text: "Weapon-mounted lights shall not be used as the primary navigation tool between stages with the muzzle pointed at the course/trail. The firearm must be slung or holstered during navigation. A separate headlamp or handheld light is required for course navigation." },
+        ],
+      },
+      {
+        num: "12.2",
+        title: "Stage Waiting Area Lighting Discipline — All Divisions",
+        items: [
+          { num: "12.2.1", text: "When a competitor arrives at a stage and another competitor is actively running the COF, the arriving competitor shall turn off all personal lights except chemical lights upon entering the Stage Waiting Area (SWA)." },
+          { num: "12.2.2", text: "Stage lighting, RO lights, and the active shooter’s lights are the only permitted light sources during an active COF." },
+          { num: "12.2.3", text: "Failure to comply with 12.2.1 will result in a 30-second stage time penalty assessed to the non-compliant competitor for each occurrence." },
+        ],
+      },
+      {
+        num: "12.3",
+        title: "NV Division Lighting Rules",
+        callout: {
+          variant: "warn",
+          label: "White light is prohibited",
+          text:
+            "for NV competitors during NV event nights, except for admin, safety reason, medical emergencies, or when directed by an RO.",
+        },
+        items: [
+          { num: "12.3.1", text: "NV competitors may use night-vision devices (NVDs), IR weapon-mounted illuminators, and IR lasers during shooting stages and course navigation." },
+          { num: "12.3.2", text: "White light is prohibited for NV competitors during the NV event nights, except for admin, safety reason, medical emergencies, or when directed by an RO." },
+          { num: "12.3.3", text: "Non-NV personnel (ROs, staff) at NV-night stages shall use red-filtered lights or dim white light to preserve competitor night adaptation. Flashlights used for scoring/admin shall be red-filtered or directed away from competitors." },
+          {
+            num: "12.3.4",
+            text: "NV Lighting Violation Enforcement:",
+            children: [
+              { text: "First offense: Verbal warning issued by the RO." },
+              { text: "Second offense: The competitor is administratively moved from the NV division to the corresponding white-light division (NV 2Gun → 2Gun; NV PCC → PCC). Their scores are transferred and scored under white-light division rules for remaining stages." },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    num: 13,
+    id: "s13",
+    title: "Medical and Emergency Procedures",
+    subs: [
+      {
+        num: "13.1",
+        title: "Medical Emergency",
+        items: [
+          { num: "13.1.1", text: "If any competitor or official requires medical assistance, any person on the course may call “CEASE FIRE” loudly and repeatedly. All shooting shall halt immediately." },
+          { num: "13.1.2", text: "ROs at stage shall acknowledge with a “STAGE CLEAR” call or radio confirmation before competitors resume." },
+        ],
+      },
+      {
+        num: "13.2",
+        title: "Lost Competitor Protocol",
+        items: [
+          { num: "13.2.1", text: "Competitors who fail to finish within 2 hours shall be flagged by the scoring station." },
+          { num: "13.2.2", text: "A designated RO or MD shall initiate contact (radio, phone, or physical check) for any competitor exceeding the maximum time." },
+        ],
+      },
+      {
+        num: "13.3",
+        title: "Weather and Course Abort",
+        items: [
+          { num: "13.3.1", text: "The MD has sole authority to suspend or abort the event for safety reasons including severe weather, lightning, or course hazard." },
+        ],
+      },
+    ],
+  },
+  {
+    num: 14,
+    id: "s14",
+    title: "Refund Policy",
+    tables: [
+      {
+        head: ["Window", "Refund"],
+        rows: [
+          ["14.1 — Until 60 days before the event", "Full refund, minus fees"],
+          ["14.2 — Until 30 days before the event", "Half refund, minus fees"],
+          ["14.3 — Within 30 days of the event", { v: "No refund", cls: "dq" }],
+        ],
+      },
+    ],
+  },
+];
+---
+
+<BaseLayout
+  title="Rules"
+  description="Twilight Biathlon official rulebook — safety, range commands, firearms, ammunition, scoring, penalties, disqualifications, lighting protocol, and refunds."
+>
+  <section class="mx-auto max-w-4xl px-4 py-20 sm:px-6 lg:px-8">
+    <p class="section-label">// Rulebook · 2026 Edition</p>
+    <h1
+      class="mt-3 font-[family-name:var(--font-display)] text-5xl font-bold uppercase sm:text-6xl"
+    >
+      Rules of the Match.
+    </h1>
+    <p class="mt-6 max-w-2xl text-[var(--color-text-muted)]">
+      The sections below govern all Twilight Biathlon events. The stage brief
+      delivered by the RO supersedes any previously posted stage information.
+      Safety violations are not subject to arbitration.
+    </p>
+
+    {/* Table of contents */}
+    <nav aria-label="Rules sections" class="mt-10 border-t border-b border-[var(--color-hairline)] py-4">
+      <ul class="grid grid-cols-1 gap-x-6 gap-y-1 text-sm sm:grid-cols-2 md:grid-cols-3">
+        {sections.map((s) => (
+          <li>
+            <a
+              href={`#${s.id}`}
+              class="flex gap-2 py-1 text-[var(--color-text-muted)] transition-colors hover:text-[var(--color-nv)]"
+            >
+              <span class="font-[family-name:var(--font-mono)] text-xs text-[var(--color-nv)]/80">{String(s.num).padStart(2, "0")}</span>
+              <span>{s.title}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    {/* Sections */}
+    <div class="mt-16 space-y-20">
+      {sections.map((section) => (
+        <section id={section.id} class="scroll-mt-24">
+          <header class="flex items-baseline gap-4 border-b border-[var(--color-hairline)] pb-4">
+            <span class="font-[family-name:var(--font-mono)] text-xs uppercase tracking-[0.2em] text-[var(--color-nv)]">
+              Section {section.num}
+            </span>
+            <h2 class="font-[family-name:var(--font-display)] text-3xl font-bold uppercase sm:text-4xl">
+              {section.title}
+            </h2>
+          </header>
+
+          {section.subs && (
+            <div class="mt-8 space-y-8">
+              {section.subs.map((sub) => (
+                <div>
+                  <h3 class="font-[family-name:var(--font-display)] text-xl font-semibold uppercase tracking-wide text-[var(--color-text)]">
+                    <span class="mr-2 font-[family-name:var(--font-mono)] text-sm text-[var(--color-nv)]">{sub.num}</span>
+                    {sub.title}
+                  </h3>
+
+                  {sub.body && (
+                    <p class="mt-3 text-[var(--color-text)]/90 leading-relaxed">
+                      {sub.body}
+                    </p>
+                  )}
+
+                  {sub.callout && (
+                    <div
+                      class={[
+                        "mt-4 border-l-2 p-4 text-sm",
+                        sub.callout.variant === "warn"
+                          ? "border-[var(--color-wl)] bg-[var(--color-wl)]/5 text-[var(--color-text)]"
+                          : "border-[var(--color-nv)] bg-[var(--color-nv)]/5 text-[var(--color-text)]",
+                      ].join(" ")}
+                    >
+                      {sub.callout.label && (
+                        <strong
+                          class={
+                            sub.callout.variant === "warn"
+                              ? "font-bold uppercase tracking-wide text-[var(--color-wl)]"
+                              : "font-bold uppercase tracking-wide text-[var(--color-nv)]"
+                          }
+                        >
+                          {sub.callout.label}{" "}
+                        </strong>
+                      )}
+                      <span>{sub.callout.text}</span>
+                    </div>
+                  )}
+
+                  {sub.items && (
+                    <ul class="mt-4 space-y-2">
+                      {sub.items.map((item) => (
+                        <li class="flex gap-3 text-[var(--color-text)]/90">
+                          {item.num && (
+                            <span class="shrink-0 font-[family-name:var(--font-mono)] text-xs text-[var(--color-nv)]/80 pt-1 min-w-[3.5rem]">
+                              {item.num}
+                            </span>
+                          )}
+                          {!item.num && (
+                            <span class="shrink-0 text-[var(--color-nv)]/60 pt-1">—</span>
+                          )}
+                          <span class="leading-relaxed">
+                            {item.text}
+                            {item.children && (
+                              <ul class="mt-2 ml-0 space-y-1.5">
+                                {item.children.map((child) => (
+                                  <li class="flex gap-3 text-[var(--color-text-muted)]">
+                                    {child.num && (
+                                      <span class="shrink-0 font-[family-name:var(--font-mono)] text-xs text-[var(--color-nv)]/60 pt-0.5 min-w-[4rem]">
+                                        {child.num}
+                                      </span>
+                                    )}
+                                    <span class="leading-relaxed">{child.text}</span>
+                                  </li>
+                                ))}
+                              </ul>
+                            )}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
+
+          {section.tables &&
+            section.tables.map((table) => (
+              <div class="mt-8 overflow-hidden border border-[var(--color-hairline)]">
+                <table class="w-full border-collapse text-left text-sm">
+                  <thead class="bg-[var(--color-surface)]">
+                    <tr>
+                      {table.head.map((h) => (
+                        <th class="border-b border-[var(--color-hairline)] px-4 py-3 font-[family-name:var(--font-display)] text-xs font-semibold uppercase tracking-[0.15em] text-[var(--color-text-muted)]">
+                          {h}
+                        </th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {table.rows.map((row) => (
+                      <tr class="border-b border-[var(--color-hairline)] last:border-b-0">
+                        {row.map((cell) => {
+                          const isObj = typeof cell === "object";
+                          const value = isObj ? cell.v : cell;
+                          const cls = isObj && cell.cls === "dq"
+                            ? "font-semibold text-[var(--color-wl)]"
+                            : "text-[var(--color-text)]/90";
+                          return (
+                            <td class={`px-4 py-3 ${cls}`}>{value}</td>
+                          );
+                        })}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            ))}
+        </section>
+      ))}
+    </div>
+
+    <footer class="mt-24 border-t border-[var(--color-hairline)] pt-6 text-sm text-[var(--color-text-muted)]">
+      <p>
+        Rulebook · 2026 edition. Questions?{" "}
+        <a class="text-[var(--color-nv)] hover:underline" href="mailto:okmultigun@gmail.com">
+          okmultigun@gmail.com
+        </a>
+      </p>
+    </footer>
+  </section>
+</BaseLayout>

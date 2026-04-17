@@ -1,0 +1,26 @@
+---
+// Placeholder email-capture — intentionally a mailto for v1.
+// Swap to Buttondown / ConvertKit / Mailchimp when ready; no critical-path JS needed.
+import { SITE } from "../lib/site";
+---
+
+<section class="border-t border-[var(--color-hairline)]">
+  <div class="mx-auto max-w-3xl px-4 py-20 text-center sm:px-6 lg:px-8">
+    <p class="section-label text-[var(--color-nv)]">// Announcements</p>
+    <h2
+      class="mt-3 font-[family-name:var(--font-display)] text-4xl font-bold uppercase sm:text-5xl"
+    >
+      Get updates and announcements.
+    </h2>
+    <p class="mt-4 text-[var(--color-text-muted)]">
+      Be first to know when registration opens.
+    </p>
+
+    <a
+      href={`mailto:${SITE.contact.email}?subject=Subscribe%20-%20Twilight%20Biathlon%20Updates`}
+      class="btn-primary mt-8 text-sm"
+    >
+      Email to Subscribe
+    </a>
+  </div>
+</section>

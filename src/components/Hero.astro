@@ -1,0 +1,93 @@
+---
+// Hero — LCP element. The <img> inside uses fetchpriority="high" and the
+// AVIF variant at the user's viewport width is preloaded in BaseLayout.
+//
+// We ship 3 widths × 3 formats for the hero (9 files total):
+//   1920w, 1280w, 768w · AVIF / WebP / JPEG
+
+import { SITE } from "../lib/site";
+import { formatEventRange } from "../lib/format";
+
+interface Props {
+  nextEventStart: Date;
+  nextEventEnd: Date;
+  /** Hero basename, e.g. "hero-twilight" — used to construct srcsets */
+  heroBase?: string;
+  /** Widths available (in px) */
+  heroWidths?: number[];
+}
+
+const {
+  nextEventStart,
+  nextEventEnd,
+  heroBase = "hero-twilight",
+  heroWidths = [768, 1280, 1920],
+} = Astro.props;
+
+const widthsAsc = [...heroWidths].sort((a, b) => a - b);
+const largest = widthsAsc[widthsAsc.length - 1];
+
+const srcset = (fmt: "avif" | "webp" | "jpg") =>
+  widthsAsc.map((w) => `/images/hero/${heroBase}-${w}w.${fmt} ${w}w`).join(", ");
+
+const sizes = "100vw";
+---
+
+<section class="relative isolate overflow-hidden">
+  <!-- Background image: picture element for AVIF/WebP fallback chain -->
+  <picture>
+    <source type="image/avif" srcset={srcset("avif")} sizes={sizes} />
+    <source type="image/webp" srcset={srcset("webp")} sizes={sizes} />
+    <img
+      src={`/images/hero/${heroBase}-${largest}w.jpg`}
+      srcset={srcset("jpg")}
+      sizes={sizes}
+      alt=""
+      aria-hidden="true"
+      width="1920"
+      height="1080"
+      fetchpriority="high"
+      decoding="async"
+      class="absolute inset-0 h-full w-full object-cover object-center opacity-60"
+    />
+  </picture>
+
+  <!-- Gradient overlay for legibility -->
+  <div
+    class="absolute inset-0 bg-gradient-to-t from-[var(--color-bg)] via-[var(--color-bg)]/70 to-[var(--color-bg)]/40"
+    aria-hidden="true"
+  >
+  </div>
+
+  <div class="relative mx-auto max-w-7xl px-4 pt-24 pb-20 sm:px-6 sm:pt-32 sm:pb-28 lg:px-8 lg:pt-40 lg:pb-36">
+    <p class="section-label text-[var(--color-nv)]">
+      {SITE.venue.city}, {SITE.venue.state} · Spring & Fall
+    </p>
+
+    <h1
+      class="mt-4 font-[family-name:var(--font-display)] text-6xl font-bold uppercase leading-[0.95] tracking-tight sm:text-7xl lg:text-8xl"
+    >
+      Twilight<br />Biathlon
+    </h1>
+
+    <p
+      class="mt-6 max-w-2xl font-[family-name:var(--font-display)] text-2xl font-semibold uppercase tracking-wider text-[var(--color-nv)] sm:text-3xl"
+    >
+      Run the Dark. Shoot the Dark.
+    </p>
+
+    <p class="mt-6 max-w-2xl text-base text-[var(--color-text)]/90 sm:text-lg">
+      The original nighttime run-and-gun biathlon. 5K night course, 4 live-fire
+      shooting stages, NV and white-light divisions. Running since 2018.
+    </p>
+
+    <div class="mt-10 flex flex-col items-start gap-4 sm:flex-row sm:items-center">
+      <a href="/register" class="btn-primary text-base">
+        Register for {formatEventRange(nextEventStart, nextEventEnd)}
+      </a>
+      <a href="#how-it-works" class="btn-ghost text-sm">
+        What is a run-and-gun biathlon?
+      </a>
+    </div>
+  </div>
+</section>

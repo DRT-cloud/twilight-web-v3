@@ -1,0 +1,48 @@
+---
+const steps = [
+  {
+    n: "01",
+    title: "Arrive",
+    body: "Check in during the posted window. Gear check, safety brief, shooters meeting. Time on the range increases with daylight lost.",
+  },
+  {
+    n: "02",
+    title: "Run",
+    body: "Individual 5-minute releases send you into the 5K course — Oklahoma fields, woods, and creek beds. No other competitors in sight. Clock running.",
+  },
+  {
+    n: "03",
+    title: "Shoot",
+    body: "Four live-fire stages on the course. Engage targets, time stops, back on the run. Final score = course time + four stage times. Lowest wins.",
+  },
+];
+---
+
+<section id="how-it-works" class="relative bg-[var(--color-surface)]">
+  <div class="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+    <p class="section-label">// How It Works</p>
+    <h2
+      class="mt-3 max-w-3xl font-[family-name:var(--font-display)] text-4xl font-bold uppercase sm:text-5xl"
+    >
+      Three steps. One clock. No excuses.
+    </h2>
+
+    <ol class="mt-14 grid gap-8 md:grid-cols-3">
+      {
+        steps.map((s) => (
+          <li class="relative border-t-2 border-[var(--color-nv)] pt-6">
+            <p class="font-[family-name:var(--font-mono)] text-sm text-[var(--color-nv)]">
+              {s.n}
+            </p>
+            <h3 class="mt-3 font-[family-name:var(--font-display)] text-3xl font-bold uppercase">
+              {s.title}
+            </h3>
+            <p class="mt-3 text-[var(--color-text-muted)] leading-relaxed">
+              {s.body}
+            </p>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>

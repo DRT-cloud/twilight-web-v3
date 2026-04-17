@@ -1,0 +1,7 @@
+# Cloudflare Pages redirects file
+# Canonical host is twilightbiathlon.com (apex)
+# www -> apex redirect is handled by the Cloudflare Pages custom domain setting.
+# Use this file for path-level redirects only.
+
+# Example (uncomment once paths are defined):
+# /old-path  /new-path  301

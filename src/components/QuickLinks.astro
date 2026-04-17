@@ -1,0 +1,40 @@
+---
+const links = [
+  { href: "/course", label: "Course Map", sub: "Terrain, elevation, stages" },
+  { href: "/rules", label: "Rules & Equipment", sub: "Divisions, gear, safety" },
+  { href: "/schedule", label: "Event Schedule", sub: "Check-in, release times" },
+  { href: "/results", label: "Past Results", sub: "Times + standings" },
+];
+---
+
+<section class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+  <p class="section-label">// For Registered Competitors</p>
+  <h2
+    class="mt-3 font-[family-name:var(--font-display)] text-3xl font-bold uppercase sm:text-4xl"
+  >
+    Everything you need for event night.
+  </h2>
+
+  <ul class="mt-8 grid gap-px bg-[var(--color-hairline)] sm:grid-cols-2 lg:grid-cols-4">
+    {
+      links.map((l) => (
+        <li class="bg-[var(--color-bg)]">
+          <a
+            href={l.href}
+            class="flex h-full flex-col justify-between gap-4 p-6 transition-colors hover:bg-[var(--color-surface)]"
+          >
+            <div>
+              <p class="font-[family-name:var(--font-display)] text-xl font-bold uppercase">
+                {l.label}
+              </p>
+              <p class="mt-1 text-sm text-[var(--color-text-muted)]">{l.sub}</p>
+            </div>
+            <span class="font-[family-name:var(--font-mono)] text-xs text-[var(--color-nv)]">
+              ENTER →
+            </span>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</section>

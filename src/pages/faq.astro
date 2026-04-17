@@ -1,0 +1,52 @@
+---
+import { getCollection, render } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const faqs = await getCollection("faq");
+const sorted = faqs.sort((a, b) => a.data.order - b.data.order);
+
+// Render each FAQ's markdown body at build time
+const rendered = await Promise.all(
+  sorted.map(async (entry) => {
+    const { Content } = await render(entry);
+    return { entry, Content };
+  }),
+);
+---
+
+<BaseLayout
+  title="FAQ"
+  description="Common questions about the Twilight Biathlon — format, gear, registration, logistics."
+>
+  <section class="mx-auto max-w-3xl px-4 py-20 sm:px-6 lg:px-8">
+    <p class="section-label">// FAQ</p>
+    <h1
+      class="mt-3 font-[family-name:var(--font-display)] text-5xl font-bold uppercase sm:text-6xl"
+    >
+      Frequently asked.
+    </h1>
+
+    <div class="mt-12 divide-y divide-[var(--color-hairline)] border-y border-[var(--color-hairline)]">
+      {
+        rendered.map(({ entry, Content }) => (
+          <details class="group py-6">
+            <summary class="flex cursor-pointer list-none items-start justify-between gap-6">
+              <span class="font-[family-name:var(--font-display)] text-xl font-semibold uppercase tracking-wide">
+                {entry.data.question}
+              </span>
+              <span
+                class="shrink-0 font-[family-name:var(--font-mono)] text-[var(--color-nv)] transition-transform group-open:rotate-45"
+                aria-hidden="true"
+              >
+                +
+              </span>
+            </summary>
+            <div class="mt-4 text-[var(--color-text)]/90 leading-relaxed [&_strong]:text-[var(--color-text)]">
+              <Content />
+            </div>
+          </details>
+        ))
+      }
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,163 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+
+const all = await getCollection("results");
+
+// Sort newest first
+const sorted = all
+  .map((e) => ({ ...e.data, slug: e.id }))
+  .sort(
+    (a, b) => new Date(b.eventDate).getTime() - new Date(a.eventDate).getTime(),
+  );
+
+// Group by year descending
+const byYear = new Map<number, typeof sorted>();
+for (const r of sorted) {
+  const arr = byYear.get(r.year) ?? [];
+  arr.push(r);
+  byYear.set(r.year, arr);
+}
+const years = [...byYear.keys()].sort((a, b) => b - a);
+
+const totalMatches = sorted.length;
+const totalShooters = sorted.reduce(
+  (n, r) => n + (r.competitors ?? 0),
+  0,
+);
+const firstYear = Math.min(...sorted.map((r) => r.year));
+---
+
+<BaseLayout
+  title="Results"
+  description="Twilight Biathlon historical results, 2018 to present. All standings archived on PractiScore."
+>
+  <section class="mx-auto max-w-5xl px-4 py-20 sm:px-6 lg:px-8">
+    <p class="section-label">// Results · archive</p>
+    <h1
+      class="mt-3 font-[family-name:var(--font-display)] text-5xl font-bold uppercase sm:text-6xl"
+    >
+      Past standings.
+    </h1>
+    <p class="mt-6 max-w-2xl text-[var(--color-text-muted)]">
+      Every Twilight Biathlon match since {firstYear}. Full scoring lives on
+      PractiScore — click through for stage-by-stage breakdowns and every
+      competitor’s run.
+    </p>
+
+    {/* Headline stats */}
+    <dl class="mt-12 grid grid-cols-3 gap-6 border-y border-[var(--color-hairline)] py-6">
+      <div>
+        <dt class="section-label">Matches</dt>
+        <dd class="mt-1 font-[family-name:var(--font-display)] text-3xl font-bold sm:text-4xl">{totalMatches}</dd>
+      </div>
+      <div>
+        <dt class="section-label">Total shooters</dt>
+        <dd class="mt-1 font-[family-name:var(--font-display)] text-3xl font-bold sm:text-4xl">{totalShooters}</dd>
+      </div>
+      <div>
+        <dt class="section-label">Running since</dt>
+        <dd class="mt-1 font-[family-name:var(--font-display)] text-3xl font-bold sm:text-4xl">{firstYear}</dd>
+      </div>
+    </dl>
+
+    {/* Year groups */}
+    <div class="mt-16 space-y-16">
+      {years.map((year) => (
+        <section>
+          <header class="flex items-baseline justify-between border-b border-[var(--color-hairline)] pb-3">
+            <h2 class="font-[family-name:var(--font-display)] text-4xl font-bold">{year}</h2>
+            <span class="font-[family-name:var(--font-mono)] text-xs uppercase tracking-[0.2em] text-[var(--color-text-muted)]">
+              {byYear.get(year)!.length} match{byYear.get(year)!.length === 1 ? "" : "es"}
+            </span>
+          </header>
+
+          <ul class="mt-6 space-y-4">
+            {byYear.get(year)!.map((r) => {
+              const accent =
+                r.lighting === "NV"
+                  ? "var(--color-nv)"
+                  : r.lighting === "WL"
+                    ? "var(--color-wl)"
+                    : "var(--color-hairline)";
+              return (
+                <li>
+                  <a
+                    href={r.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="group block border border-[var(--color-hairline)] p-5 transition-colors hover:border-[var(--color-nv)] hover:bg-[var(--color-surface)]"
+                  >
+                    <div class="flex items-center gap-3">
+                      <span
+                        class="inline-block h-2.5 w-2.5 rounded-full"
+                        style={`background: ${accent}`}
+                        aria-hidden="true"
+                      ></span>
+                      <span class="font-[family-name:var(--font-mono)] text-xs uppercase tracking-[0.15em] text-[var(--color-text-muted)]">
+                        {new Date(r.eventDate).toLocaleDateString("en-US", {
+                          month: "short",
+                          day: "numeric",
+                          year: "numeric",
+                          timeZone: "UTC",
+                        })}
+                        {r.lighting && r.lighting !== "Unknown" && (
+                          <span class="ml-2 text-[var(--color-text)]/80">
+                            · {r.lighting}
+                          </span>
+                        )}
+                        {r.division && r.division !== "Unknown" && (
+                          <span class="ml-2 text-[var(--color-text)]/80">
+                            · {r.division}
+                          </span>
+                        )}
+                      </span>
+                    </div>
+
+                    <h3 class="mt-2 font-[family-name:var(--font-display)] text-xl font-semibold uppercase tracking-wide transition-colors group-hover:text-[var(--color-nv)] sm:text-2xl">
+                      {r.eventTitle}
+                    </h3>
+
+                    <dl class="mt-3 grid grid-cols-2 gap-x-6 gap-y-1 text-sm sm:grid-cols-3">
+                      {r.competitors !== undefined && (
+                        <div class="flex gap-2">
+                          <dt class="text-[var(--color-text-muted)]">Shooters</dt>
+                          <dd class="text-[var(--color-text)]">{r.competitors}</dd>
+                        </div>
+                      )}
+                      {r.winner && (
+                        <div class="flex gap-2 sm:col-span-2">
+                          <dt class="text-[var(--color-text-muted)]">Winner</dt>
+                          <dd class="text-[var(--color-text)]">{r.winner}</dd>
+                        </div>
+                      )}
+                      {r.winnerTime && (
+                        <div class="flex gap-2 sm:col-span-3">
+                          <dt class="text-[var(--color-text-muted)]">Time</dt>
+                          <dd class="font-[family-name:var(--font-mono)] text-[var(--color-text)]">
+                            {r.winnerTime}
+                          </dd>
+                        </div>
+                      )}
+                    </dl>
+
+                    <p class="mt-3 font-[family-name:var(--font-mono)] text-xs text-[var(--color-nv)]/70 transition-colors group-hover:text-[var(--color-nv)]">
+                      View full results on PractiScore →
+                    </p>
+                  </a>
+                </li>
+              );
+            })}
+          </ul>
+        </section>
+      ))}
+    </div>
+
+    <footer class="mt-24 border-t border-[var(--color-hairline)] pt-6 text-sm text-[var(--color-text-muted)]">
+      <p>
+        Canonical scoring lives on PractiScore. Historical archive maintained
+        by Oklahoma Multi-Gun.
+      </p>
+    </footer>
+  </section>
+</BaseLayout>

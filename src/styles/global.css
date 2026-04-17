@@ -1,0 +1,153 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------------------
+   Twilight Biathlon — Design Tokens
+   Night-reconnaissance field-manual aesthetic.
+   Palette locked per redesign plan (section 3, mood board).
+--------------------------------------------------------------------------- */
+
+@theme {
+  /* Colors */
+  --color-bg: #0a0b0d; /* near-black, not pure black */
+  --color-surface: #14161a; /* subtle card lift */
+  --color-hairline: #2a2d33; /* 1px rules, borders */
+  --color-text: #f2f2f0; /* warm off-white */
+  --color-text-muted: #9aa0a6; /* metadata, captions */
+
+  --color-nv: #39ff14; /* phosphor green — primary CTA, NV/Friday */
+  --color-nv-dim: #2bd10f;
+  --color-wl: #ff4d00; /* ember orange — WL/Saturday accents only */
+  --color-wl-dim: #d03f00;
+
+  /* Typography */
+  --font-display: "Barlow Condensed", "Oswald", ui-sans-serif, system-ui,
+    sans-serif;
+  --font-body: "Inter", ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", Roboto, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas,
+    monospace;
+
+  /* Rhythm */
+  --shadow-glow-nv: 0 0 24px 0 rgba(57, 255, 20, 0.25);
+  --shadow-glow-wl: 0 0 24px 0 rgba(255, 77, 0, 0.25);
+}
+
+/* ---------------------------------------------------------------------------
+   Self-hosted fonts — WOFF2, Latin subset.
+   Drop your WOFF2 files into /public/fonts/ matching the filenames below.
+   Variable fonts preferred; a single file covers all weights.
+--------------------------------------------------------------------------- */
+
+@font-face {
+  font-family: "Barlow Condensed";
+  src: url("/fonts/BarlowCondensed-VariableFont_wght.woff2") format("woff2-variations");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("/fonts/Inter-VariableFont_opsz,wght.woff2") format("woff2-variations");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: optional;
+}
+
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("/fonts/JetBrainsMono-VariableFont_wght.woff2") format("woff2-variations");
+  font-weight: 100 800;
+  font-style: normal;
+  font-display: optional;
+}
+
+/* ---------------------------------------------------------------------------
+   Base — minimal resets. Tailwind Preflight handles most of it.
+--------------------------------------------------------------------------- */
+
+html {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100dvh;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.05;
+}
+
+::selection {
+  background: var(--color-nv);
+  color: var(--color-bg);
+}
+
+/* Focus visible ring — accessibility baseline */
+:focus-visible {
+  outline: 2px solid var(--color-nv);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Component utilities
+--------------------------------------------------------------------------- */
+
+@utility section-label {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+@utility btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: var(--color-nv);
+  color: var(--color-bg);
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.875rem 1.5rem;
+  border-radius: 2px;
+  transition: transform 150ms ease, box-shadow 150ms ease,
+    background-color 150ms ease;
+}
+
+@utility btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: 1px solid var(--color-hairline);
+  color: var(--color-text);
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.75rem 1.375rem;
+  border-radius: 2px;
+  transition: border-color 150ms ease, color 150ms ease;
+}

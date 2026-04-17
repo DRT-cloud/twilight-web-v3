@@ -1,0 +1,64 @@
+---
+interface Props {
+  /** Target datetime as an ISO string, e.g. "2026-05-15T22:00:00-05:00" */
+  target: string;
+  /** Optional heading text */
+  label?: string;
+}
+
+const { target, label = "Next Release" } = Astro.props;
+---
+
+<section class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+  <div class="border border-[var(--color-hairline)] bg-[var(--color-bg)] p-8 sm:p-12">
+    <p class="section-label text-[var(--color-nv)]">// {label}</p>
+    <div
+      class="mt-6 grid grid-cols-4 gap-2 font-[family-name:var(--font-mono)]"
+      data-countdown
+      data-target={target}
+    >
+      {
+        ["Days", "Hours", "Mins", "Secs"].map((lbl, i) => (
+          <div class="border border-[var(--color-hairline)] bg-[var(--color-surface)] p-4 text-center sm:p-6">
+            <p
+              class="font-[family-name:var(--font-display)] text-4xl font-bold tabular-nums text-[var(--color-nv)] sm:text-6xl"
+              data-countdown-part={i}
+            >
+              00
+            </p>
+            <p class="mt-2 text-xs uppercase tracking-widest text-[var(--color-text-muted)]">
+              {lbl}
+            </p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<script>
+  // ~0.5 KB vanilla island
+  const root = document.querySelector<HTMLElement>("[data-countdown]");
+  if (root) {
+    const target = new Date(root.dataset.target ?? "").getTime();
+    const parts = root.querySelectorAll<HTMLElement>("[data-countdown-part]");
+    const pad = (n: number) => String(Math.max(0, n)).padStart(2, "0");
+
+    const tick = () => {
+      const now = Date.now();
+      const diff = Math.max(0, target - now);
+      const s = Math.floor(diff / 1000);
+      const days = Math.floor(s / 86400);
+      const hours = Math.floor((s % 86400) / 3600);
+      const mins = Math.floor((s % 3600) / 60);
+      const secs = s % 60;
+      const values = [days, hours, mins, secs];
+      parts.forEach((el, i) => {
+        el.textContent = pad(values[i] ?? 0);
+      });
+    };
+
+    tick();
+    setInterval(tick, 1000);
+  }
+</script>

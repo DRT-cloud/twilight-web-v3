@@ -1,0 +1,53 @@
+---
+// Responsive <picture> wrapping AVIF → WebP → JPEG.
+// Upstream callers pass id + widths (from src/lib/gallery.ts).
+import { srcset, fallback } from "../lib/gallery";
+
+interface Props {
+  id: string;
+  widths: number[];
+  alt: string;
+  /** Directory under /images/: "gallery" (default) or "hero" */
+  dir?: "gallery" | "hero";
+  /** CSS sizes attribute — tell the browser how wide the image displays */
+  sizes?: string;
+  /** Eagerly load? Only true for above-the-fold hero */
+  eager?: boolean;
+  /** LCP hint for the hero */
+  fetchpriority?: "high" | "low" | "auto";
+  class?: string;
+  /** Optional width/height for layout stability (applied to <img>) */
+  width?: number;
+  height?: number;
+}
+
+const {
+  id,
+  widths,
+  alt,
+  dir = "gallery",
+  sizes = "(min-width: 1024px) 50vw, 100vw",
+  eager = false,
+  fetchpriority = "auto",
+  class: className,
+  width,
+  height,
+} = Astro.props;
+---
+
+<picture class={className}>
+  <source type="image/avif" srcset={srcset(id, widths, "avif", dir)} sizes={sizes} />
+  <source type="image/webp" srcset={srcset(id, widths, "webp", dir)} sizes={sizes} />
+  <img
+    src={fallback(id, widths, dir)}
+    srcset={srcset(id, widths, "jpg", dir)}
+    sizes={sizes}
+    alt={alt}
+    loading={eager ? "eager" : "lazy"}
+    decoding={eager ? "sync" : "async"}
+    fetchpriority={fetchpriority}
+    width={width}
+    height={height}
+    class="block h-full w-full object-cover"
+  />
+</picture>
