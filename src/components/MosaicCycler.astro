@@ -1,0 +1,426 @@
+---
+/**
+ * MosaicCycler — split-flap dissolve transition between photos.
+ *
+ * Renders two stacked <picture> layers. Overlaid on top: an 8×5 grid of
+ * tiles that flip (rotateY) in a staggered wave to reveal the next image.
+ * After the flip completes, the "next" layer swaps to "current" and we
+ * start again.
+ *
+ * Props:
+ *   photos: GalleryPhoto[]    — 3+ photos recommended
+ *   intervalMs?: number       — time each photo is held on screen (default 5000)
+ *   tileCols?: number         — number of tile columns (default 8)
+ *   tileRows?: number         — number of tile rows (default 5)
+ */
+import { photos as allPhotos, srcset, fallback, type GalleryPhoto } from "../lib/gallery";
+
+interface Props {
+  photos?: GalleryPhoto[];
+  intervalMs?: number;
+  tileCols?: number;
+  tileRows?: number;
+}
+
+const {
+  photos = allPhotos,
+  intervalMs = 5000,
+  tileCols = 8,
+  tileRows = 5,
+} = Astro.props;
+
+// Build a JSON-safe manifest for the client script
+const manifest = photos
+  .filter((p) => p.widths.length > 0)
+  .map((p) => ({
+    id: p.id,
+    avif: srcset(p.id, p.widths, "avif"),
+    webp: srcset(p.id, p.widths, "webp"),
+    jpg: srcset(p.id, p.widths, "jpg"),
+    fallback: fallback(p.id, p.widths),
+    caption: p.caption ?? "Twilight Biathlon photograph",
+  }));
+
+// Preload the first image server-rendered so there's no flash
+const first = manifest[0];
+---
+
+<div
+  class="mosaic-cycler relative aspect-[16/10] w-full overflow-hidden bg-[var(--color-surface)] sm:aspect-[16/9]"
+  data-mosaic-cycler
+  data-interval={intervalMs}
+  data-cols={tileCols}
+  data-rows={tileRows}
+  data-photos={JSON.stringify(manifest)}
+  aria-roledescription="carousel"
+  aria-label="Photo gallery"
+>
+  {/* Base layer — current image */}
+  <picture class="mosaic-base absolute inset-0">
+    <source type="image/avif" srcset={first?.avif} sizes="100vw" />
+    <source type="image/webp" srcset={first?.webp} sizes="100vw" />
+    <img
+      src={first?.fallback}
+      srcset={first?.jpg}
+      sizes="100vw"
+      alt={first?.caption}
+      class="h-full w-full object-cover"
+      fetchpriority="high"
+      decoding="async"
+    />
+  </picture>
+
+  {/* Next layer — revealed as tiles flip */}
+  <picture class="mosaic-next absolute inset-0 opacity-0" aria-hidden="true">
+    <source type="image/avif" />
+    <source type="image/webp" />
+    <img src="" alt="" class="h-full w-full object-cover" decoding="async" />
+  </picture>
+
+  {/* Tile grid — positioned over top, each tile reveals the "next" image as it flips */}
+  <div
+    class="mosaic-tiles pointer-events-none absolute inset-0 grid"
+    style={`grid-template-columns: repeat(${tileCols}, 1fr); grid-template-rows: repeat(${tileRows}, 1fr);`}
+    aria-hidden="true"
+  >
+    {Array.from({ length: tileCols * tileRows }).map((_, i) => (
+      <div class="mosaic-tile" data-index={i}></div>
+    ))}
+  </div>
+
+  {/* Vignette + border for aesthetic */}
+  <div
+    class="pointer-events-none absolute inset-0 bg-gradient-to-t from-[var(--color-bg)]/50 via-transparent to-[var(--color-bg)]/20"
+    aria-hidden="true"
+  ></div>
+
+  {/* Controls */}
+  <div class="absolute inset-x-0 bottom-0 z-20 flex items-center justify-between gap-4 p-4 sm:p-6">
+    <button
+      type="button"
+      class="mosaic-prev btn-ghost px-3 py-2 text-xs"
+      aria-label="Previous photo"
+    >
+      ← Prev
+    </button>
+
+    <div class="mosaic-dots flex items-center gap-1.5" role="tablist" aria-label="Photo position"></div>
+
+    <button
+      type="button"
+      class="mosaic-next-btn btn-ghost px-3 py-2 text-xs"
+      aria-label="Next photo"
+    >
+      Next →
+    </button>
+  </div>
+
+  {/* Live caption (a11y) */}
+  <div class="sr-only mosaic-live" aria-live="polite" aria-atomic="true"></div>
+</div>
+
+<style>
+  .mosaic-cycler {
+    /* Stack context so z-index on controls works */
+    isolation: isolate;
+  }
+
+  .mosaic-base,
+  .mosaic-next {
+    z-index: 0;
+  }
+
+  .mosaic-tiles {
+    z-index: 1;
+    perspective: 1200px;
+  }
+
+  .mosaic-tile {
+    position: relative;
+    transform-style: preserve-3d;
+    transform-origin: center center;
+    transition:
+      transform 620ms cubic-bezier(0.65, 0.05, 0.35, 1),
+      opacity 320ms ease-in;
+    will-change: transform, opacity;
+    background-image: var(--current-image);
+    background-size: var(--tile-bg-size, 100% 100%);
+    background-position: var(--tile-bg-pos, 0 0);
+    background-repeat: no-repeat;
+    backface-visibility: hidden;
+  }
+
+  /* "flipped" tile reveals the layer below (the "next" image) */
+  .mosaic-tile.flipped {
+    transform: rotateY(90deg);
+    opacity: 0;
+  }
+
+  .mosaic-dots button {
+    width: 6px;
+    height: 6px;
+    border-radius: 9999px;
+    background: rgba(255, 255, 255, 0.35);
+    transition: background-color 200ms ease, width 200ms ease;
+  }
+
+  .mosaic-dots button[aria-selected="true"] {
+    background: var(--color-nv);
+    width: 18px;
+    border-radius: 2px;
+  }
+
+  /* Reduced-motion fallback: simple crossfade, no tile flip */
+  @media (prefers-reduced-motion: reduce) {
+    .mosaic-tile {
+      transition: none !important;
+      transform: none !important;
+      opacity: 0 !important;
+    }
+    .mosaic-base,
+    .mosaic-next {
+      transition: opacity 600ms ease !important;
+    }
+  }
+</style>
+
+<script>
+  type PhotoEntry = {
+    id: string;
+    avif: string;
+    webp: string;
+    jpg: string;
+    fallback: string;
+    caption: string;
+  };
+
+  function initCycler(root: HTMLElement) {
+    const photos: PhotoEntry[] = JSON.parse(root.dataset.photos || "[]");
+    if (photos.length < 2) return;
+
+    const intervalMs = Number(root.dataset.interval || 5000);
+    const cols = Number(root.dataset.cols || 8);
+    const rows = Number(root.dataset.rows || 5);
+    const totalTiles = cols * rows;
+
+    const basePic = root.querySelector(".mosaic-base") as HTMLPictureElement;
+    const baseImg = basePic.querySelector("img") as HTMLImageElement;
+    const baseSources = basePic.querySelectorAll("source");
+
+    const nextPic = root.querySelector(".mosaic-next") as HTMLPictureElement;
+    const nextImg = nextPic.querySelector("img") as HTMLImageElement;
+    const nextSources = nextPic.querySelectorAll("source");
+
+    const tiles = Array.from(root.querySelectorAll<HTMLElement>(".mosaic-tile"));
+    const dotsWrap = root.querySelector(".mosaic-dots") as HTMLElement;
+    const prevBtn = root.querySelector(".mosaic-prev") as HTMLButtonElement;
+    const nextBtn = root.querySelector(".mosaic-next-btn") as HTMLButtonElement;
+    const live = root.querySelector(".mosaic-live") as HTMLElement;
+
+    let current = 0;
+    let transitioning = false;
+    let paused = false;
+    let timer: number | null = null;
+
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    // Build dots
+    photos.forEach((_, i) => {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.setAttribute("role", "tab");
+      b.setAttribute("aria-label", `Go to photo ${i + 1}`);
+      b.setAttribute("aria-selected", i === 0 ? "true" : "false");
+      b.addEventListener("click", () => jumpTo(i));
+      dotsWrap.appendChild(b);
+    });
+    const dots = Array.from(dotsWrap.querySelectorAll("button"));
+
+    // Set CSS var for tile bg using the current photo (used only in alt styles; we actually swap images via <picture>, so leave as-is)
+    function setBaseTo(idx: number) {
+      const p = photos[idx];
+      baseSources[0].srcset = p.avif;
+      baseSources[1].srcset = p.webp;
+      baseImg.src = p.fallback;
+      baseImg.srcset = p.jpg;
+      baseImg.alt = p.caption;
+    }
+
+    function setNextTo(idx: number) {
+      const p = photos[idx];
+      nextSources[0].type = "image/avif";
+      nextSources[0].srcset = p.avif;
+      nextSources[1].type = "image/webp";
+      nextSources[1].srcset = p.webp;
+      nextImg.src = p.fallback;
+      nextImg.srcset = p.jpg;
+      nextImg.alt = "";
+    }
+
+    function updateDots() {
+      dots.forEach((d, i) => d.setAttribute("aria-selected", i === current ? "true" : "false"));
+      live.textContent = `Photo ${current + 1} of ${photos.length}: ${photos[current].caption}`;
+    }
+
+    // Pre-load next image so it's in cache before the flip starts
+    function preload(idx: number) {
+      const p = photos[idx];
+      const img = new Image();
+      // Browser will pick from srcset; simplest: grab largest jpg fallback
+      img.src = p.fallback;
+    }
+
+    function flipTiles(): Promise<void> {
+      return new Promise((resolve) => {
+        // Reset tiles (in case they were flipped previously)
+        tiles.forEach((t) => t.classList.remove("flipped"));
+
+        if (reduceMotion) {
+          // Crossfade: fade "next" in over ~600ms
+          nextPic.style.transition = "opacity 600ms ease";
+          nextPic.style.opacity = "1";
+          window.setTimeout(() => {
+            // Commit: copy next → base, reset next
+            basePic.style.opacity = "1";
+            setTimeout(resolve, 50);
+          }, 620);
+          return;
+        }
+
+        // Ensure next is fully visible beneath (it's at z-0, so showing it is just opacity=1)
+        nextPic.style.opacity = "1";
+
+        // Build a shuffled order so the reveal feels organic, not a mechanical sweep
+        const order = Array.from({ length: totalTiles }, (_, i) => i);
+        // Biased shuffle: roughly top-left to bottom-right wave, but with jitter
+        order.sort((a, b) => {
+          const ra = Math.floor(a / cols) + (a % cols) + Math.random() * 1.6;
+          const rb = Math.floor(b / cols) + (b % cols) + Math.random() * 1.6;
+          return ra - rb;
+        });
+
+        const perTileDelay = 18; // ms
+        order.forEach((tileIdx, seq) => {
+          window.setTimeout(() => tiles[tileIdx].classList.add("flipped"), seq * perTileDelay);
+        });
+
+        const totalDuration = order.length * perTileDelay + 620;
+        window.setTimeout(resolve, totalDuration);
+      });
+    }
+
+    async function goTo(idx: number) {
+      if (transitioning) return;
+      if (idx === current) return;
+      transitioning = true;
+
+      setNextTo(idx);
+      preload((idx + 1) % photos.length);
+
+      // Wait a frame so the browser paints the "next" layer before we start flipping
+      await new Promise((r) => requestAnimationFrame(() => r(null)));
+      await flipTiles();
+
+      // Commit: swap base to the new image, reset next + tiles
+      setBaseTo(idx);
+      nextPic.style.opacity = "0";
+      nextPic.style.transition = "";
+      tiles.forEach((t) => t.classList.remove("flipped"));
+
+      current = idx;
+      updateDots();
+      transitioning = false;
+    }
+
+    function next() {
+      goTo((current + 1) % photos.length);
+    }
+    function prev() {
+      goTo((current - 1 + photos.length) % photos.length);
+    }
+    function jumpTo(i: number) {
+      goTo(i);
+    }
+
+    // Auto-advance
+    function startTimer() {
+      if (timer !== null) return;
+      timer = window.setInterval(() => {
+        if (!paused && !document.hidden) next();
+      }, intervalMs);
+    }
+    function stopTimer() {
+      if (timer !== null) {
+        window.clearInterval(timer);
+        timer = null;
+      }
+    }
+
+    // Pause on hover/focus
+    root.addEventListener("mouseenter", () => (paused = true));
+    root.addEventListener("mouseleave", () => (paused = false));
+    root.addEventListener("focusin", () => (paused = true));
+    root.addEventListener("focusout", () => (paused = false));
+
+    // Pause when tab hidden (battery saver)
+    document.addEventListener("visibilitychange", () => {
+      paused = document.hidden;
+    });
+
+    // Controls
+    nextBtn.addEventListener("click", next);
+    prevBtn.addEventListener("click", prev);
+
+    // Keyboard
+    root.tabIndex = 0;
+    root.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowRight") {
+        e.preventDefault();
+        next();
+      } else if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        prev();
+      } else if (e.key === " " || e.key === "Spacebar") {
+        e.preventDefault();
+        paused = !paused;
+      }
+    });
+
+    // Expose a hook so thumbnails on the page can jump the cycler
+    (root as HTMLElement & { jumpToId?: (id: string) => void }).jumpToId = (id: string) => {
+      const idx = photos.findIndex((p) => p.id === id);
+      if (idx >= 0) jumpTo(idx);
+    };
+
+    // IntersectionObserver — only auto-play while the cycler is visible
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            startTimer();
+          } else {
+            stopTimer();
+          }
+        });
+      },
+      { threshold: 0.25 },
+    );
+    io.observe(root);
+
+    // Init
+    updateDots();
+    preload(1);
+  }
+
+  function bootAll() {
+    document
+      .querySelectorAll<HTMLElement>("[data-mosaic-cycler]")
+      .forEach((el) => initCycler(el));
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", bootAll);
+  } else {
+    bootAll();
+  }
+</script>

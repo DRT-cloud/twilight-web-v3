@@ -24,6 +24,12 @@ export const SITE = {
     email: "okmultigun@gmail.com",
   },
 
+  // Full photo archive (shared album)
+  photoArchive: {
+    url: "https://photos.app.goo.gl/zwXDNuQ923TAoZ8e7",
+    host: "Google Photos",
+  },
+
   // Nav items surface in the header in this order
   nav: [
     { href: "/about", label: "About" },

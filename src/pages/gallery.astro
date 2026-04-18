@@ -1,7 +1,12 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Picture from "../components/Picture.astro";
+import MosaicCycler from "../components/MosaicCycler.astro";
 import { photos } from "../lib/gallery";
+import { SITE } from "../lib/site";
+
+// Use largest-available photos for the cycler so the hero rotation is sharp
+const cyclerPhotos = photos.filter((p) => p.widths.includes(1600) || p.widths.includes(1024));
 ---
 
 <BaseLayout
@@ -16,29 +21,93 @@ import { photos } from "../lib/gallery";
       Night captured.
     </h1>
     <p class="mt-6 max-w-2xl text-[var(--color-text-muted)]">
-      {photos.length} frames from past events. AVIF with WebP and JPEG
-      fallbacks, lazy-loaded below the fold.
+      {photos.length} curated frames from past events. Click any thumbnail to
+      jump the cycler. Full archive on {SITE.photoArchive.host}.
     </p>
 
-    <div
-      class="mt-12 grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4"
-    >
-      {photos.map((p) => (
-        <figure class="group relative aspect-[3/2] overflow-hidden bg-[var(--color-surface)]">
-          <Picture
-            id={p.id}
-            widths={p.widths}
-            dir="gallery"
-            alt={p.caption ?? "Twilight Biathlon photograph"}
-            sizes="(min-width: 1024px) 25vw, (min-width: 640px) 33vw, 50vw"
-            class="h-full w-full transition-transform duration-500 ease-out group-hover:scale-[1.03]"
-          />
-          <div
-            class="pointer-events-none absolute inset-0 bg-gradient-to-t from-[var(--color-bg)]/40 via-transparent to-transparent opacity-0 transition-opacity group-hover:opacity-100"
-            aria-hidden="true"
-          />
-        </figure>
-      ))}
+    {/* Hero cycler */}
+    <div class="mt-10">
+      <MosaicCycler photos={cyclerPhotos} intervalMs={5000} />
+    </div>
+
+    {/* Archive CTA */}
+    <div class="mt-10 flex flex-col gap-4 border border-[var(--color-hairline)] bg-[var(--color-surface)]/40 p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8">
+      <div>
+        <p class="section-label">// Full Archive</p>
+        <h2 class="mt-2 font-[family-name:var(--font-display)] text-2xl font-semibold uppercase sm:text-3xl">
+          Every frame, every match.
+        </h2>
+        <p class="mt-2 max-w-xl text-sm text-[var(--color-text-muted)]">
+          Hundreds of additional photos from every Twilight Biathlon event,
+          hosted on {SITE.photoArchive.host}. Free to view, browse, and download.
+        </p>
+      </div>
+      <a
+        href={SITE.photoArchive.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="btn-primary shrink-0 text-sm"
+      >
+        Open {SITE.photoArchive.host} →
+      </a>
+    </div>
+
+    {/* Thumbnail grid */}
+    <div class="mt-16">
+      <p class="section-label">// Thumbnails</p>
+      <h2 class="mt-2 font-[family-name:var(--font-display)] text-2xl font-semibold uppercase">
+        Curated set
+      </h2>
+      <p class="mt-2 max-w-2xl text-sm text-[var(--color-text-muted)]">
+        Click any photo to load it in the cycler above.
+      </p>
+
+      <div
+        class="mt-8 grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4"
+        data-gallery-thumbs
+      >
+        {photos.map((p) => (
+          <button
+            type="button"
+            data-photo-id={p.id}
+            class="group relative aspect-[3/2] overflow-hidden bg-[var(--color-surface)] focus:outline-none focus:ring-2 focus:ring-[var(--color-nv)] focus:ring-offset-2 focus:ring-offset-[var(--color-bg)]"
+            aria-label={`Load photo ${p.id} into cycler`}
+          >
+            <Picture
+              id={p.id}
+              widths={p.widths}
+              dir="gallery"
+              alt={p.caption ?? "Twilight Biathlon photograph"}
+              sizes="(min-width: 1024px) 25vw, (min-width: 640px) 33vw, 50vw"
+              class="h-full w-full transition-transform duration-500 ease-out group-hover:scale-[1.03]"
+            />
+            <div
+              class="pointer-events-none absolute inset-0 bg-gradient-to-t from-[var(--color-bg)]/40 via-transparent to-transparent opacity-0 transition-opacity group-hover:opacity-100"
+              aria-hidden="true"
+            />
+          </button>
+        ))}
+      </div>
     </div>
   </section>
 </BaseLayout>
+
+<script>
+  // Wire thumbnail clicks to the cycler
+  document.addEventListener("DOMContentLoaded", () => {
+    const cycler = document.querySelector<HTMLElement & { jumpToId?: (id: string) => void }>(
+      "[data-mosaic-cycler]",
+    );
+    if (!cycler) return;
+
+    document.querySelectorAll<HTMLButtonElement>("[data-photo-id]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const id = btn.dataset.photoId;
+        if (id && cycler.jumpToId) {
+          cycler.jumpToId(id);
+          cycler.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      });
+    });
+  });
+</script>
