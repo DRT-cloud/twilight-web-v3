@@ -52,58 +52,29 @@ const firstYear = Math.min(...sorted.map((r) => r.year));
           </header>
 
           <ul class="mt-6 space-y-4">
-            {byYear.get(year)!.map((r) => {
-              const accent =
-                r.lighting === "NV"
-                  ? "var(--color-nv)"
-                  : r.lighting === "WL"
-                    ? "var(--color-wl)"
-                    : "var(--color-hairline)";
-              return (
-                <li>
-                  <a
-                    href={r.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="group block border border-[var(--color-hairline)] p-5 transition-colors hover:border-[var(--color-nv)] hover:bg-[var(--color-surface)]"
-                  >
-                    <div class="flex items-center gap-3">
-                      <span
-                        class="inline-block h-2.5 w-2.5 rounded-full"
-                        style={`background: ${accent}`}
-                        aria-hidden="true"
-                      ></span>
-                      <span class="font-[family-name:var(--font-mono)] text-xs uppercase tracking-[0.15em] text-[var(--color-text-muted)]">
-                        {new Date(r.eventDate).toLocaleDateString("en-US", {
-                          month: "short",
-                          day: "numeric",
-                          year: "numeric",
-                          timeZone: "UTC",
-                        })}
-                        {r.lighting && r.lighting !== "Unknown" && (
-                          <span class="ml-2 text-[var(--color-text)]/80">
-                            · {r.lighting}
-                          </span>
-                        )}
-                        {r.division && r.division !== "Unknown" && (
-                          <span class="ml-2 text-[var(--color-text)]/80">
-                            · {r.division}
-                          </span>
-                        )}
-                      </span>
-                    </div>
+            {byYear.get(year)!.map((r) => (
+              <li>
+                <a
+                  href={r.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="group block border border-[var(--color-hairline)] p-5 transition-colors hover:border-[var(--color-nv)] hover:bg-[var(--color-surface)]"
+                >
+                  <span class="font-[family-name:var(--font-mono)] text-xs uppercase tracking-[0.15em] text-[var(--color-text-muted)]">
+                    {new Date(r.eventDate).toLocaleDateString("en-US", {
+                      month: "short",
+                      day: "numeric",
+                      year: "numeric",
+                      timeZone: "UTC",
+                    })}
+                  </span>
 
-                    <h3 class="mt-2 font-[family-name:var(--font-display)] text-xl font-semibold uppercase tracking-wide transition-colors group-hover:text-[var(--color-nv)] sm:text-2xl">
-                      {r.eventTitle}
-                    </h3>
-
-                    <p class="mt-3 font-[family-name:var(--font-mono)] text-xs text-[var(--color-nv)]/70 transition-colors group-hover:text-[var(--color-nv)]">
-                      View full results on PractiScore →
-                    </p>
-                  </a>
-                </li>
-              );
-            })}
+                  <h3 class="mt-2 font-[family-name:var(--font-display)] text-xl font-semibold uppercase tracking-wide transition-colors group-hover:text-[var(--color-nv)] sm:text-2xl">
+                    {r.eventTitle}
+                  </h3>
+                </a>
+              </li>
+            ))}
           </ul>
         </section>
       ))}
