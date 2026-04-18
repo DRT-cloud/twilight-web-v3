@@ -1,7 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import PageHero from "../components/PageHero.astro";
-import heroImage from "../assets/hero/rules.jpg";
+import PageHeader from "../components/PageHeader.astro";
 
 // Rulebook structured as data so markup stays clean. Sub-items can include
 // a `children` array for nested enumerations. Callouts use `callout` / `warn`.
@@ -426,8 +425,7 @@ const sections: Section[] = [
   title="Rules"
   description="Twilight Biathlon official rulebook — safety, range commands, firearms, ammunition, scoring, penalties, disqualifications, lighting protocol, and refunds."
 >
-  <PageHero
-    image={heroImage}
+  <PageHeader
     eyebrow="// Rulebook · 2026 Edition"
     title="Twilight Rules."
   />

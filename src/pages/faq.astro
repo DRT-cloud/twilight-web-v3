@@ -1,8 +1,7 @@
 ---
 import { getCollection, render } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import PageHero from "../components/PageHero.astro";
-import heroImage from "../assets/hero/faq.jpg";
+import PageHeader from "../components/PageHeader.astro";
 
 const faqs = await getCollection("faq");
 const sorted = faqs.sort((a, b) => a.data.order - b.data.order);
@@ -20,8 +19,7 @@ const rendered = await Promise.all(
   title="FAQ"
   description="Common questions about the Twilight Biathlon — format, gear, registration, logistics."
 >
-  <PageHero
-    image={heroImage}
+  <PageHeader
     eyebrow="// FAQ"
     title="Frequently asked."
   />

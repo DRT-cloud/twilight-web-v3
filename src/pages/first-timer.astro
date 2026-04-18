@@ -1,7 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import PageHero from "../components/PageHero.astro";
-import heroImage from "../assets/hero/first-timer.jpg";
+import PageHeader from "../components/PageHeader.astro";
 
 const checklist = [
   {
@@ -67,8 +66,7 @@ const tips = [
   title="First-Timer Guide"
   description="Never done a run and gun? This is a complete walkthrough — gear, fitness, division choice, day-of flow, and tips from past competitors."
 >
-  <PageHero
-    image={heroImage}
+  <PageHeader
     eyebrow="// First-Timer Guide"
     title="Your first run."
   />

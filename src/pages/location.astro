@@ -2,8 +2,7 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { SITE } from "../lib/site";
 import VenueMap from "../components/VenueMap.astro";
-import PageHero from "../components/PageHero.astro";
-import heroImage from "../assets/hero/location.jpg";
+import PageHeader from "../components/PageHeader.astro";
 
 // Four physical entrances to The Burial Mound Shooting Center.
 // Coordinates pulled from the legacy Google Maps embed iframes.
@@ -82,8 +81,7 @@ const lodging = [
   title="Location & Directions"
   description="The Burial Mound Shooting Center, 42251 S 34500 Rd, Pawnee, OK. GPS for all four gates, parking, free on-site camping, and nearby lodging."
 >
-  <PageHero
-    image={heroImage}
+  <PageHeader
     eyebrow="// Location & Directions"
     title="Pawnee, Oklahoma."
   />

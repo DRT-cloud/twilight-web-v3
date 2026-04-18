@@ -1,7 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import PageHero from "../components/PageHero.astro";
-import heroImage from "../assets/hero/what-is-run-and-gun.jpg";
+import PageHeader from "../components/PageHeader.astro";
 
 const flow = [
   { num: "01", title: "Start", body: "You begin at the starting line carrying everything: firearms, ammunition, eye/ear protection, and lighting. No resupply at your vehicle." },
@@ -22,8 +21,7 @@ const adds = [
   title="What Is Run-and-Gun?"
   description="Run and gun combines cross-country running with live-fire shooting stages. Twilight Biathlon adds the dark."
 >
-  <PageHero
-    image={heroImage}
+  <PageHeader
     eyebrow="// The Format"
     title="What is run-and-gun?"
   />

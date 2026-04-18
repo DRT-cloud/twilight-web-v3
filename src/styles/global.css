@@ -75,8 +75,34 @@ html {
   scroll-behavior: smooth;
 }
 
+/* MultiCam Black camo tile behind all pages. Tiled at a comfortable size,
+   fixed so it stays put while content scrolls over it (subtle parallax).
+   A dark scrim via ::before keeps content legible. */
 body {
   min-height: 100dvh;
+  background-color: var(--color-bg);
+  background-image: url("/multicam-black.jpg");
+  background-repeat: repeat;
+  background-size: 900px auto;
+  background-attachment: fixed;
+  background-position: center top;
+  position: relative;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: rgba(10, 11, 13, 0.55);
+  pointer-events: none;
+}
+
+/* Disable fixed attachment on touch/narrow viewports where it's laggy */
+@media (max-width: 768px), (pointer: coarse) {
+  body {
+    background-attachment: scroll;
+  }
 }
 
 h1, h2, h3, h4 {

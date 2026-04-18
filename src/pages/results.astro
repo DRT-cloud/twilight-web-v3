@@ -1,8 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
-import PageHero from "../components/PageHero.astro";
-import heroImage from "../assets/hero/results.jpg";
+import PageHeader from "../components/PageHeader.astro";
 
 const all = await getCollection("results");
 
@@ -29,8 +28,7 @@ const firstYear = Math.min(...sorted.map((r) => r.year));
   title="Results"
   description="Twilight Biathlon historical results, 2018 to present. All standings archived on PractiScore."
 >
-  <PageHero
-    image={heroImage}
+  <PageHeader
     eyebrow="// Results · archive"
     title="Past results."
   />
