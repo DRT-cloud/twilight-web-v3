@@ -1,0 +1,301 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "West Gate 2",
+        "category": "gate",
+        "description": "Entrance to shooting bays",
+        "notes": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -96.8549722,
+          36.4059444
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "West Gate 1 (Main Gate)",
+        "category": "gate",
+        "description": "Entrance to west parking",
+        "notes": ""
+      },
+      "geometry": {
+        "coordinates": [
+          -96.85344845745283,
+          36.40095199682817
+        ],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "East Gate 1",
+        "category": "gate",
+        "description": "Entrance to east lower parking",
+        "notes": ""
+      },
+      "geometry": {
+        "coordinates": [
+          -96.8354444280992,
+          36.39974581112712
+        ],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "East Gate 2",
+        "category": "gate",
+        "description": "Entrance to east upper parking",
+        "notes": ""
+      },
+      "geometry": {
+        "coordinates": [
+          -96.83541784103139,
+          36.395485593103515
+        ],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Shooting Bays",
+        "category": "bay",
+        "description": "2 shooting bays",
+        "notes": ""
+      },
+      "geometry": {
+        "coordinates": [
+          [
+            [
+              -96.85642769088773,
+              36.40501742424678
+            ],
+            [
+              -96.85621160630122,
+              36.404367906302156
+            ],
+            [
+              -96.855148822924,
+              36.40475477829989
+            ],
+            [
+              -96.85547515474944,
+              36.40539364527267
+            ],
+            [
+              -96.85642769088773,
+              36.40501742424678
+            ]
+          ]
+        ],
+        "type": "Polygon"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "West Parking",
+        "category": "parking",
+        "description": "West main parking",
+        "notes": ""
+      },
+      "geometry": {
+        "coordinates": [
+          [
+            [
+              -96.85544371732982,
+              36.4019431535239
+            ],
+            [
+              -96.85546100425455,
+              36.401442255445815
+            ],
+            [
+              -96.85400025910688,
+              36.401831843118956
+            ],
+            [
+              -96.85399593737587,
+              36.40194663197134
+            ],
+            [
+              -96.85544371732982,
+              36.4019431535239
+            ]
+          ]
+        ],
+        "type": "Polygon"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Gate 3 Parking A",
+        "category": "parking",
+        "description": "East gate 3 parking",
+        "notes": ""
+      },
+      "geometry": {
+        "coordinates": [
+          [
+            [
+              -96.83545880058179,
+              36.399978745219656
+            ],
+            [
+              -96.83545880058179,
+              36.399851713187346
+            ],
+            [
+              -96.83512112973843,
+              36.39957401453401
+            ],
+            [
+              -96.83510644839708,
+              36.399978745219656
+            ],
+            [
+              -96.83545880058179,
+              36.399978745219656
+            ]
+          ]
+        ],
+        "type": "Polygon"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Gate 3 Parking B",
+        "category": "parking",
+        "description": "East gate 3 parking",
+        "notes": ""
+      },
+      "geometry": {
+        "coordinates": [
+          [
+            [
+              -96.83502657087624,
+              36.39914591462326
+            ],
+            [
+              -96.83502418799864,
+              36.39875464479027
+            ],
+            [
+              -96.83476445433017,
+              36.39876039877335
+            ],
+            [
+              -96.83477160296351,
+              36.3989138381467
+            ],
+            [
+              -96.83502657087624,
+              36.39914591462326
+            ]
+          ]
+        ],
+        "type": "Polygon"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Gate 4 Parking B",
+        "category": "parking",
+        "description": "East gate 4 parking",
+        "notes": ""
+      },
+      "geometry": {
+        "coordinates": [
+          [
+            [
+              -96.83547545002966,
+              36.39592357237677
+            ],
+            [
+              -96.83546473117764,
+              36.39507322986188
+            ],
+            [
+              -96.83467867402014,
+              36.39508267363168
+            ],
+            [
+              -96.83467867402014,
+              36.39519757274354
+            ],
+            [
+              -96.83527701603546,
+              36.395189702947064
+            ],
+            [
+              -96.8352828821339,
+              36.39543838813876
+            ],
+            [
+              -96.83512058675053,
+              36.3955942094677
+            ],
+            [
+              -96.83512254211652,
+              36.39577678759683
+            ],
+            [
+              -96.83547545002966,
+              36.39592357237677
+            ]
+          ]
+        ],
+        "type": "Polygon"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Gate 4 Parking A",
+        "category": "parking",
+        "description": "East gate 4 parking",
+        "notes": ""
+      },
+      "geometry": {
+        "coordinates": [
+          [
+            [
+              -96.83492166798706,
+              36.39613252078725
+            ],
+            [
+              -96.83456476524812,
+              36.39567233446533
+            ],
+            [
+              -96.83427395560922,
+              36.395938338452154
+            ],
+            [
+              -96.8345350233535,
+              36.39618572134232
+            ],
+            [
+              -96.83492166798706,
+              36.39613252078725
+            ]
+          ]
+        ],
+        "type": "Polygon"
+      }
+    }
+  ]
+}

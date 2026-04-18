@@ -3,13 +3,12 @@ const stats = [
   { value: "5K", label: "Course" },
   { value: "4", label: "Shooting Stages" },
   { value: "5–150", label: "Yard Range" },
-  { value: "5 MIN", label: "Releases" },
 ];
 ---
 
 <section class="border-y border-[var(--color-hairline)] bg-[var(--color-surface)]">
   <div class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-    <dl class="grid grid-cols-2 gap-6 sm:grid-cols-4">
+    <dl class="grid grid-cols-3 gap-6">
       {
         stats.map((s) => (
           <div class="border-l border-[var(--color-hairline)] pl-4">

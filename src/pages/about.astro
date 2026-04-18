@@ -1,21 +1,22 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/PageHero.astro";
 import { SITE } from "../lib/site";
+import heroImage from "../assets/hero/about.jpg";
 ---
 
 <BaseLayout
   title="About"
   description="What the Twilight Biathlon is, how the format works, and why we run at night."
 >
-  <section class="mx-auto max-w-3xl px-4 py-20 sm:px-6 lg:px-8">
-    <p class="section-label">// About</p>
-    <h1
-      class="mt-3 font-[family-name:var(--font-display)] text-5xl font-bold uppercase sm:text-6xl"
-    >
-      The original nighttime run-and-gun biathlon.
-    </h1>
+  <PageHero
+    image={heroImage}
+    eyebrow="// About"
+    title="The original nighttime run-and-gun biathlon."
+  />
 
-    <div class="prose-content mt-10 space-y-6 text-lg text-[var(--color-text)]/90 leading-relaxed">
+  <section class="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
+    <div class="prose-content space-y-6 text-lg text-[var(--color-text)]/90 leading-relaxed">
       <p>
         The Twilight Biathlon is a timed 5K run-and-shoot competition held at
         night on unlit terrain at {SITE.venue.name} in {SITE.venue.city},
@@ -47,3 +48,4 @@ import { SITE } from "../lib/site";
     </div>
   </section>
 </BaseLayout>
+

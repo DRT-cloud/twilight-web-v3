@@ -1,5 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/PageHero.astro";
+import heroImage from "../assets/hero/first-timer.jpg";
 
 const checklist = [
   {
@@ -65,14 +67,14 @@ const tips = [
   title="First-Timer Guide"
   description="Never done a run and gun? This is a complete walkthrough — gear, fitness, division choice, day-of flow, and tips from past competitors."
 >
-  <section class="mx-auto max-w-4xl px-4 py-20 sm:px-6 lg:px-8">
-    <p class="section-label">// First-Timer Guide</p>
-    <h1
-      class="mt-3 font-[family-name:var(--font-display)] text-5xl font-bold uppercase sm:text-6xl"
-    >
-      Your first night.
-    </h1>
-    <p class="mt-6 max-w-2xl text-[var(--color-text-muted)]">
+  <PageHero
+    image={heroImage}
+    eyebrow="// First-Timer Guide"
+    title="Your first run."
+  />
+
+  <section class="mx-auto max-w-4xl px-4 py-16 sm:px-6 lg:px-8">
+    <p class="max-w-2xl text-[var(--color-text-muted)]">
       Everything a new competitor needs to register, prepare, and finish their
       first Twilight Biathlon with a smile.
     </p>

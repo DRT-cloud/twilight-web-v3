@@ -19,9 +19,33 @@ const now = new Date();
 const upcoming = sorted.filter((e) => e.data.endDate >= now);
 const nextEvent = upcoming[0] ?? sorted[sorted.length - 1]!;
 
-// Construct ISO target for countdown (Friday first release).
-// Astro frontmatter executes at build time; format as ISO.
-const countdownTarget = nextEvent.data.startDate.toISOString();
+// Parse the check-in start time from the event's checkinWindow string
+// (e.g. "7:00–8:00 PM each night" → 7:00 PM on startDate).
+// All events are in Central Time; Oklahoma observes DST, so May = CDT (UTC-5),
+// October = CDT (still before first-Sunday-November DST end). Use UTC-5.
+function parseCheckinTarget(startDate: Date, window: string): string {
+  const m = window.match(/^(\d{1,2}):(\d{2})\s*[–\-]?.*?(AM|PM)/i);
+  let hour = 19;
+  let minute = 0;
+  if (m) {
+    hour = parseInt(m[1], 10);
+    minute = parseInt(m[2], 10);
+    if (/PM/i.test(m[3]) && hour < 12) hour += 12;
+    if (/AM/i.test(m[3]) && hour === 12) hour = 0;
+  }
+  const y = startDate.getUTCFullYear();
+  const mo = String(startDate.getUTCMonth() + 1).padStart(2, "0");
+  const d = String(startDate.getUTCDate()).padStart(2, "0");
+  const hh = String(hour).padStart(2, "0");
+  const mm = String(minute).padStart(2, "0");
+  // Central Daylight Time offset (UTC-5) — both Twilight events are inside DST.
+  return `${y}-${mo}-${d}T${hh}:${mm}:00-05:00`;
+}
+
+const countdownTarget = parseCheckinTarget(
+  nextEvent.data.startDate,
+  nextEvent.data.checkinWindow,
+);
 
 // Hero variants live in /public/images/hero/ as hero-twilight-{768,1280,1920}w.{avif,webp,jpg}
 // Preload the 1280w AVIF — covers typical laptop viewports without over-fetching on mobile.
@@ -38,6 +62,8 @@ const heroPreload = "/images/hero/hero-twilight-1280w.avif";
     nextEventEnd={nextEvent.data.endDate}
     registrationUrl={nextEvent.data.registrationUrl}
   />
+
+  <Countdown target={countdownTarget} label="Countdown to Next Twilight" />
 
   <StatsStrip />
 
@@ -58,8 +84,6 @@ const heroPreload = "/images/hero/hero-twilight-1280w.avif";
       {upcoming.slice(0, 2).map((event) => <EventCard event={event} />)}
     </div>
   </section>
-
-  <Countdown target={countdownTarget} label="First Release" />
 
   <HowItWorks />
 

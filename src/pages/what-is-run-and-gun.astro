@@ -1,5 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/PageHero.astro";
+import heroImage from "../assets/hero/what-is-run-and-gun.jpg";
 
 const flow = [
   { num: "01", title: "Start", body: "You begin at the starting line carrying everything: firearms, ammunition, eye/ear protection, and lighting. No resupply at your vehicle." },
@@ -20,14 +22,14 @@ const adds = [
   title="What Is Run-and-Gun?"
   description="Run and gun combines cross-country running with live-fire shooting stages. Twilight Biathlon adds the dark."
 >
-  <section class="mx-auto max-w-4xl px-4 py-20 sm:px-6 lg:px-8">
-    <p class="section-label">// The Format</p>
-    <h1
-      class="mt-3 font-[family-name:var(--font-display)] text-5xl font-bold uppercase sm:text-6xl"
-    >
-      What is run-and-gun?
-    </h1>
-    <p class="mt-6 max-w-2xl text-[var(--color-text-muted)]">
+  <PageHero
+    image={heroImage}
+    eyebrow="// The Format"
+    title="What is run-and-gun?"
+  />
+
+  <section class="mx-auto max-w-4xl px-4 py-16 sm:px-6 lg:px-8">
+    <p class="max-w-2xl text-[var(--color-text-muted)]">
       Run and gun (also called "run n' gun" or "tactical biathlon") is a timed
       shooting competition that combines cross-country running with live-fire
       shooting stages. You carry your firearms the entire course, stop at
