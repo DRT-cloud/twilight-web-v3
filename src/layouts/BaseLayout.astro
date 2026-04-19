@@ -12,6 +12,10 @@ interface Props {
   preloadImage?: string;
   /** Canonical path, no domain. Defaults to Astro.url.pathname. */
   canonicalPath?: string;
+  /** Override og:type. Default: website. Use "event" on registration pages. */
+  ogType?: string;
+  /** Extra JSON-LD objects to embed in <head> alongside the default Organization schema. */
+  structuredData?: unknown[];
 }
 
 const {
@@ -20,10 +24,46 @@ const {
   ogImage = SITE.ogImage,
   preloadImage,
   canonicalPath,
+  ogType = "website",
+  structuredData = [],
 } = Astro.props;
 
 const pageTitle = title ? `${title} — ${SITE.name}` : `${SITE.name} — ${SITE.tagline}`;
 const canonical = new URL(canonicalPath ?? Astro.url.pathname, SITE.url).toString();
+
+// Organization + WebSite schemas are emitted on every page.
+const orgSchema = {
+  "@context": "https://schema.org",
+  "@type": "SportsOrganization",
+  name: SITE.name,
+  url: SITE.url,
+  logo: new URL("/icon-512.png", SITE.url).toString(),
+  email: SITE.contact.email,
+  sameAs: [SITE.photoArchive.url],
+  location: {
+    "@type": "Place",
+    name: SITE.venue.name,
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: SITE.venue.address,
+      addressLocality: SITE.venue.city,
+      addressRegion: SITE.venue.region,
+      postalCode: SITE.venue.postalCode,
+      addressCountry: SITE.venue.country,
+    },
+  },
+};
+
+const websiteSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: SITE.name,
+  url: SITE.url,
+  description: SITE.description,
+  inLanguage: SITE.locale,
+};
+
+const allSchemas = [orgSchema, websiteSchema, ...structuredData];
 ---
 
 <!doctype html>
@@ -40,7 +80,7 @@ const canonical = new URL(canonicalPath ?? Astro.url.pathname, SITE.url).toStrin
     <link rel="canonical" href={canonical} />
 
     <!-- Open Graph -->
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={ogType} />
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
@@ -57,7 +97,7 @@ const canonical = new URL(canonicalPath ?? Astro.url.pathname, SITE.url).toStrin
     <!-- Preload: display font only on desktop (media query prevents mobile download contention with hero image) -->
     <link
       rel="preload"
-      href="/fonts/BarlowCondensed-VariableFont_wght.woff2"
+      href="/fonts/BarlowCondensed-700.woff2"
       as="font"
       type="font/woff2"
       crossorigin="anonymous"
@@ -83,6 +123,11 @@ const canonical = new URL(canonicalPath ?? Astro.url.pathname, SITE.url).toStrin
 
     <!-- Sitemap -->
     <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <!-- Structured data -->
+    {allSchemas.map((schema) => (
+      <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+    ))}
   </head>
 
   <body class="min-h-dvh text-[var(--color-text)] antialiased">

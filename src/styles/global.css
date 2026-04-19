@@ -33,22 +33,38 @@
 }
 
 /* ---------------------------------------------------------------------------
-   Self-hosted fonts — WOFF2, Latin subset.
-   Drop your WOFF2 files into /public/fonts/ matching the filenames below.
-   Variable fonts preferred; a single file covers all weights.
+   Self-hosted fonts — WOFF2, Latin subset (via fontsource).
+   Barlow Condensed ships only static weights; Inter + JetBrains Mono ship as
+   wght-axis variable fonts. All three are bundled in /public/fonts/.
 --------------------------------------------------------------------------- */
 
 @font-face {
   font-family: "Barlow Condensed";
-  src: url("/fonts/BarlowCondensed-VariableFont_wght.woff2") format("woff2-variations");
-  font-weight: 100 900;
+  src: url("/fonts/BarlowCondensed-400.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Barlow Condensed";
+  src: url("/fonts/BarlowCondensed-600.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Barlow Condensed";
+  src: url("/fonts/BarlowCondensed-700.woff2") format("woff2");
+  font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
   font-family: "Inter";
-  src: url("/fonts/Inter-VariableFont_opsz,wght.woff2") format("woff2-variations");
+  src: url("/fonts/Inter-Variable.woff2") format("woff2");
   font-weight: 100 900;
   font-style: normal;
   font-display: optional;
@@ -56,7 +72,7 @@
 
 @font-face {
   font-family: "JetBrains Mono";
-  src: url("/fonts/JetBrainsMono-VariableFont_wght.woff2") format("woff2-variations");
+  src: url("/fonts/JetBrainsMono-Variable.woff2") format("woff2");
   font-weight: 100 800;
   font-style: normal;
   font-display: optional;

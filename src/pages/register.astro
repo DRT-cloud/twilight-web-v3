@@ -3,17 +3,62 @@ import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import EventCard from "../components/EventCard.astro";
 import PageHeader from "../components/PageHeader.astro";
+import { SITE } from "../lib/site";
 
 const all = await getCollection("events");
 const now = new Date();
 const upcoming = all
   .filter((e) => e.data.endDate >= now)
   .sort((a, b) => a.data.startDate.getTime() - b.data.startDate.getTime());
+
+const eventSchemas = upcoming.map((e) => ({
+  "@context": "https://schema.org",
+  "@type": "SportsEvent",
+  name: `Twilight Biathlon — ${e.data.title}`,
+  description: SITE.description,
+  startDate: e.data.startDate.toISOString().slice(0, 10),
+  endDate: e.data.endDate.toISOString().slice(0, 10),
+  eventStatus: "https://schema.org/EventScheduled",
+  eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+  location: {
+    "@type": "Place",
+    name: SITE.venue.name,
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: SITE.venue.address,
+      addressLocality: SITE.venue.city,
+      addressRegion: SITE.venue.region,
+      postalCode: SITE.venue.postalCode,
+      addressCountry: SITE.venue.country,
+    },
+  },
+  organizer: {
+    "@type": "Organization",
+    name: SITE.name,
+    url: SITE.url,
+  },
+  image: new URL("/images/og-default.jpg", SITE.url).toString(),
+  offers: e.data.registrationUrl
+    ? {
+        "@type": "Offer",
+        url: e.data.registrationUrl,
+        price: String(e.data.entryFee),
+        priceCurrency: "USD",
+        availability:
+          e.data.status === "registration-open"
+            ? "https://schema.org/InStock"
+            : "https://schema.org/PreOrder",
+        validFrom: e.data.registrationOpens.toISOString().slice(0, 10),
+      }
+    : undefined,
+}));
 ---
 
 <BaseLayout
   title="Register"
   description="Register for the next Twilight Biathlon. PractiScore + PayPal. Registration is not complete until PayPal payment is received."
+  ogType="event"
+  structuredData={eventSchemas}
 >
   <PageHeader
     eyebrow="// Register"

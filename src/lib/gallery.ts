@@ -13,7 +13,7 @@ export type GalleryPhoto = {
   lighting?: "NV" | "WL";
 };
 
-// All 25 gallery photos. Hero (62033-21) lives under /images/hero/ separately.
+// All 24 gallery photos. Hero (62033-21) lives under /images/hero/ separately.
 export const photos: GalleryPhoto[] = [
   { id: "5678-20", widths: [640, 1024, 1600] },
   { id: "62020-24", widths: [640, 1024] },
@@ -39,7 +39,6 @@ export const photos: GalleryPhoto[] = [
   { id: "62042-25", widths: [640, 1024] },
   { id: "62043-17", widths: [640, 1024, 1600] },
   { id: "62044", widths: [640, 1024, 1600] },
-  { id: "image", widths: [987] },
 ];
 
 /** Build a srcset string for a given format */

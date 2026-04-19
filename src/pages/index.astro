@@ -9,8 +9,10 @@ import Differentiators from "../components/Differentiators.astro";
 import Countdown from "../components/Countdown.astro";
 import QuickLinks from "../components/QuickLinks.astro";
 import UpdatesSignup from "../components/UpdatesSignup.astro";
+import { SITE } from "../lib/site";
 
 // Load all events, sort by date, pick the next upcoming one for countdown + hero CTA.
+
 const all = await getCollection("events");
 const sorted = all.sort(
   (a, b) => a.data.startDate.getTime() - b.data.startDate.getTime(),
@@ -50,12 +52,56 @@ const countdownTarget = parseCheckinTarget(
 // Hero variants live in /public/images/hero/ as hero-twilight-{768,1280,1920}w.{avif,webp,jpg}
 // Preload the 1280w AVIF — covers typical laptop viewports without over-fetching on mobile.
 const heroPreload = "/images/hero/hero-twilight-1280w.avif";
+
+// SportsEvent JSON-LD for each upcoming event surfaces event cards in Google results.
+const eventSchemas = upcoming.map((e) => ({
+  "@context": "https://schema.org",
+  "@type": "SportsEvent",
+  name: `Twilight Biathlon — ${e.data.title}`,
+  description: SITE.description,
+  startDate: e.data.startDate.toISOString().slice(0, 10),
+  endDate: e.data.endDate.toISOString().slice(0, 10),
+  eventStatus: "https://schema.org/EventScheduled",
+  eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+  location: {
+    "@type": "Place",
+    name: SITE.venue.name,
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: SITE.venue.address,
+      addressLocality: SITE.venue.city,
+      addressRegion: SITE.venue.region,
+      postalCode: SITE.venue.postalCode,
+      addressCountry: SITE.venue.country,
+    },
+  },
+  organizer: {
+    "@type": "Organization",
+    name: SITE.name,
+    url: SITE.url,
+  },
+  image: new URL("/images/og-default.jpg", SITE.url).toString(),
+  offers: e.data.registrationUrl
+    ? {
+        "@type": "Offer",
+        url: e.data.registrationUrl,
+        price: String(e.data.entryFee),
+        priceCurrency: "USD",
+        availability:
+          e.data.status === "registration-open"
+            ? "https://schema.org/InStock"
+            : "https://schema.org/PreOrder",
+        validFrom: e.data.registrationOpens.toISOString().slice(0, 10),
+      }
+    : undefined,
+}));
 ---
 
 <BaseLayout
   title=""
   preloadImage={heroPreload}
   canonicalPath="/"
+  structuredData={eventSchemas}
 >
   <Hero
     nextEventStart={nextEvent.data.startDate}
