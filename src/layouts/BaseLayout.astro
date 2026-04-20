@@ -31,6 +31,45 @@ const {
 const pageTitle = title ? `${title} — ${SITE.name}` : `${SITE.name} — ${SITE.tagline}`;
 const canonical = new URL(canonicalPath ?? Astro.url.pathname, SITE.url).toString();
 
+// Block indexing when served from a non-canonical host (e.g. preview deployments
+// on *.pages.dev). Prevents duplicate-content issues with the primary domain.
+const currentHost = Astro.url.hostname;
+const canonicalHost = new URL(SITE.url).hostname;
+const isNonCanonicalHost = currentHost !== canonicalHost && currentHost !== "localhost";
+
+// Auto-generate a BreadcrumbList schema from the path (skipped on the homepage).
+const pathname = canonicalPath ?? Astro.url.pathname;
+const segments = pathname.split("/").filter(Boolean);
+const breadcrumbSchema =
+  segments.length === 0
+    ? null
+    : {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          {
+            "@type": "ListItem",
+            position: 1,
+            name: "Home",
+            item: SITE.url,
+          },
+          ...segments.map((seg, i) => ({
+            "@type": "ListItem",
+            position: i + 2,
+            name: (title && i === segments.length - 1)
+              ? title
+              : seg
+                  .split("-")
+                  .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+                  .join(" "),
+            item: new URL(
+              "/" + segments.slice(0, i + 1).join("/") + "/",
+              SITE.url,
+            ).toString(),
+          })),
+        ],
+      };
+
 // Organization + WebSite schemas are emitted on every page.
 const orgSchema = {
   "@context": "https://schema.org",
@@ -63,7 +102,12 @@ const websiteSchema = {
   inLanguage: SITE.locale,
 };
 
-const allSchemas = [orgSchema, websiteSchema, ...structuredData];
+const allSchemas = [
+  orgSchema,
+  websiteSchema,
+  ...(breadcrumbSchema ? [breadcrumbSchema] : []),
+  ...structuredData,
+];
 ---
 
 <!doctype html>
@@ -78,6 +122,9 @@ const allSchemas = [orgSchema, websiteSchema, ...structuredData];
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
+    {isNonCanonicalHost && (
+      <meta name="robots" content="noindex, nofollow" />
+    )}
 
     <!-- Open Graph -->
     <meta property="og:type" content={ogType} />
