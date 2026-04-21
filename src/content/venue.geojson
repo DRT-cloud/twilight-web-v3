@@ -4,7 +4,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "West Gate 2",
+        "name": "Gate 2 West",
         "category": "gate",
         "description": "Entrance to shooting bays",
         "notes": ""
@@ -20,7 +20,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "West Gate 1 (Main Gate)",
+        "name": "Gate 1 West (Main Gate)",
         "category": "gate",
         "description": "Entrance to west parking",
         "notes": ""
@@ -36,7 +36,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "East Gate 1",
+        "name": "Gate 3 East",
         "category": "gate",
         "description": "Entrance to east lower parking",
         "notes": ""
@@ -52,7 +52,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "East Gate 2",
+        "name": "Gate 4 East",
         "category": "gate",
         "description": "Entrance to east upper parking",
         "notes": ""
