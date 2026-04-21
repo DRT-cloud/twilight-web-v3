@@ -30,6 +30,13 @@ export const SITE = {
     host: "Google Photos",
   },
 
+  social: [
+    {
+      label: "Facebook",
+      href: "https://www.facebook.com/profile.php?id=61572093187778",
+    },
+  ],
+
   // Nav items surface in the header in this order
   nav: [
     { href: "/about", label: "About" },

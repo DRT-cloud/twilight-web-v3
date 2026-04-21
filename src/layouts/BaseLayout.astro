@@ -31,11 +31,10 @@ const {
 const pageTitle = title ? `${title} — ${SITE.name}` : `${SITE.name} — ${SITE.tagline}`;
 const canonical = new URL(canonicalPath ?? Astro.url.pathname, SITE.url).toString();
 
-// Block indexing when served from a non-canonical host (e.g. preview deployments
-// on *.pages.dev). Prevents duplicate-content issues with the primary domain.
-const currentHost = Astro.url.hostname;
-const canonicalHost = new URL(SITE.url).hostname;
-const isNonCanonicalHost = currentHost !== canonicalHost && currentHost !== "localhost";
+// NOTE: Non-canonical host noindex must be handled at the edge (e.g. Cloudflare
+// Transform Rule adding X-Robots-Tag on *.pages.dev) because Astro renders the
+// same static HTML for every host at build time. Do not attempt a build-time
+// host check here.
 
 // Auto-generate a BreadcrumbList schema from the path (skipped on the homepage).
 const pathname = canonicalPath ?? Astro.url.pathname;
@@ -122,9 +121,6 @@ const allSchemas = [
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
-    {isNonCanonicalHost && (
-      <meta name="robots" content="noindex, nofollow" />
-    )}
 
     <!-- Open Graph -->
     <meta property="og:type" content={ogType} />

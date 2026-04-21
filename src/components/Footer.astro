@@ -47,6 +47,37 @@ const year = new Date().getFullYear();
             {SITE.contact.email}
           </a>
         </p>
+
+        {SITE.social && SITE.social.length > 0 && (
+          <>
+            <p class="section-label mt-6">Follow</p>
+            <ul class="mt-3 flex items-center gap-3">
+              {SITE.social.map((s) => (
+                <li>
+                  <a
+                    href={s.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`Twilight Biathlon on ${s.label}`}
+                    class="inline-flex h-9 w-9 items-center justify-center rounded-md border border-[var(--color-hairline)] text-[var(--color-text-muted)] transition-colors hover:border-[var(--color-nv)] hover:text-[var(--color-nv)]"
+                  >
+                    {s.label === "Facebook" && (
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                        aria-hidden="true"
+                        class="h-5 w-5"
+                      >
+                        <path d="M13.5 22v-8.25h2.78l.42-3.23H13.5V8.46c0-.94.26-1.58 1.6-1.58h1.71V3.99c-.3-.04-1.32-.13-2.5-.13-2.48 0-4.18 1.52-4.18 4.3v2.36H7.34v3.23h2.79V22h3.37Z" />
+                      </svg>
+                    )}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </>
+        )}
       </div>
     </div>
 
