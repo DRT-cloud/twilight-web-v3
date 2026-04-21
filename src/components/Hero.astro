@@ -12,20 +12,13 @@
 //     prefers-reduced-motion or is on a coarse pointer / narrow viewport.
 
 import { SITE } from "../lib/site";
-import { formatEventRange } from "../lib/format";
 
 interface Props {
-  nextEventStart: Date;
-  nextEventEnd: Date;
-  registrationUrl?: string;
   heroBase?: string;
   heroWidths?: number[];
 }
 
 const {
-  nextEventStart,
-  nextEventEnd,
-  registrationUrl,
   heroBase = "hero-twilight",
   heroWidths = [768, 1280, 1920],
 } = Astro.props;
@@ -107,13 +100,8 @@ const sizes = "100vw";
     </p>
 
     <div class="mt-10 flex flex-col items-start gap-4 sm:flex-row sm:items-center">
-      <a
-        href={registrationUrl ?? "/register"}
-        class="btn-primary text-base"
-        target={registrationUrl ? "_blank" : undefined}
-        rel={registrationUrl ? "noopener noreferrer" : undefined}
-      >
-        Register for {formatEventRange(nextEventStart, nextEventEnd)}
+      <a href="/register" class="btn-primary text-base">
+        Register →
       </a>
       <a href="/what-is-run-and-gun" class="btn-ghost text-sm">
         What is a run-and-gun biathlon?
