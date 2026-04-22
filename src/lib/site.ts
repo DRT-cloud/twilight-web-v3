@@ -47,7 +47,7 @@ export const SITE = {
     { href: "/faq", label: "FAQ" },
     { href: "/what-is-run-and-gun", label: "What is Run-and-Gun?" },
     { href: "/first-timer", label: "First-Timer Guide" },
-    { href: "/gallery", label: "Gallery" },
+    { href: "/gallery", label: "Media" },
     { href: "/contact", label: "Contact" },
   ],
 
