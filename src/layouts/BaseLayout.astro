@@ -16,6 +16,8 @@ interface Props {
   ogType?: string;
   /** Extra JSON-LD objects to embed in <head> alongside the default Organization schema. */
   structuredData?: unknown[];
+  /** If true, emit <meta name="robots" content="noindex,nofollow"> and skip Organization/WebSite/Breadcrumb JSON-LD. Use on hidden/internal pages. */
+  noindex?: boolean;
 }
 
 const {
@@ -26,6 +28,7 @@ const {
   canonicalPath,
   ogType = "website",
   structuredData = [],
+  noindex = false,
 } = Astro.props;
 
 const pageTitle = title ? `${title} — ${SITE.name}` : `${SITE.name} — ${SITE.tagline}`;
@@ -101,12 +104,14 @@ const websiteSchema = {
   inLanguage: SITE.locale,
 };
 
-const allSchemas = [
-  orgSchema,
-  websiteSchema,
-  ...(breadcrumbSchema ? [breadcrumbSchema] : []),
-  ...structuredData,
-];
+const allSchemas = noindex
+  ? [...structuredData]
+  : [
+      orgSchema,
+      websiteSchema,
+      ...(breadcrumbSchema ? [breadcrumbSchema] : []),
+      ...structuredData,
+    ];
 ---
 
 <!doctype html>
@@ -120,6 +125,7 @@ const allSchemas = [
 
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex,nofollow" />}
     <link rel="canonical" href={canonical} />
 
     <!-- Open Graph -->

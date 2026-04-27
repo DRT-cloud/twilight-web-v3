@@ -21,6 +21,9 @@ export default defineConfig({
       changefreq: "monthly",
       priority: 0.7,
       lastmod: new Date(),
+      // Exclude hidden/internal pages from sitemap so they are not
+      // discoverable through normal browsing or search engines.
+      filter: (page) => !page.includes("/staff-event"),
     }),
   ],
   vite: {

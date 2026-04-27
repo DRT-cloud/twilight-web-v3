@@ -1,0 +1,565 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHeader from "../components/PageHeader.astro";
+
+// HIDDEN STAFF PAGE
+// - Not linked from public nav, footer, or any internal CTA.
+// - noindex/nofollow via BaseLayout.
+// - Excluded from sitemap (see astro.config.mjs filter on /staff-event).
+// - Distribute the URL manually to event staff only.
+
+type SubItem = { num?: string; text: string };
+type Sub = {
+  num: string;
+  title: string;
+  body?: string;
+  items?: SubItem[];
+  callout?: { variant?: "default" | "warn"; label?: string; text: string };
+};
+type Section = {
+  num: number;
+  id: string;
+  title: string;
+  subs?: Sub[];
+};
+
+// Section 1 content: RO Stage Operations (from twilight_biathlon_ro_stage_operations.docx).
+const instructions: Section[] = [
+  {
+    num: 1,
+    id: "ro-1",
+    title: "Report to Stage and Prepare",
+    subs: [
+      {
+        num: "1.1",
+        title: "Read the brief and walk the course",
+        body:
+          "When arriving at the stage, first read the stage brief and walk the course. Confirm the locations of all targets, obstacles, barricades, shooting positions, and any areas likely to create problems for competitors. The stage brief is the controlling document for the stage. Know it well enough to deliver it consistently and exactly as written.",
+      },
+      {
+        num: "1.2",
+        title: "Verify equipment before competitors arrive",
+        items: [
+          { num: "1.2.1", text: "Shot timer is functional and the correct par time is set." },
+          { num: "1.2.2", text: "Tablet is functional, charged, and set to the correct match and stage." },
+          { num: "1.2.3", text: "Radio is functional and set to the correct channel (usually GMRS 7)." },
+          { num: "1.2.4", text: "Scores are being entered for the correct stage." },
+        ],
+      },
+      {
+        num: "1.3",
+        title: "Check in with base",
+        body:
+          "When the stage is ready, check in with base using proper radio procedure. State your stage number first, then state who you are calling.",
+        callout: {
+          label: "EXAMPLE:",
+          text: "“Stage 1 to Base.”",
+        },
+      },
+    ],
+  },
+  {
+    num: 2,
+    id: "ro-2",
+    title: "Receive the Competitor",
+    subs: [
+      {
+        num: "2.1",
+        title: "Visual safety check",
+        body:
+          "When a competitor arrives, visually confirm safe firearm handling and that their equipment appears to be in order. Ask them to show a clear rifle or PCC if applicable.",
+      },
+      {
+        num: "2.2",
+        title: "Wait time",
+        body:
+          "If the stage is not ready, instruct the competitor to begin wait time on their stopwatch. Wait time is deducted from run time and must not be used to gain an advantage.",
+        items: [
+          { num: "2.2.1", text: "The competitor may not reload magazines." },
+          { num: "2.2.2", text: "The competitor may not adjust gear or work on equipment while the wait clock is running." },
+          { num: "2.2.3", text: "If the competitor needs to reload, adjust gear, or work on equipment, wait time must stop." },
+        ],
+      },
+    ],
+  },
+  {
+    num: 3,
+    id: "ro-3",
+    title: "Deliver the Stage Brief",
+    subs: [
+      {
+        num: "3.1",
+        title: "Record wait time, then deliver brief",
+        body:
+          "Ask the competitor for their wait time then record the total wait time in the scoring tablet. Read the stage brief exactly as written. You may point out targets, but do not add to or change the script.",
+      },
+      {
+        num: "3.2",
+        title: "Consistency",
+        body:
+          "Every competitor must receive the same stage brief. Answer questions as needed but keep the stage moving and avoid unnecessary delays.",
+      },
+    ],
+  },
+  {
+    num: 4,
+    id: "ro-4",
+    title: "Start the Competitor",
+    subs: [
+      {
+        num: "4.1",
+        title: "Make ready",
+        body:
+          "Move the competitor to the correct starting position and instruct them to make ready. If the stage requires loaded firearms at the start, ensure they are in the exact condition required by the stage brief.",
+      },
+      {
+        num: "4.2",
+        title: "Command sequence",
+        items: [
+          { num: "4.2.1", text: "“Do you understand the course of fire?”" },
+          { num: "4.2.2", text: "“Shooter ready?”" },
+          { num: "4.2.3", text: "“Standby.”" },
+          { num: "4.2.4", text: "Then start the shot timer." },
+        ],
+      },
+      {
+        num: "4.3",
+        title: "Operating the shot timer",
+        items: [
+          { num: "4.3.1", text: "Press the start button once." },
+          { num: "4.3.2", text: "Position it so the competitor can hear it clearly." },
+          { num: "4.3.3", text: "Move your hand away immediately. Do not press it again." },
+          { num: "4.3.4", text: "Make sure the timer picks up the last shot. Suppressed firearms can be difficult — move the timer near the ejection port or tap the timer on something to capture the last shot. Practice ahead of time to find the best method." },
+        ],
+      },
+    ],
+  },
+  {
+    num: 5,
+    id: "ro-5",
+    title: "Observe the Run",
+    subs: [
+      {
+        num: "5.1",
+        title: "Watch continuously for safety and stage compliance",
+        items: [
+          { num: "5.1.1", text: "Muzzle direction." },
+          { num: "5.1.2", text: "Trigger finger discipline." },
+          { num: "5.1.3", text: "Body and foot position." },
+          { num: "5.1.4", text: "Safe movement." },
+          { num: "5.1.5", text: "Proper target engagement." },
+        ],
+      },
+      {
+        num: "5.2",
+        title: "Calling hits",
+        body:
+          "Only call “HIT” when the target has been hit the required number of times. Be loud, clear, and decisive. Once “HIT” has been called, that target is neutralized and the call cannot be reversed.",
+      },
+      {
+        num: "5.3",
+        title: "Par time",
+        body:
+          "If the competitor exceeds par time, their score is the time of the last shot fired plus any penalties — not the full par time.",
+      },
+    ],
+  },
+  {
+    num: 6,
+    id: "ro-6",
+    title: "Clear the Competitor",
+    subs: [
+      {
+        num: "6.1",
+        title: "End-of-stage procedure",
+        body:
+          "When the stage ends, either by completion or time limit, visually note the stage time. Do not press any timer buttons. Move the shot timer behind your back or away from the competitor so unloading noise does not create a false reading.",
+      },
+      {
+        num: "6.2",
+        title: "Unload and show clear",
+        items: [
+          { num: "6.2.1", text: "The firearm in hand has an empty chamber." },
+          { num: "6.2.2", text: "No magazine is inserted." },
+          { num: "6.2.3", text: "The second firearm is also clear, if applicable." },
+        ],
+        callout: {
+          label: "DEPART CONDITION:",
+          text:
+            "The competitor must leave the stage with empty chambers on both firearms. A pistol may have a loaded or unloaded magazine inserted, but no magazine may be inserted in a rifle while on the course.",
+        },
+      },
+    ],
+  },
+  {
+    num: 7,
+    id: "ro-7",
+    title: "Record the Score",
+    subs: [
+      {
+        num: "7.1",
+        title: "Tablet entry",
+        body:
+          "After confirming all firearms are clear, record the stage time and any penalties in the tablet.",
+      },
+      {
+        num: "7.2",
+        title: "If another RO is scorekeeping",
+        body: "Clearly call out:",
+        items: [
+          { text: "Stage time." },
+          { text: "Penalties." },
+          { text: "Any other required scoring information." },
+        ],
+      },
+      {
+        num: "7.3",
+        title: "Confirm before the competitor leaves",
+        body:
+          "Require all entries to be repeated back for confirmation. Before the competitor leaves, make sure the score is correctly entered and approved for the proper stage and competitor.",
+      },
+    ],
+  },
+  {
+    num: 8,
+    id: "ro-8",
+    title: "Emergency and Safety Commands",
+    subs: [
+      {
+        num: "8.1",
+        title: "Cease-fire",
+        callout: {
+          variant: "warn",
+          label: "PRIORITY:",
+          text:
+            "These commands take priority over all other stage actions. If there is any medical or safety emergency, immediately shout: “Cease-fire, Cease-fire, Cease-fire!” The command must be loud, immediate, and unmistakable.",
+        },
+      },
+      {
+        num: "8.2",
+        title: "Correctable safety issues",
+        body: "If the problem is a safety issue that can be corrected immediately, do so at once. Examples:",
+        items: [
+          { text: "Unsafe target." },
+          { text: "Spectator out of position." },
+          { text: "Person in danger within the stage area." },
+        ],
+      },
+      {
+        num: "8.3",
+        title: "Uncorrectable safety issues",
+        body: "If the unsafe condition cannot be corrected immediately, call base and request immediate assistance. Examples:",
+        items: [
+          { text: "A person downrange and out of your control." },
+          { text: "A target that is unsafe and not easily repairable." },
+        ],
+      },
+      {
+        num: "8.4",
+        title: "Medical emergency radio call",
+        body:
+          "If there is a medical emergency requiring urgent response, make this radio call: “Emergency, emergency, emergency.” State your stage number, then wait for base to respond. Once acknowledged, state the problem calmly and clearly. Provide whatever assistance you can within your training and ability while waiting for match staff or EMS.",
+      },
+    ],
+  },
+  {
+    num: 9,
+    id: "ro-9",
+    title: "Manage Equipment and Stage Problems",
+    subs: [
+      {
+        num: "9.1",
+        title: "Protect electronics",
+        items: [
+          { num: "9.1.1", text: "Keep the tablet dry, protected, and charged." },
+          { num: "9.1.2", text: "If tablet battery falls to 25%, connect external power or call base for a replacement tablet or power source." },
+          { num: "9.1.3", text: "Keep the shot timer dry; it is not waterproof." },
+          { num: "9.1.4", text: "Protect all devices from excessive heat and cold." },
+        ],
+      },
+      {
+        num: "9.2",
+        title: "Target malfunctions",
+        body:
+          "If a target malfunctions while a competitor is on the stage, continue the run if possible. If necessary, direct the competitor to another target of equal difficulty and presentation. If the target remains usable, continue running competitors, but notify base immediately and state whether the stage is still operational. If a quick repair can be made safely, do it at once and inform base.",
+      },
+      {
+        num: "9.3",
+        title: "Backlog",
+        callout: {
+          label: "THRESHOLD:",
+          text:
+            "If backlog exceeds five competitors or wait times exceed 10 minutes, notify base immediately so assistance can be sent or incoming competitors can be paused.",
+        },
+      },
+    ],
+  },
+  {
+    num: 10,
+    id: "ro-10",
+    title: "Shut Down the Stage",
+    subs: [
+      {
+        num: "10.1",
+        title: "End of day",
+        body:
+          "At the end of the day, confirm with base that all competitors assigned to your stage have completed it. Do not shut down the stage until base gives explicit approval.",
+      },
+      {
+        num: "10.2",
+        title: "Two-day events",
+        body:
+          "If it is day one of a two-day event, leave targets in place unless instructed otherwise. Collapse and secure canopies or tarps so they are protected from wind and weather.",
+      },
+      {
+        num: "10.3",
+        title: "When directed to shut down",
+        items: [
+          { num: "10.3.1", text: "Pack all equipment and any targets base wants returned or taken down." },
+          { num: "10.3.2", text: "Return the tablet, radio, shot timer, and any other issued equipment. The tablet must be returned to base and handed off to the event scorekeeper without delay so that match scoring may be completed." },
+          { num: "10.3.3", text: "Leave the stage only after base has confirmed your stage is complete." },
+        ],
+      },
+    ],
+  },
+];
+
+const tocSections = [
+  { id: "instructions", label: "Instructions" },
+  { id: "arrival", label: "Arrival & Parking" },
+  { id: "gear", label: "Gear" },
+  { id: "videos", label: "Videos" },
+  { id: "contact", label: "Day-of Contact" },
+];
+---
+
+<BaseLayout
+  title="Staff Event Brief"
+  description="Internal Twilight Biathlon staff briefing — RO operations, arrival, gear, videos, and day-of contacts."
+  noindex={true}
+>
+  <PageHeader
+    eyebrow="// Staff Only · Internal Brief"
+    title="Staff Event Brief."
+  />
+
+  <section class="mx-auto max-w-4xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
+    <div class="mb-10 border border-[var(--color-hairline)] bg-[var(--color-surface)]/60 px-5 py-4 text-sm text-[var(--color-text)]/85">
+      <p class="font-[family-name:var(--font-mono)] text-xs uppercase tracking-[0.15em] text-[var(--color-nv)]">
+        Internal Use
+      </p>
+      <p class="mt-2 leading-relaxed">
+        This page is unlisted. It is not linked from the public site and is
+        excluded from search indexes. Share the URL directly with assigned
+        staff only.
+      </p>
+    </div>
+
+    {/* On-page navigation */}
+    <nav aria-label="On this page" class="mb-12 border border-[var(--color-hairline)] bg-[var(--color-surface)]/40 px-5 py-4">
+      <p class="section-label text-[var(--color-nv)]">On this page</p>
+      <ul class="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3">
+        {tocSections.map((s) => (
+          <li>
+            <a
+              href={`#${s.id}`}
+              class="font-[family-name:var(--font-mono)] text-sm text-[var(--color-text)]/85 hover:text-[var(--color-nv)]"
+            >
+              › {s.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    {/* ============================================================
+       SECTION 1 — INSTRUCTIONS (RO Stage Operations)
+       ============================================================ */}
+    <section id="instructions" class="scroll-mt-24">
+      <p class="section-label text-[var(--color-nv)]">// Section 01</p>
+      <h2 class="mt-2 font-[family-name:var(--font-display)] text-3xl font-bold uppercase tracking-tight sm:text-4xl">
+        Instructions — Range Officer Stage Operations
+      </h2>
+      <p class="mt-4 max-w-2xl text-[var(--color-text-muted)]">
+        Operating procedure for ROs running a stage at a Twilight Biathlon
+        event. Follow in order. Emergency commands in Section 8 take priority
+        over everything else.
+      </p>
+
+      <div class="mt-10 space-y-12">
+        {instructions.map((section) => (
+          <section id={section.id} class="scroll-mt-24">
+            <header class="border-l-2 border-[var(--color-nv)] pl-4">
+              <p class="font-[family-name:var(--font-mono)] text-xs uppercase tracking-[0.2em] text-[var(--color-nv)]">
+                {`§ ${section.num}`}
+              </p>
+              <h3 class="mt-1 font-[family-name:var(--font-display)] text-2xl font-bold uppercase tracking-tight sm:text-3xl">
+                {section.title}
+              </h3>
+            </header>
+
+            {section.subs && (
+              <div class="mt-6 space-y-6">
+                {section.subs.map((sub) => (
+                  <div>
+                    <h4 class="font-[family-name:var(--font-display)] text-lg font-semibold uppercase tracking-wide">
+                      <span class="font-[family-name:var(--font-mono)] text-sm text-[var(--color-nv)]/80">
+                        {sub.num}
+                      </span>
+                      <span class="ml-3">{sub.title}</span>
+                    </h4>
+
+                    {sub.body && (
+                      <p class="mt-2 leading-relaxed text-[var(--color-text)]/90">
+                        {sub.body}
+                      </p>
+                    )}
+
+                    {sub.callout && (
+                      <div
+                        class={
+                          sub.callout.variant === "warn"
+                            ? "mt-4 border-l-2 border-[var(--color-wl)] bg-[var(--color-wl)]/5 px-4 py-3"
+                            : "mt-4 border-l-2 border-[var(--color-nv)] bg-[var(--color-nv)]/5 px-4 py-3"
+                        }
+                      >
+                        {sub.callout.label && (
+                          <strong
+                            class={
+                              sub.callout.variant === "warn"
+                                ? "font-bold uppercase tracking-wide text-[var(--color-wl)]"
+                                : "font-bold uppercase tracking-wide text-[var(--color-nv)]"
+                            }
+                          >
+                            {sub.callout.label}{" "}
+                          </strong>
+                        )}
+                        <span>{sub.callout.text}</span>
+                      </div>
+                    )}
+
+                    {sub.items && (
+                      <ul class="mt-4 space-y-2">
+                        {sub.items.map((item) => (
+                          <li class="flex gap-3 text-[var(--color-text)]/90">
+                            {item.num ? (
+                              <span class="shrink-0 font-[family-name:var(--font-mono)] text-xs text-[var(--color-nv)]/80 pt-1 min-w-[3.5rem]">
+                                {item.num}
+                              </span>
+                            ) : (
+                              <span class="shrink-0 text-[var(--color-nv)]/60 pt-1">—</span>
+                            )}
+                            <span class="leading-relaxed">{item.text}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+          </section>
+        ))}
+      </div>
+    </section>
+
+    <hr class="my-16 border-t border-[var(--color-hairline)]" />
+
+    {/* ============================================================
+       SECTION 2 — ARRIVAL & PARKING (placeholder)
+       ============================================================ */}
+    <section id="arrival" class="scroll-mt-24">
+      <p class="section-label text-[var(--color-nv)]">// Section 02</p>
+      <h2 class="mt-2 font-[family-name:var(--font-display)] text-3xl font-bold uppercase tracking-tight sm:text-4xl">
+        Arrival & Parking
+      </h2>
+      <div class="mt-6 border border-dashed border-[var(--color-hairline)] bg-[var(--color-surface)]/40 px-5 py-6 text-[var(--color-text-muted)]">
+        <p class="font-[family-name:var(--font-mono)] text-xs uppercase tracking-[0.2em] text-[var(--color-wl)]">
+          Placeholder
+        </p>
+        <p class="mt-3 leading-relaxed">
+          Content pending. To be filled in with: staff arrival window, gate
+          to use, where to park, where to check in, who to find on arrival,
+          and any vehicle-pass or radio handout instructions.
+        </p>
+      </div>
+    </section>
+
+    <hr class="my-16 border-t border-[var(--color-hairline)]" />
+
+    {/* ============================================================
+       SECTION 3 — GEAR (placeholder)
+       ============================================================ */}
+    <section id="gear" class="scroll-mt-24">
+      <p class="section-label text-[var(--color-nv)]">// Section 03</p>
+      <h2 class="mt-2 font-[family-name:var(--font-display)] text-3xl font-bold uppercase tracking-tight sm:text-4xl">
+        Gear
+      </h2>
+      <div class="mt-6 border border-dashed border-[var(--color-hairline)] bg-[var(--color-surface)]/40 px-5 py-6 text-[var(--color-text-muted)]">
+        <p class="font-[family-name:var(--font-mono)] text-xs uppercase tracking-[0.2em] text-[var(--color-wl)]">
+          Placeholder
+        </p>
+        <p class="mt-3 leading-relaxed">
+          Content pending. To be filled in with: staff gear list, what is
+          issued by the match vs. what staff should bring, weather/cold
+          loadout, light and IR equipment, eye and ear pro, and any required
+          uniform or visibility items.
+        </p>
+      </div>
+    </section>
+
+    <hr class="my-16 border-t border-[var(--color-hairline)]" />
+
+    {/* ============================================================
+       SECTION 4 — VIDEOS (placeholder)
+       ============================================================ */}
+    <section id="videos" class="scroll-mt-24">
+      <p class="section-label text-[var(--color-nv)]">// Section 04</p>
+      <h2 class="mt-2 font-[family-name:var(--font-display)] text-3xl font-bold uppercase tracking-tight sm:text-4xl">
+        Videos
+      </h2>
+      <div class="mt-6 border border-dashed border-[var(--color-hairline)] bg-[var(--color-surface)]/40 px-5 py-6 text-[var(--color-text-muted)]">
+        <p class="font-[family-name:var(--font-mono)] text-xs uppercase tracking-[0.2em] text-[var(--color-wl)]">
+          Placeholder
+        </p>
+        <p class="mt-3 leading-relaxed">
+          Embedded staff training videos go here — short clips per task
+          (timer use, hit calls, unload-and-show-clear, scoring tablet,
+          radio procedure). Use unlisted YouTube/Vimeo embeds or self-hosted
+          MP4s in <code class="font-[family-name:var(--font-mono)] text-[var(--color-text)]/90">/public</code>.
+        </p>
+      </div>
+    </section>
+
+    <hr class="my-16 border-t border-[var(--color-hairline)]" />
+
+    {/* ============================================================
+       SECTION 5 — DAY-OF CONTACT (placeholder)
+       ============================================================ */}
+    <section id="contact" class="scroll-mt-24">
+      <p class="section-label text-[var(--color-nv)]">// Section 05</p>
+      <h2 class="mt-2 font-[family-name:var(--font-display)] text-3xl font-bold uppercase tracking-tight sm:text-4xl">
+        Day-of Contact
+      </h2>
+      <div class="mt-6 border border-dashed border-[var(--color-hairline)] bg-[var(--color-surface)]/40 px-5 py-6 text-[var(--color-text-muted)]">
+        <p class="font-[family-name:var(--font-mono)] text-xs uppercase tracking-[0.2em] text-[var(--color-wl)]">
+          Placeholder
+        </p>
+        <p class="mt-3 leading-relaxed">
+          Match director, base/scorekeeper, safety lead, and EMS contact
+          info — names, cell numbers, and radio channels. Add a single
+          “if you can’t reach base” fallback contact at the bottom.
+        </p>
+      </div>
+    </section>
+
+    <footer class="mt-24 border-t border-[var(--color-hairline)] pt-6 text-sm text-[var(--color-text-muted)]">
+      <p>
+        Internal staff brief · Twilight Biathlon. Questions?{" "}
+        <a class="text-[var(--color-nv)] hover:underline" href="mailto:okmultigun@gmail.com">
+          okmultigun@gmail.com
+        </a>
+      </p>
+    </footer>
+  </section>
+</BaseLayout>
