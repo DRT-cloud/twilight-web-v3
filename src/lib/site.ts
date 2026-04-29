@@ -51,7 +51,9 @@ export const SITE = {
     { href: "/contact", label: "Contact" },
   ],
 
-  footerNav: [],
+  footerNav: [
+    { href: "/sponsors", label: "Sponsors" },
+  ],
 } as const;
 
 export type NavItem = { href: string; label: string };

@@ -57,6 +57,22 @@ const faq = defineCollection({
   }),
 });
 
+const sponsors = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/sponsors" }),
+  schema: z.object({
+    name: z.string(),
+    url: z.string().url(),
+    logo: z.string(), // path under /public, e.g. /images/sponsors/aurora-tactical.jpg
+    logoAlt: z.string().optional(),
+    blurb: z.string(),
+    location: z.string().optional(),
+    // Tier scaffolding for future expansion. Flat list rendering for now.
+    tier: z.enum(["title", "supporting", "partner"]).default("partner"),
+    order: z.number().default(0),
+    active: z.boolean().default(true),
+  }),
+});
+
 const results = defineCollection({
   loader: glob({ pattern: "**/*.md", base: "./src/content/results" }),
   schema: z.object({
@@ -73,4 +89,4 @@ const results = defineCollection({
   }),
 });
 
-export const collections = { events, faq, results };
+export const collections = { events, faq, results, sponsors };

@@ -1,0 +1,93 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHeader from "../components/PageHeader.astro";
+import { getCollection } from "astro:content";
+
+// Active sponsors, ordered by `order` then name.
+const all = await getCollection("sponsors", ({ data }) => data.active !== false);
+const sponsors = all.sort((a, b) => {
+  const ao = a.data.order ?? 0;
+  const bo = b.data.order ?? 0;
+  if (ao !== bo) return ao - bo;
+  return a.data.name.localeCompare(b.data.name);
+});
+---
+
+<BaseLayout
+  title="Sponsors"
+  description="The companies and partners who support Twilight Biathlon."
+>
+  <PageHeader
+    eyebrow="// Sponsors"
+    title="The companies that back Twilight."
+  />
+
+  <section class="mx-auto max-w-7xl px-4 pb-20 sm:px-6 lg:px-8">
+    <div class="mx-auto max-w-3xl">
+      <p class="text-lg text-[var(--color-text)]/90 leading-relaxed">
+        Twilight Biathlon runs because the people and businesses below show up
+        for it. If you do business with them, tell them where you heard their
+        name.
+      </p>
+    </div>
+
+    {
+      sponsors.length === 0 ? (
+        <p class="mt-12 text-[var(--color-text-muted)]">
+          Sponsor list coming soon.
+        </p>
+      ) : (
+        <ul
+          class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
+          role="list"
+        >
+          {sponsors.map((s) => (
+            <li>
+              <a
+                href={s.data.url}
+                target="_blank"
+                rel="noopener noreferrer sponsored"
+                class="group flex h-full flex-col border border-[var(--color-hairline)] bg-[var(--color-surface)] transition-colors hover:border-[var(--color-nv)]/60 focus-visible:border-[var(--color-nv)] focus-visible:outline-none"
+                aria-label={`${s.data.name} (opens in new tab)`}
+              >
+                <div class="flex h-48 items-center justify-center bg-white p-6 sm:h-56">
+                  <img
+                    src={s.data.logo}
+                    alt={s.data.logoAlt ?? `${s.data.name} logo`}
+                    loading="lazy"
+                    decoding="async"
+                    class="max-h-full max-w-full object-contain"
+                  />
+                </div>
+                <div class="flex flex-1 flex-col gap-2 border-t border-[var(--color-hairline)] p-6">
+                  <p class="font-[family-name:var(--font-display)] text-xl font-bold uppercase leading-tight tracking-tight text-[var(--color-text)]">
+                    {s.data.name}
+                  </p>
+                  {s.data.location && (
+                    <p class="font-[family-name:var(--font-mono)] text-xs uppercase tracking-wider text-[var(--color-text-muted)]">
+                      {s.data.location}
+                    </p>
+                  )}
+                  <p class="text-sm text-[var(--color-text)]/85 leading-relaxed">
+                    {s.data.blurb}
+                  </p>
+                  <p class="mt-auto pt-4 font-[family-name:var(--font-mono)] text-xs uppercase tracking-wider text-[var(--color-text-muted)] transition-colors group-hover:text-[var(--color-nv)]">
+                    Visit site →
+                  </p>
+                </div>
+              </a>
+            </li>
+          ))}
+        </ul>
+      )
+    }
+
+    <div class="mx-auto mt-16 max-w-3xl border-t border-[var(--color-hairline)] pt-10">
+      <p class="section-label">Sponsor Twilight Biathlon</p>
+      <p class="mt-3 text-[var(--color-text)]/85 leading-relaxed">
+        Interested in supporting the event? Reach out:
+<a href="mailto:okmultigun@gmail.com" class="text-[var(--color-nv)] hover:underline">okmultigun@gmail.com</a>.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
