@@ -48,12 +48,11 @@ export const SITE = {
     { href: "/what-is-run-and-gun", label: "What is Run-and-Gun?" },
     { href: "/first-timer", label: "First-Timer Guide" },
     { href: "/gallery", label: "Media" },
+    { href: "/sponsors", label: "Sponsors" },
     { href: "/contact", label: "Contact" },
   ],
 
-  footerNav: [
-    { href: "/sponsors", label: "Sponsors" },
-  ],
+  footerNav: [],
 } as const;
 
 export type NavItem = { href: string; label: string };

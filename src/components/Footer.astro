@@ -85,7 +85,16 @@ const year = new Date().getFullYear();
       class="mt-12 flex flex-col gap-2 border-t border-[var(--color-hairline)] pt-6 text-xs text-[var(--color-text-muted)] sm:flex-row sm:items-center sm:justify-between"
     >
       <p>© {year} Twilight Biathlon. Running since 2018.</p>
-      <p class="font-[family-name:var(--font-mono)]">PAWNEE · OK</p>
+      <p class="flex items-center gap-3 font-[family-name:var(--font-mono)]">
+        <a
+          href="/staff-event"
+          class="text-[var(--color-text-muted)]/40 hover:text-[var(--color-text-muted)]"
+        >
+          Staff
+        </a>
+        <span aria-hidden="true" class="text-[var(--color-text-muted)]/40">·</span>
+        <span>PAWNEE · OK</span>
+      </p>
     </div>
   </div>
 </footer>
