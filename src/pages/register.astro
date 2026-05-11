@@ -47,7 +47,9 @@ const eventSchemas = upcoming.map((e) => ({
         availability:
           e.data.status === "registration-open"
             ? "https://schema.org/InStock"
-            : "https://schema.org/PreOrder",
+            : e.data.status === "closed"
+              ? "https://schema.org/SoldOut"
+              : "https://schema.org/PreOrder",
         validFrom: e.data.registrationOpens.toISOString().slice(0, 10),
       }
     : undefined,

@@ -3,7 +3,7 @@ title: "Spring 2026"
 startDate: 2026-05-15
 endDate: 2026-05-16
 season: "spring"
-status: "registration-open"
+status: "closed"
 gatesOpen: "5:00 PM each night"
 checkinWindow: "7:00–8:00 PM each night"
 shootersMeeting: "9:00 PM each night"

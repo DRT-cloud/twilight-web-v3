@@ -34,6 +34,10 @@ const d = event.data;
           <span class="shrink-0 rounded-sm border border-[var(--color-hairline)] bg-[var(--color-surface)] px-2 py-1 font-[family-name:var(--font-mono)] text-xs font-semibold uppercase tracking-wider text-[var(--color-text-muted)]">
             Upcoming
           </span>
+        ) : d.status === "closed" ? (
+          <span class="shrink-0 rounded-sm border border-[var(--color-hairline)] bg-[var(--color-surface)] px-2 py-1 font-[family-name:var(--font-mono)] text-xs font-semibold uppercase tracking-wider text-[var(--color-text-muted)]">
+            Registration Closed
+          </span>
         ) : null
       }
     </div>
@@ -97,16 +101,25 @@ const d = event.data;
   </div>
 
   <div class="mt-8 flex flex-col gap-3 sm:flex-row">
-    <a
-      href={d.registrationUrl ?? "/register"}
-      target={d.registrationUrl ? "_blank" : undefined}
-      rel={d.registrationUrl ? "noopener noreferrer" : undefined}
-      class:list={[
-        "flex-1 text-sm",
-        d.registrationUrl ? "btn-primary" : "btn-ghost",
-      ]}
-    >
-      {d.registrationUrl ? "Register →" : "Details"}
-    </a>
+    {d.status === "closed" ? (
+      <span
+        aria-disabled="true"
+        class="flex-1 text-sm btn-ghost cursor-not-allowed opacity-60"
+      >
+        Registration Closed
+      </span>
+    ) : (
+      <a
+        href={d.registrationUrl ?? "/register"}
+        target={d.registrationUrl ? "_blank" : undefined}
+        rel={d.registrationUrl ? "noopener noreferrer" : undefined}
+        class:list={[
+          "flex-1 text-sm",
+          d.registrationUrl ? "btn-primary" : "btn-ghost",
+        ]}
+      >
+        {d.registrationUrl ? "Register →" : "Details"}
+      </a>
+    )}
   </div>
 </article>
