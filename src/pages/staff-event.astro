@@ -325,11 +325,11 @@ const instructions: Section[] = [
 ];
 
 const tocSections = [
-  { id: "instructions", label: "Instructions" },
   { id: "arrival", label: "Arrival & Parking" },
   { id: "gear", label: "Gear" },
-  { id: "videos", label: "Videos" },
   { id: "contact", label: "Day-of Contact" },
+  { id: "instructions", label: "Instructions" },
+  { id: "videos", label: "Videos" },
 ];
 ---
 
@@ -344,7 +344,7 @@ const tocSections = [
   />
 
   <section class="mx-auto max-w-4xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
-    <div class="mb-10 border border-[var(--color-hairline)] bg-[var(--color-surface)]/60 px-5 py-4 text-sm text-[var(--color-text)]/85">
+    <div class="mb-10 border border-[var(--color-hairline)] bg-black px-5 py-4 text-sm text-[var(--color-text)]/85">
       <p class="font-[family-name:var(--font-mono)] text-xs uppercase tracking-[0.15em] text-[var(--color-nv)]">
         Internal Use
       </p>
@@ -354,7 +354,7 @@ const tocSections = [
     </div>
 
     {/* On-page navigation */}
-    <nav aria-label="On this page" class="mb-12 border border-[var(--color-hairline)] bg-[var(--color-surface)]/40 px-5 py-4">
+    <nav aria-label="On this page" class="mb-12 border border-[var(--color-hairline)] bg-black px-5 py-4">
       <p class="section-label text-[var(--color-nv)]">On this page</p>
       <ul class="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3">
         {tocSections.map((s) => (
@@ -371,33 +371,185 @@ const tocSections = [
     </nav>
 
     {/* ============================================================
-       SECTION 1 — INSTRUCTIONS (RO Stage Operations)
+       SECTION 1 — ARRIVAL & PARKING
        ============================================================ */}
-    <section id="instructions" class="scroll-mt-24">
+    <section id="arrival" class="scroll-mt-24 border border-[var(--color-hairline)] bg-black px-5 py-8 sm:px-8 sm:py-10">
       <p class="section-label text-[var(--color-nv)]">// Section 01</p>
+      <h2 class="mt-2 font-[family-name:var(--font-display)] text-3xl font-bold uppercase tracking-tight sm:text-4xl">
+        Arrival & Parking
+      </h2>
+      <p class="mt-6 leading-relaxed text-[var(--color-text)]/90">
+        Specific arrival times and parking locations vary by venue and event.
+        Your staff email (sent a few days before the event) will include the
+        confirmed time and location.
+      </p>
+
+      <div class="mt-8">
+        <h3 class="font-[family-name:var(--font-display)] text-xl font-bold uppercase tracking-tight sm:text-2xl">
+          Check-In
+        </h3>
+        <p class="mt-3 leading-relaxed text-[var(--color-text)]/90">
+          As soon as you arrive check-in at the scoring table so that we have
+          a good count on all staff present and you can get your event shirt.
+        </p>
+      </div>
+    </section>
+
+    <hr class="my-12 border-t border-[var(--color-hairline)]" />
+
+    {/* ============================================================
+       SECTION 2 — GEAR
+       ============================================================ */}
+    <section id="gear" class="scroll-mt-24 border border-[var(--color-hairline)] bg-black px-5 py-8 sm:px-8 sm:py-10">
+      <p class="section-label text-[var(--color-nv)]">// Section 02</p>
+      <h2 class="mt-2 font-[family-name:var(--font-display)] text-3xl font-bold uppercase tracking-tight sm:text-4xl">
+        Gear
+      </h2>
+
+      <div class="mt-8">
+        <h3 class="font-[family-name:var(--font-display)] text-xl font-bold uppercase tracking-tight sm:text-2xl">
+          Issued by the Match
+        </h3>
+        <ul class="mt-3 space-y-1 text-[var(--color-text)]/90">
+          <li class="flex gap-3">
+            <span class="shrink-0 text-[var(--color-nv)]/60 pt-1">—</span>
+            <div class="leading-relaxed">
+              <span>Stage box including:</span>
+              <ul class="mt-2 ml-2 space-y-1">
+                <li class="flex gap-3">
+                  <span class="shrink-0 text-[var(--color-nv)]/60 pt-1">·</span>
+                  <span class="leading-relaxed">Radio</span>
+                </li>
+                <li class="flex gap-3">
+                  <span class="shrink-0 text-[var(--color-nv)]/60 pt-1">·</span>
+                  <span class="leading-relaxed">Shot timer</span>
+                </li>
+                <li class="flex gap-3">
+                  <span class="shrink-0 text-[var(--color-nv)]/60 pt-1">·</span>
+                  <span class="leading-relaxed">Scoring tablet</span>
+                </li>
+                <li class="flex gap-3">
+                  <span class="shrink-0 text-[var(--color-nv)]/60 pt-1">·</span>
+                  <span class="leading-relaxed">Stage Brief</span>
+                </li>
+                <li class="flex gap-3">
+                  <span class="shrink-0 text-[var(--color-nv)]/60 pt-1">·</span>
+                  <span class="leading-relaxed">Tourniquet</span>
+                </li>
+                <li class="flex gap-3">
+                  <span class="shrink-0 text-[var(--color-nv)]/60 pt-1">·</span>
+                  <span class="leading-relaxed">Note pad</span>
+                </li>
+                <li class="flex gap-3">
+                  <span class="shrink-0 text-[var(--color-nv)]/60 pt-1">·</span>
+                  <span class="leading-relaxed">Pens</span>
+                </li>
+                <li class="flex gap-3">
+                  <span class="shrink-0 text-[var(--color-nv)]/60 pt-1">·</span>
+                  <span class="leading-relaxed">Extra batteries</span>
+                </li>
+                <li class="flex gap-3">
+                  <span class="shrink-0 text-[var(--color-nv)]/60 pt-1">·</span>
+                  <span class="leading-relaxed">Quick repair kit for stage</span>
+                </li>
+                <li class="flex gap-3">
+                  <span class="shrink-0 text-[var(--color-nv)]/60 pt-1">·</span>
+                  <span class="leading-relaxed">Pop-up canopy when appropriate for stage and weather</span>
+                </li>
+              </ul>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="mt-8">
+        <h3 class="font-[family-name:var(--font-display)] text-xl font-bold uppercase tracking-tight sm:text-2xl">
+          Staff Brings
+        </h3>
+        <ul class="mt-3 space-y-1 text-[var(--color-text)]/90">
+          <li class="flex gap-3">
+            <span class="shrink-0 text-[var(--color-nv)]/60 pt-1">—</span>
+            <span class="leading-relaxed">Eye protection</span>
+          </li>
+          <li class="flex gap-3">
+            <span class="shrink-0 text-[var(--color-nv)]/60 pt-1">—</span>
+            <span class="leading-relaxed">Ear protection</span>
+          </li>
+          <li class="flex gap-3">
+            <span class="shrink-0 text-[var(--color-nv)]/60 pt-1">—</span>
+            <span class="leading-relaxed">Flashlight or headlamp — white light minimum. IR-capable preferred.</span>
+          </li>
+          <li class="flex gap-3">
+            <span class="shrink-0 text-[var(--color-nv)]/60 pt-1">—</span>
+            <span class="leading-relaxed">Night vision device — not required, but useful if you have one.</span>
+          </li>
+          <li class="flex gap-3">
+            <span class="shrink-0 text-[var(--color-nv)]/60 pt-1">—</span>
+            <span class="leading-relaxed">Weather appropriate clothing — matches are held in variable conditions. Bring a hat, gloves, and a rain jacket regardless of forecast.</span>
+          </li>
+          <li class="flex gap-3">
+            <span class="shrink-0 text-[var(--color-nv)]/60 pt-1">—</span>
+            <span class="leading-relaxed">Chair — folding camp chair works well</span>
+          </li>
+          <li class="flex gap-3">
+            <span class="shrink-0 text-[var(--color-nv)]/60 pt-1">—</span>
+            <span class="leading-relaxed">Closed-toe footwear</span>
+          </li>
+          <li class="flex gap-3">
+            <span class="shrink-0 text-[var(--color-nv)]/60 pt-1">—</span>
+            <span class="leading-relaxed">Water and snacks</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <hr class="my-12 border-t border-[var(--color-hairline)]" />
+
+    {/* ============================================================
+       SECTION 3 — DAY-OF CONTACT
+       ============================================================ */}
+    <section id="contact" class="scroll-mt-24 border border-[var(--color-hairline)] bg-black px-5 py-8 sm:px-8 sm:py-10">
+      <p class="section-label text-[var(--color-nv)]">// Section 03</p>
+      <h2 class="mt-2 font-[family-name:var(--font-display)] text-3xl font-bold uppercase tracking-tight sm:text-4xl">
+        Day-of Contact
+      </h2>
+      <p class="mt-6 leading-relaxed text-[var(--color-text)]/90">
+        All day-of contact information — Match Director, radio channels, and
+        fallback contact — will be included in your staff email sent prior to
+        the event. Save that email and have it accessible on match day.
+      </p>
+    </section>
+
+    <hr class="my-12 border-t border-[var(--color-hairline)]" />
+
+    {/* ============================================================
+       SECTION 4 — INSTRUCTIONS (RO Stage Operations)
+       ============================================================ */}
+    <section id="instructions" class="scroll-mt-24 border border-[var(--color-hairline)] bg-black px-5 py-8 sm:px-8 sm:py-10">
+      <p class="section-label text-[var(--color-nv)]">// Section 04</p>
       <h2 class="mt-2 font-[family-name:var(--font-display)] text-3xl font-bold uppercase tracking-tight sm:text-4xl">
         Instructions — Range Officer Stage Operations
       </h2>
-      <p class="mt-4 max-w-2xl text-[var(--color-text-muted)]">
+      <p class="mt-3 max-w-2xl text-[var(--color-text-muted)]">
         Operating procedure for ROs running a stage at a Twilight Biathlon
         event. Follow in order. Emergency commands in Section 8 take priority
         over everything else.
       </p>
 
-      <div class="mt-10 space-y-12">
+      <div class="mt-6 space-y-6">
         {instructions.map((section) => (
           <section id={section.id} class="scroll-mt-24">
-            <header class="border-l-2 border-[var(--color-nv)] pl-4">
-              <p class="font-[family-name:var(--font-mono)] text-xs uppercase tracking-[0.2em] text-[var(--color-nv)]">
+            <header class="flex items-baseline gap-3 border-l-2 border-[var(--color-nv)] pl-3">
+              <span class="font-[family-name:var(--font-mono)] text-xs uppercase tracking-[0.2em] text-[var(--color-nv)]">
                 {`§ ${section.num}`}
-              </p>
-              <h3 class="mt-1 font-[family-name:var(--font-display)] text-2xl font-bold uppercase tracking-tight sm:text-3xl">
+              </span>
+              <h3 class="font-[family-name:var(--font-display)] text-xl font-bold uppercase tracking-tight sm:text-2xl">
                 {section.title}
               </h3>
             </header>
 
             {section.subs && (
-              <div class="mt-6 space-y-6">
+              <div class="mt-3 space-y-4">
                 {section.subs.map((sub) => (
                   <div>
                     <h4 class="font-[family-name:var(--font-display)] text-lg font-semibold uppercase tracking-wide">
@@ -408,7 +560,7 @@ const tocSections = [
                     </h4>
 
                     {sub.body && (
-                      <p class="mt-2 leading-relaxed text-[var(--color-text)]/90">
+                      <p class="mt-1 leading-relaxed text-[var(--color-text)]/90">
                         {sub.body}
                       </p>
                     )}
@@ -417,8 +569,8 @@ const tocSections = [
                       <div
                         class={
                           sub.callout.variant === "warn"
-                            ? "mt-4 border-l-2 border-[var(--color-wl)] bg-[var(--color-wl)]/5 px-4 py-3"
-                            : "mt-4 border-l-2 border-[var(--color-nv)] bg-[var(--color-nv)]/5 px-4 py-3"
+                            ? "mt-3 border-l-2 border-[var(--color-wl)] bg-[var(--color-wl)]/5 px-4 py-2"
+                            : "mt-3 border-l-2 border-[var(--color-nv)] bg-[var(--color-nv)]/5 px-4 py-2"
                         }
                       >
                         {sub.callout.label && (
@@ -437,7 +589,7 @@ const tocSections = [
                     )}
 
                     {sub.items && (
-                      <ul class="mt-4 space-y-2">
+                      <ul class="mt-2 space-y-1">
                         {sub.items.map((item) => (
                           <li class="flex gap-3 text-[var(--color-text)]/90">
                             {item.num ? (
@@ -461,94 +613,22 @@ const tocSections = [
       </div>
     </section>
 
-    <hr class="my-16 border-t border-[var(--color-hairline)]" />
+    <hr class="my-12 border-t border-[var(--color-hairline)]" />
 
     {/* ============================================================
-       SECTION 2 — ARRIVAL & PARKING (placeholder)
+       SECTION 5 — VIDEOS (placeholder)
        ============================================================ */}
-    <section id="arrival" class="scroll-mt-24">
-      <p class="section-label text-[var(--color-nv)]">// Section 02</p>
-      <h2 class="mt-2 font-[family-name:var(--font-display)] text-3xl font-bold uppercase tracking-tight sm:text-4xl">
-        Arrival & Parking
-      </h2>
-      <div class="mt-6 border border-dashed border-[var(--color-hairline)] bg-[var(--color-surface)]/40 px-5 py-6 text-[var(--color-text-muted)]">
-        <p class="font-[family-name:var(--font-mono)] text-xs uppercase tracking-[0.2em] text-[var(--color-wl)]">
-          Placeholder
-        </p>
-        <p class="mt-3 leading-relaxed">
-          Content pending. To be filled in with: staff arrival window, gate
-          to use, where to park, where to check in, who to find on arrival,
-          and any vehicle-pass or radio handout instructions.
-        </p>
-      </div>
-    </section>
-
-    <hr class="my-16 border-t border-[var(--color-hairline)]" />
-
-    {/* ============================================================
-       SECTION 3 — GEAR (placeholder)
-       ============================================================ */}
-    <section id="gear" class="scroll-mt-24">
-      <p class="section-label text-[var(--color-nv)]">// Section 03</p>
-      <h2 class="mt-2 font-[family-name:var(--font-display)] text-3xl font-bold uppercase tracking-tight sm:text-4xl">
-        Gear
-      </h2>
-      <div class="mt-6 border border-dashed border-[var(--color-hairline)] bg-[var(--color-surface)]/40 px-5 py-6 text-[var(--color-text-muted)]">
-        <p class="font-[family-name:var(--font-mono)] text-xs uppercase tracking-[0.2em] text-[var(--color-wl)]">
-          Placeholder
-        </p>
-        <p class="mt-3 leading-relaxed">
-          Content pending. To be filled in with: staff gear list, what is
-          issued by the match vs. what staff should bring, weather/cold
-          loadout, light and IR equipment, eye and ear pro, and any required
-          uniform or visibility items.
-        </p>
-      </div>
-    </section>
-
-    <hr class="my-16 border-t border-[var(--color-hairline)]" />
-
-    {/* ============================================================
-       SECTION 4 — VIDEOS (placeholder)
-       ============================================================ */}
-    <section id="videos" class="scroll-mt-24">
-      <p class="section-label text-[var(--color-nv)]">// Section 04</p>
+    <section id="videos" class="scroll-mt-24 border border-[var(--color-hairline)] bg-black px-5 py-8 sm:px-8 sm:py-10">
+      <p class="section-label text-[var(--color-nv)]">// Section 05</p>
       <h2 class="mt-2 font-[family-name:var(--font-display)] text-3xl font-bold uppercase tracking-tight sm:text-4xl">
         Videos
       </h2>
-      <div class="mt-6 border border-dashed border-[var(--color-hairline)] bg-[var(--color-surface)]/40 px-5 py-6 text-[var(--color-text-muted)]">
-        <p class="font-[family-name:var(--font-mono)] text-xs uppercase tracking-[0.2em] text-[var(--color-wl)]">
-          Placeholder
-        </p>
-        <p class="mt-3 leading-relaxed">
-          Embedded staff training videos go here — short clips per task
-          (timer use, hit calls, unload-and-show-clear, scoring tablet,
-          radio procedure). Use unlisted YouTube/Vimeo embeds or self-hosted
-          MP4s in <code class="font-[family-name:var(--font-mono)] text-[var(--color-text)]/90">/public</code>.
-        </p>
-      </div>
-    </section>
-
-    <hr class="my-16 border-t border-[var(--color-hairline)]" />
-
-    {/* ============================================================
-       SECTION 5 — DAY-OF CONTACT (placeholder)
-       ============================================================ */}
-    <section id="contact" class="scroll-mt-24">
-      <p class="section-label text-[var(--color-nv)]">// Section 05</p>
-      <h2 class="mt-2 font-[family-name:var(--font-display)] text-3xl font-bold uppercase tracking-tight sm:text-4xl">
-        Day-of Contact
-      </h2>
-      <div class="mt-6 border border-dashed border-[var(--color-hairline)] bg-[var(--color-surface)]/40 px-5 py-6 text-[var(--color-text-muted)]">
-        <p class="font-[family-name:var(--font-mono)] text-xs uppercase tracking-[0.2em] text-[var(--color-wl)]">
-          Placeholder
-        </p>
-        <p class="mt-3 leading-relaxed">
-          Match director, base/scorekeeper, safety lead, and EMS contact
-          info — names, cell numbers, and radio channels. Add a single
-          “if you can’t reach base” fallback contact at the bottom.
-        </p>
-      </div>
+      <p class="mt-6 font-[family-name:var(--font-mono)] text-xs uppercase tracking-[0.2em] text-[var(--color-wl)]">
+        Placeholder
+      </p>
+      <p class="mt-3 leading-relaxed text-[var(--color-text-muted)]">
+        Embedded staff training videos go here.
+      </p>
     </section>
 
     <footer class="mt-24 border-t border-[var(--color-hairline)] pt-6 text-sm text-[var(--color-text-muted)]">
