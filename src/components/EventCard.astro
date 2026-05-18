@@ -1,5 +1,5 @@
 ---
-import { formatEventRange, formatCurrency, formatShortDate } from "../lib/format";
+import { formatEventRange, formatCurrency, formatShortDate, formatLongDate } from "../lib/format";
 import type { CollectionEntry } from "astro:content";
 
 interface Props {
@@ -67,12 +67,10 @@ const d = event.data;
     </div>
 
     <dl class="mt-8 grid gap-x-6 gap-y-2 text-sm sm:grid-cols-2">
-      {d.squaddingOpens && (
-        <div class="flex justify-between gap-2 border-b border-[var(--color-hairline)] py-2 sm:col-span-2">
-          <dt class="text-[var(--color-text-muted)]">Squadding opens</dt>
-          <dd class="text-right font-[family-name:var(--font-mono)]">{d.squaddingOpens}</dd>
-        </div>
-      )}
+      <div class="flex justify-between gap-2 border-b border-[var(--color-hairline)] py-2 sm:col-span-2">
+        <dt class="text-[var(--color-text-muted)]">Registration opens</dt>
+        <dd class="text-right font-[family-name:var(--font-mono)]">{formatLongDate(d.registrationOpens)}</dd>
+      </div>
       {d.gatesOpen && (
         <div class="flex justify-between gap-2 border-b border-[var(--color-hairline)] py-2">
           <dt class="text-[var(--color-text-muted)]">Gates open</dt>
