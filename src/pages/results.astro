@@ -26,7 +26,7 @@ const firstYear = Math.min(...sorted.map((r) => r.year));
 
 <BaseLayout
   title="Results"
-  description="Twilight Biathlon historical results, 2018 to present. All standings archived on PractiScore."
+  description="Twilight Biathlon historical results, 2018 to present. Standings archived on PractiScore and Leap Scoring."
 >
   <PageHeader
     eyebrow="// Results · archive"
@@ -36,8 +36,8 @@ const firstYear = Math.min(...sorted.map((r) => r.year));
   <section class="mx-auto max-w-5xl px-4 py-16 sm:px-6 lg:px-8">
     <p class="max-w-2xl text-[var(--color-text-muted)]">
       Every Twilight Biathlon match since {firstYear}. Full scoring lives on
-      PractiScore — click through for stage-by-stage breakdowns and every
-      competitor’s run.
+      PractiScore and Leap Scoring — click through for stage-by-stage breakdowns
+      and every competitor’s run.
     </p>
 
     {/* Year groups */}
@@ -82,8 +82,8 @@ const firstYear = Math.min(...sorted.map((r) => r.year));
 
     <footer class="mt-24 border-t border-[var(--color-hairline)] pt-6 text-sm text-[var(--color-text-muted)]">
       <p>
-        Canonical scoring lives on PractiScore. Historical archive maintained
-        by Oklahoma Multi-Gun.
+        Canonical scoring lives on PractiScore and Leap Scoring. Historical
+        archive maintained by Oklahoma Multi-Gun.
       </p>
     </footer>
   </section>
