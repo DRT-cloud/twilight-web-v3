@@ -2,67 +2,66 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PageHeader from "../components/PageHeader.astro";
 
-// Each item: { t: "REQ" | "REC", text }
 const checklist = [
   {
     cat: "Firearms & Carry",
     items: [
-      { t: "REQ", text: "Rifle — center-fire (2Gun) or PCC (PCC division)" },
-      { t: "REQ", text: "Pistol — center-fire (2Gun); optional in PCC" },
-      { t: "REQ", text: "Rifle sling / retention device — must stay attached to body" },
-      { t: "REQ", text: "Rigid pistol holster covering the trigger, retains while running" },
-      { t: "REC", text: "Dedicated magazine carry — chest rig or belt mag pouches" },
+      "Rifle — center-fire (2Gun) or PCC (PCC division)",
+      "Pistol — center-fire (2Gun); optional in PCC",
+      "Rifle sling / retention device — must stay attached to body",
+      "Rigid pistol holster covering the trigger, retains while running",
+      "Dedicated magazine carry — chest rig or belt mag pouches",
     ],
   },
   {
     cat: "Ammunition",
     items: [
-      { t: "REQ", text: "Rifle: 30–50 hits needed (bring 2× that)" },
-      { t: "REQ", text: "Pistol: 40–60 hits needed (bring 2× that)" },
-      { t: "REQ", text: "Loaded magazines ready to go" },
-      { t: "REQ", text: "No tracers, incendiary, armor-piercing, or steel/tungsten-core projectiles" },
+      "Rifle: 30–50 hits needed (bring 2× that)",
+      "Pistol: 40–60 hits needed (bring 2× that)",
+      "Loaded magazines ready to go",
+      "No tracers, incendiary, armor-piercing, or steel/tungsten-core projectiles",
     ],
   },
   {
     cat: "Lighting",
     items: [
-      { t: "REQ", text: "Headlamp (primary navigation light)" },
-      { t: "REQ", text: "Weapon-mounted light on rifle and pistol" },
-      { t: "REC", text: "Backup flashlight" },
-      { t: "REQ", text: "Fresh batteries in all lights + spare batteries" },
-      { t: "REQ", text: "Chem-lights — required while waiting in the Stage Waiting Area" },
+      "Headlamp (primary navigation light)",
+      "Weapon-mounted light on rifle and pistol",
+      "Backup flashlight",
+      "Fresh batteries in all lights + spare batteries",
+      "Chem-lights — required while waiting in the Stage Waiting Area",
     ],
   },
   {
     cat: "Safety & Medical",
     items: [
-      { t: "REQ", text: "Eye protection" },
-      { t: "REQ", text: "Ear protection (electronic strongly recommended)" },
-      { t: "REC", text: "Tourniquet / IFAK carried on your person" },
+      "Eye protection",
+      "Ear protection (electronic strongly recommended)",
+      "Tourniquet / IFAK carried on your person",
     ],
   },
   {
     cat: "Timing & Tools",
     items: [
-      { t: "REQ", text: "Stopwatch or watch with timer function" },
-      { t: "REC", text: "Knife or multi-tool" },
-      { t: "REC", text: "Basic weapon servicing tools, electrical tape, zip-ties" },
+      "Stopwatch or watch with timer function",
+      "Knife or multi-tool",
+      "Basic weapon servicing tools, electrical tape, zip-ties",
     ],
   },
   {
     cat: "Hydration",
     items: [
-      { t: "REQ", text: "Water / hydration — hands-free pack preferred" },
+      "Water / hydration — hands-free pack preferred",
     ],
   },
   {
     cat: "Clothing & Personal",
     items: [
-      { t: "REQ", text: "Weather-appropriate clothing — layers for night temps" },
-      { t: "REC", text: "Trail runners or boots for uneven wooded terrain at night" },
-      { t: "REC", text: "Gloves — liner or trigger-finger gloves" },
-      { t: "REC", text: "Change of clothes for after — you will be dirty and/or wet" },
-      { t: "REC", text: "DEET bug spray (warm-season events)" },
+      "Weather-appropriate clothing — layers for night temps",
+      "Trail runners or boots for uneven wooded terrain at night",
+      "Gloves — liner or trigger-finger gloves",
+      "Change of clothes for after — you will be dirty and/or wet",
+      "DEET bug spray (warm-season events)",
     ],
   },
 ];
@@ -208,16 +207,6 @@ const tips = [
       <p class="mt-3 text-[var(--color-text-muted)]">
         Carry all gear from start to finish. No resupply at your vehicle.
       </p>
-      <p class="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-[var(--color-text-muted)]">
-        <span class="inline-flex items-center gap-1.5">
-          <span class="rounded-sm border border-[var(--color-wl)] px-1.5 py-0.5 font-[family-name:var(--font-mono)] text-[10px] font-semibold uppercase text-[var(--color-wl)]">REQ</span>
-          Required
-        </span>
-        <span class="inline-flex items-center gap-1.5">
-          <span class="rounded-sm border border-[var(--color-nv)] px-1.5 py-0.5 font-[family-name:var(--font-mono)] text-[10px] font-semibold uppercase text-[var(--color-nv)]">REC</span>
-          Recommended
-        </span>
-      </p>
 
       <div class="mt-8 grid gap-6 sm:grid-cols-2">
         {checklist.map((cat) => (
@@ -228,12 +217,8 @@ const tips = [
             <ul class="mt-4 space-y-2">
               {cat.items.map((item) => (
                 <li class="flex gap-2.5 text-sm text-[var(--color-text)]/90">
-                  <span
-                    class={`mt-0.5 shrink-0 rounded-sm border px-1 py-0 font-[family-name:var(--font-mono)] text-[10px] font-semibold uppercase leading-tight ${item.t === "REQ" ? "border-[var(--color-wl)] text-[var(--color-wl)]" : "border-[var(--color-nv)] text-[var(--color-nv)]"}`}
-                  >
-                    {item.t}
-                  </span>
-                  <span>{item.text}</span>
+                  <span class="text-[var(--color-nv)]/70 shrink-0">▸</span>
+                  <span>{item}</span>
                 </li>
               ))}
             </ul>
@@ -352,19 +337,15 @@ const tips = [
   </section>
   {/* ===================================================================
        PRINT SHEET — hidden on screen, the only thing that prints.
-       Page 1: checklist + seasonal conditions. Page 2: on-course flow.
+       Single Letter page: checklist + seasonal conditions + on-course flow.
        Content is driven by the same arrays as the visible page so the two
        can never drift apart.
   ==================================================================== */}
   <div id="print-sheet" aria-hidden="true">
-    {/* PAGE 1 — checklist + seasonal */}
     <section class="ps-page">
       <div class="ps-head">
         <h1 class="ps-title">Twilight Biathlon — Gear Checklist</h1>
-        <div class="ps-legend">
-          <span class="ps-tag ps-tag--req">REQ</span> Required
-          <span class="ps-tag ps-tag--rec">REC</span> Recommended
-        </div>
+        <span class="ps-foot-inline">twilightbiathlon.com/first-timer</span>
       </div>
       <p class="ps-note">Carry all gear from start to finish. No resupply at your vehicle.</p>
 
@@ -374,11 +355,7 @@ const tips = [
             <h2 class="ps-cat__title">{cat.cat}</h2>
             <ul class="ps-list">
               {cat.items.map((item) => (
-                <li>
-                  <span class="ps-box"></span>
-                  <span class={`ps-tag ${item.t === "REQ" ? "ps-tag--req" : "ps-tag--rec"}`}>{item.t}</span>
-                  <span class="ps-item-text">{item.text}</span>
-                </li>
+                <li><span class="ps-bullet">•</span><span class="ps-item-text">{item}</span></li>
               ))}
             </ul>
           </div>
@@ -395,25 +372,21 @@ const tips = [
           </div>
         ))}
       </div>
-    </section>
 
-    {/* PAGE 2 — on-course reference */}
-    <section class="ps-page">
-      <div class="ps-head">
-        <h1 class="ps-title">On Course — What to Expect</h1>
+      <div class="ps-oncourse">
+        <h2 class="ps-cat__title">On Course — What to Expect</h2>
+        <ol class="ps-flow">
+          {flow.map((s) => (
+            <li>
+              <span class="ps-flow__num">{s.num}</span>
+              <div>
+                <span class="ps-flow__title">{s.title}</span>
+                <span class="ps-flow__body">{s.body}</span>
+              </div>
+            </li>
+          ))}
+        </ol>
       </div>
-      <ol class="ps-flow">
-        {flow.map((s) => (
-          <li>
-            <span class="ps-flow__num">{s.num}</span>
-            <div>
-              <span class="ps-flow__title">{s.title}</span>
-              <span class="ps-flow__body">{s.body}</span>
-            </div>
-          </li>
-        ))}
-      </ol>
-      <p class="ps-foot">twilightbiathlon.com/first-timer</p>
     </section>
   </div>
 
@@ -480,70 +453,52 @@ const tips = [
       }
       #print-sheet * { background: transparent !important; color: #111 !important; }
 
-      .ps-page { page-break-after: always; }
-      .ps-page:last-child { page-break-after: auto; }
-
       .ps-head {
         display: flex; align-items: baseline; justify-content: space-between;
-        gap: 12px; border-bottom: 2px solid #111; padding-bottom: 5px; margin-bottom: 8px;
+        gap: 12px; border-bottom: 2px solid #111; padding-bottom: 4px; margin-bottom: 6px;
       }
       .ps-title {
         font-family: "Barlow Condensed", "Arial Narrow", Arial, sans-serif;
-        font-size: 19px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.02em; margin: 0;
+        font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.02em; margin: 0;
       }
-      .ps-legend { font-size: 9px; white-space: nowrap; }
-      .ps-note { font-size: 9px; color: #555 !important; margin: 0 0 8px; }
+      .ps-foot-inline { font-size: 8px; color: #888 !important; white-space: nowrap; }
+      .ps-note { font-size: 8.5px; color: #555 !important; margin: 0 0 6px; }
 
       .ps-grid {
-        display: grid; grid-template-columns: 1fr 1fr; gap: 6px 18px;
+        display: grid; grid-template-columns: 1fr 1fr; gap: 2px 18px;
       }
-      .ps-cat { break-inside: avoid; margin-bottom: 4px; }
+      .ps-cat { break-inside: avoid; margin-bottom: 3px; }
       .ps-cat__title {
         font-family: "Barlow Condensed", "Arial Narrow", Arial, sans-serif;
-        font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em;
-        margin: 4px 0 3px; border-bottom: 0.75px solid #bbb; padding-bottom: 1px;
+        font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em;
+        margin: 3px 0 2px; border-bottom: 0.75px solid #bbb; padding-bottom: 1px;
       }
       .ps-list { list-style: none; margin: 0; padding: 0; }
       .ps-list li {
-        display: flex; align-items: flex-start; gap: 4px; padding: 1.5px 0;
-        font-size: 9.5px; line-height: 1.25; break-inside: avoid;
+        display: flex; align-items: flex-start; gap: 4px; padding: 0.5px 0;
+        font-size: 9px; line-height: 1.2; break-inside: avoid;
       }
+      .ps-bullet { flex: 0 0 auto; color: #555 !important; }
       .ps-item-text { flex: 1; }
 
-      /* Empty checkbox — needs print-color-adjust to render the border. */
-      .ps-box {
-        flex: 0 0 auto; display: inline-block; width: 10px; height: 10px;
-        border: 1.25px solid #333 !important; border-radius: 2px; margin-top: 1px;
-        -webkit-print-color-adjust: exact; print-color-adjust: exact;
-      }
+      /* Seasonal block = bullet reference. */
+      .ps-season { margin-top: 4px; break-inside: avoid; }
+      .ps-cat--season .ps-cat__title { margin-top: 4px; }
+      .ps-list--bullets li { display: list-item; list-style: disc; margin-left: 14px; font-size: 8.5px; line-height: 1.2; padding: 0; }
 
-      /* Outline-only REQ/REC tags. */
-      .ps-tag {
-        flex: 0 0 auto; font-size: 7px; font-weight: 700; letter-spacing: 0.04em;
-        padding: 1px 3px; border-radius: 3px; margin: 1px 0 0; white-space: nowrap;
-        -webkit-print-color-adjust: exact; print-color-adjust: exact;
-      }
-      .ps-tag--req { color: #c0392b !important; border: 1px solid #c0392b !important; }
-      .ps-tag--rec { color: #b8902f !important; border: 1px solid #c29f5a !important; }
-
-      /* Seasonal block = bullet reference, no checkboxes. */
-      .ps-season { margin-top: 6px; break-inside: avoid; }
-      .ps-cat--season .ps-cat__title { margin-top: 6px; }
-      .ps-list--bullets li { display: list-item; list-style: disc; margin-left: 14px; font-size: 9px; line-height: 1.3; }
-
-      /* On-course flow (page 2). */
+      /* On-course flow. */
+      .ps-oncourse { margin-top: 4px; break-inside: avoid; }
       .ps-flow { list-style: none; margin: 0; padding: 0; }
-      .ps-flow li { display: flex; gap: 8px; padding: 5px 0; border-bottom: 0.5px solid #ddd; break-inside: avoid; }
+      .ps-flow li { display: flex; gap: 7px; padding: 2px 0; border-bottom: 0.5px solid #ddd; break-inside: avoid; }
       .ps-flow__num {
-        font-family: "JetBrains Mono", monospace; font-size: 11px; font-weight: 700;
+        font-family: "JetBrains Mono", monospace; font-size: 9.5px; font-weight: 700;
         color: #555 !important; flex: 0 0 auto;
       }
       .ps-flow__title {
         display: block; font-family: "Barlow Condensed", "Arial Narrow", Arial, sans-serif;
-        font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em;
+        font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em;
       }
-      .ps-flow__body { display: block; font-size: 10px; line-height: 1.35; margin-top: 1px; }
-      .ps-foot { margin-top: 12px; font-size: 8px; color: #888 !important; text-align: center; }
+      .ps-flow__body { display: block; font-size: 8.5px; line-height: 1.25; margin-top: 0; }
     }
   </style>
 </BaseLayout>
