@@ -13,13 +13,10 @@ const venue = JSON.parse(venueJson);
 const featureCount = venue.features.length;
 ---
 
-{/* Leaflet assets — loaded only on pages that mount this component */}
-<link
-  rel="stylesheet"
-  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-  integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-  crossorigin=""
-/>
+{/* Leaflet assets — self-hosted under /public/vendor/leaflet to avoid a
+    third-party (unpkg) runtime dependency and keep the CSP free of
+    external style-src origins. CSS images resolve to /vendor/leaflet/images/. */}
+<link rel="stylesheet" href="/vendor/leaflet/leaflet.css" />
 
 <div
   class="venue-map-wrap relative overflow-hidden border border-[var(--color-hairline)] bg-[var(--color-surface)]"
