@@ -21,7 +21,7 @@ export const SITE = {
   },
 
   contact: {
-    email: "okmultigun@gmail.com",
+    email: "contact@twilightbiathlon.com",
   },
 
   // Full photo archive (shared album)
